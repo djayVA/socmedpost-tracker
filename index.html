@@ -1,216 +1,235 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>30-Day Mon–Fri Content & Production Tracker</title>
-<meta name="description" content="30-day Facebook + Instagram content and production tracker for Michael Vallee — Flagstaff, Munds Park, Scottsdale & Phoenix.">
-<style>
-  :root{
-    --bg:#f5f2ec; --paper:#fff; --ink:#1d2824; --muted:#5f6b66; --line:#e3ddd2;
-    --pine:#24473b; --pine-2:#346453; --clay:#c1653a; --clay-soft:#f7e7dd; --sand:#efe7da;
-    --red:#b3261e; --red-soft:#fbe4e2; --amber:#9a6400; --amber-soft:#fdf0d5;
-    --green:#2e6b3f; --green-soft:#e1f0e4; --blue:#1d5a80; --blue-soft:#dcecf6; --violet:#4b2f8a; --violet-soft:#ebe4f8;
-    --r:14px; --shadow:0 1px 2px rgba(29,40,36,.06),0 6px 18px rgba(29,40,36,.06);
-  }
-  *{box-sizing:border-box}
-  html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-  button,input,select,textarea{font:inherit}
-  .wrap{max-width:1160px;margin:0 auto;padding:0 18px}
-  /* header */
-  header.top{background:linear-gradient(135deg,#1b352c 0%,var(--pine) 55%,#4a3326 100%);color:#fff;padding:26px 0 22px}
-  .brand{display:flex;align-items:center;gap:14px}
-  .brand svg{flex:none}
-  .brand .org{font-size:13px;letter-spacing:.12em;text-transform:uppercase;opacity:.8;font-weight:600}
-  .brand h1{margin:2px 0 0;font:700 clamp(24px,3.4vw,34px)/1.1 Georgia,"Times New Roman",serif}
-  .tagline{font-style:italic;opacity:.9;margin-top:4px}
-  .sub{font-size:13px;opacity:.8;margin-top:10px}
-  .toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
-  .tb{border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.1);color:#fff;border-radius:10px;padding:8px 12px;font-weight:600;font-size:13px;cursor:pointer}
-  .tb:hover{background:rgba(255,255,255,.2)}
-  .tb.danger{border-color:#f0a59f;color:#ffd9d5}
-  /* progress */
-  .progress-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:18px 20px;margin-top:-14px;position:relative}
-  .prog-top{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px}
-  .prog-top h2{margin:0;font:700 22px/1.2 Georgia,serif}
-  .prog-top .muted{color:var(--muted);font-size:13px}
-  .save{font-size:12.5px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--green-soft);color:var(--green)}
-  .save.saving{background:var(--amber-soft);color:var(--amber)} .save.cloud{background:var(--blue-soft);color:var(--blue)} .save.err{background:var(--red-soft);color:var(--red)}
-  .bar{height:12px;border-radius:999px;background:#ece6db;overflow:hidden;margin:12px 0 4px}
-  .bar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--pine-2),var(--clay));transition:width .4s}
-  /* stage cards */
-  .stages{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}
-  .stage{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;cursor:pointer;text-align:left;box-shadow:var(--shadow);transition:transform .08s,border-color .15s}
-  .stage:hover{transform:translateY(-1px)}
-  .stage.active{border-color:var(--clay);box-shadow:0 0 0 2px var(--clay-soft),var(--shadow)}
-  .stage .lbl{font-weight:700;font-size:14px}
-  .stage .num{font:700 26px/1.1 Georgia,serif;margin-top:6px}
-  .stage .num small{font:600 14px/1 inherit;color:var(--muted)}
-  .stage .desc{font-size:12.5px;color:var(--muted)}
-  .stage .mini{height:6px;border-radius:999px;background:#ece6db;margin-top:10px;overflow:hidden}
-  .stage .mini i{display:block;height:100%;background:var(--pine-2);width:0;transition:width .4s}
-  .stage .pct{font-size:12px;font-weight:700;color:var(--pine-2);margin-top:4px}
-  .formats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:12px}
-  .fmt{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:13px}
-  .fmt b{display:block;font:700 18px/1.2 Georgia,serif;margin-top:2px}
-  .section-title{font:700 13px/1 inherit;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:22px 0 8px}
-  /* controls */
-  .controls{position:sticky;top:0;z-index:15;background:rgba(245,242,236,.95);backdrop-filter:blur(6px);padding:12px 0;border-bottom:1px solid var(--line);margin-top:18px}
-  .controls .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-  .controls input[type=search]{flex:1;min-width:200px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:#fff}
-  .controls select{padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:#fff}
-  .btn{border:1px solid var(--pine);background:var(--pine);color:#fff;border-radius:9px;padding:8px 12px;font-weight:600;font-size:13px;cursor:pointer}
-  .btn.ghost{background:transparent;color:var(--pine)}
-  .btn.sm{padding:6px 10px;font-size:12.5px}
-  .btn.danger{border-color:var(--red);background:var(--red)}
-  .btn:hover{filter:brightness(1.07)}
-  .showing{font-size:13px;color:var(--muted);margin-top:8px}
-  /* week groups + posts */
-  .week{margin-top:22px}
-  .week h3{font:700 18px/1.2 Georgia,serif;margin:0 0 10px;display:flex;align-items:center;gap:10px}
-  .week h3 .wk-meta{font:600 12.5px/1 inherit;color:var(--muted)}
-  .post{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);margin-bottom:10px;overflow:hidden;scroll-margin-top:90px}
-  .post.posted{border-left:5px solid var(--green)} .post.scheduled{border-left:5px solid var(--blue)} .post.pending{border-left:5px solid var(--amber)}
-  .phead{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:12px 16px;cursor:pointer;user-select:none}
-  .phead .dnum{width:46px;height:46px;border-radius:12px;background:var(--sand);display:grid;place-items:center;text-align:center;line-height:1}
-  .phead .dnum b{font:700 18px/1 Georgia,serif;display:block} .phead .dnum span{font-size:10px;color:var(--muted);font-weight:700}
-  .phead .t{min-width:0}
-  .phead .hook{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .phead .when{font-size:12.5px;color:var(--muted);margin-top:2px}
-  .pills{display:flex;flex-wrap:wrap;gap:5px;justify-content:flex-end}
-  .pill{font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;white-space:nowrap}
-  .p-reel{background:var(--violet-soft);color:var(--violet)} .p-carousel{background:var(--blue-soft);color:var(--blue)} .p-text{background:var(--sand);color:#6b4b20} .p-story{background:var(--clay-soft);color:#9a431c}
-  .p-req{background:var(--red-soft);color:var(--red)} .p-rec{background:var(--amber-soft);color:var(--amber)} .p-ok{background:var(--green-soft);color:var(--green)}
-  .p-st-posted{background:var(--green);color:#fff} .p-st-scheduled{background:var(--blue);color:#fff} .p-st-pending{background:var(--amber);color:#fff} .p-st-none{background:#e9e4da;color:var(--muted)}
-  .chev{transition:transform .2s;color:var(--muted)} .post.open .chev{transform:rotate(90deg)}
-  .pbody{display:none;border-top:1px solid var(--line)}
-  .post.open .pbody{display:grid;grid-template-columns:1.3fr 1fr}
-  .pbody > div{padding:16px}
-  .pbody > div + div{border-left:1px solid var(--line);background:#fcfaf7}
-  .lbl2{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:12px 0 4px}
-  .lbl2:first-child{margin-top:0}
-  .bighook{font:700 18px/1.3 Georgia,serif;margin:0}
-  .caption{white-space:pre-wrap;background:#fbf9f5;border:1px solid var(--line);border-radius:10px;padding:10px 12px;max-height:300px;overflow:auto;font-size:14.5px}
-  .tags{color:var(--pine-2);font-weight:600;font-size:14px}
-  .flag{border-radius:10px;padding:9px 11px;font-size:13px;margin-top:10px}
-  .flag.required{background:var(--red-soft)} .flag.recommended{background:var(--amber-soft)} .flag.none{background:var(--green-soft)}
-  .checks{display:grid;gap:8px}
-  .check{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 11px;cursor:pointer}
-  .check input{width:18px;height:18px;margin-top:1px;accent-color:var(--pine)}
-  .check small{display:block;color:var(--muted);font-size:12px}
-  .check.done{background:var(--green-soft);border-color:#c5e2cb}
-  .check.comp{border-style:dashed}
-  .approver{display:flex;gap:6px;margin-top:6px}
-  .approver input{flex:1;padding:6px 8px;border:1px solid var(--line);border-radius:8px;font-size:13px;min-width:0}
-  textarea.notes{width:100%;min-height:70px;padding:9px 10px;border:1px solid var(--line);border-radius:10px;resize:vertical;background:#fff}
-  .leadform{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-  .leadform input,.leadform select{padding:7px 9px;border:1px solid var(--line);border-radius:8px;font-size:13px;min-width:0;background:#fff}
-  .leadform .full{grid-column:1/-1}
-  .leads{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:6px}
-  .leads li{background:#fff;border:1px solid var(--line);border-radius:9px;padding:7px 9px;font-size:13px;display:flex;justify-content:space-between;gap:8px}
-  .leads li .x{border:0;background:none;color:var(--red);cursor:pointer;font-weight:700}
-  .btnrow{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-  .empty{background:var(--paper);border:1px dashed var(--line);border-radius:var(--r);padding:30px;text-align:center;color:var(--muted);margin-top:18px}
-  /* modal */
-  .modal{position:fixed;inset:0;background:rgba(20,28,25,.55);display:none;align-items:center;justify-content:center;z-index:60;padding:18px}
-  .modal.show{display:flex}
-  .modal .box{background:#fff;border-radius:16px;max-width:460px;width:100%;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
-  .modal h3{margin:0 0 8px;font:700 20px/1.2 Georgia,serif}
-  .modal p{color:var(--muted);margin:0 0 16px}
-  .modal .acts{display:flex;justify-content:flex-end;gap:8px}
-  .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;transition:.25s;pointer-events:none;z-index:70}
-  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-  footer{margin-top:40px;background:#1b352c;color:#d8e6df;padding:22px 0;font-size:13px}
-  footer b{color:#fff}
-  footer .disc{opacity:.75;font-size:12px;margin-top:8px}
-  @media (max-width:860px){
-    .stages{grid-template-columns:repeat(2,1fr)} .formats{grid-template-columns:repeat(2,1fr)}
-    .post.open .pbody{grid-template-columns:1fr} .pbody > div + div{border-left:0;border-top:1px solid var(--line)}
-    .phead{grid-template-columns:auto 1fr} .pills{grid-column:1/-1;justify-content:flex-start}
-    .chev{display:none}
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>30-Day M–F Content & Production Tracker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Lato', 'Helvetica Neue', 'Arial', 'sans-serif'],
+            display: ['"Playfair Display"', 'Georgia', 'serif']
+          },
+          colors: {
+            agency: {
+              navy: '#1F4136',    // Pine green (primary)
+              deep: '#142B24',    // Deep forest (hovers / depth)
+              blue: '#2D6A64',    // Juniper teal (secondary)
+              gold: '#C9773F',    // Desert clay (accent)
+              goldink: '#8E4A22', // Clay darkened for readable text
+              cream: '#FBF1E8',   // Light clay tint
+              mist: '#E8F0EC',    // Light sage tint
+              paper: '#F6F3EE',   // Sand page background
+              line: '#E4DED4',    // Hairline borders
+              steel: '#5E6F68',   // Sage-gray neutral
+              success: '#2E7D4F', // Posted / approved
+              alert: '#B23A2E'    // Compliance / destructive
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body { font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif; }
+    h1, h2, h3, .font-display { font-family: 'Playfair Display', Georgia, serif; }
+    .eyebrow { font-family: 'Lato', sans-serif; font-weight: 900; letter-spacing: .16em; text-transform: uppercase; font-size: .7rem; }
+    .gold-rule-left { display: flex; align-items: center; gap: .75rem; }
+    .gold-rule-left::after { content: ""; height: 1px; flex: 1; background: #E4DED4; }
+    .header-arc { position: absolute; left: -10%; right: -10%; bottom: -70px; height: 110px; border-top: 3px solid #C9773F; border-radius: 50%; opacity: .55; pointer-events: none; }
+    select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%231F4136' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right .85rem center; background-size: 1rem; appearance: none; -webkit-appearance: none; padding-right: 2.5rem !important; }
+    ::selection { background: rgba(201,119,63,.30); color: #1F4136; }
+  </style>
 </head>
-<body>
+<body class="bg-agency-paper text-slate-800 font-sans antialiased">
 
-<header class="top">
-  <div class="wrap">
-    <div class="brand">
-      <svg width="54" height="54" viewBox="0 0 54 54" aria-label="Logo mark" role="img">
-        <rect width="54" height="54" rx="14" fill="#fff" fill-opacity=".12" stroke="#fff" stroke-opacity=".35"/>
-        <path d="M10 40 L20 22 L26 31 L32 18 L44 40 Z" fill="#c1653a"/>
-        <path d="M32 18 L36 25 L33 24 L30 27 Z" fill="#fff" fill-opacity=".85"/>
-        <path d="M14 40 L18 33 L22 40 Z" fill="#7fb59c"/>
-      </svg>
-      <div>
-        <div class="org">Munds Park, Arizona</div>
-        <h1>30-Day Content Tracker</h1>
-        <div class="tagline">Answers first. Then the keys.</div>
+  <!-- Toast Container -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- Confirmation Modal (in-page; works where browser pop-ups are blocked) -->
+  <div id="confirm-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-agency-deep/70 backdrop-blur-sm p-4" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+    <div id="confirm-box" class="bg-white rounded-xl max-w-md w-full p-6 shadow-2xl border-t-4 border-agency-alert">
+      <div class="flex items-center gap-3 mb-3">
+        <svg id="confirm-icon" class="w-7 h-7 shrink-0 text-agency-alert" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+        </svg>
+        <h3 id="confirm-title" class="text-2xl font-bold text-agency-navy">Are you sure?</h3>
+      </div>
+      <p id="confirm-message" class="text-slate-600 text-sm leading-relaxed mb-6 whitespace-pre-line"></p>
+      <div class="flex flex-col sm:flex-row justify-end gap-3">
+        <button id="confirm-cancel" class="px-4 py-2.5 rounded-lg font-bold text-agency-navy bg-agency-mist hover:bg-[#D9E6DF] text-sm transition cursor-pointer">Cancel</button>
+        <button id="confirm-ok" class="px-4 py-2.5 rounded-lg font-bold text-white bg-agency-alert hover:bg-[#8F2E24] text-sm transition cursor-pointer">Yes</button>
       </div>
     </div>
-    <div class="sub">Mon–Fri · 6 Weeks · Nov 23, 2026 – Jan 1, 2027 · Facebook + Instagram · Flagstaff · Munds Park · Scottsdale · Phoenix · Office: 480-848-5780 · Book: TimeWithMichael.com</div>
-    <div class="toolbar">
-      <button class="tb" id="btnCsv">⬇ Export CSV Backup</button>
-      <button class="tb" id="btnJson">⬇ Export JSON Backup</button>
-      <button class="tb" id="btnRestore">⬆ Restore JSON</button>
-      <input type="file" id="fileRestore" accept="application/json,.json" hidden>
-      <button class="tb danger" id="btnReset">↺ Reset</button>
-    </div>
   </div>
-</header>
 
-<main class="wrap">
-  <div class="progress-card">
-    <div class="prog-top">
-      <div>
-        <h2 id="progHead">0 of 30 Posts Posted Live</h2>
-        <div class="muted">Overall Campaign Execution · 30 Business Days · <span id="leadTotal">0 leads logged</span></div>
+  <!-- Hidden File Input for JSON Restore -->
+  <input type="file" id="import-file-input" accept=".json,application/json" class="hidden" />
+
+  <!-- Top Header -->
+  <header class="relative overflow-hidden bg-agency-navy text-white">
+    <div class="header-arc"></div>
+    <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-7 pb-9">
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+        <div class="flex items-center gap-5 min-w-0">
+          <svg class="w-16 h-16 sm:w-20 sm:h-20 shrink-0" viewBox="0 0 80 80" role="img" aria-label="Logo mark">
+            <circle cx="40" cy="40" r="38" fill="none" stroke="#C9773F" stroke-width="2.5"/>
+            <path d="M16 54 L30 32 L38 43 L48 26 L64 54 Z" fill="#C9773F"/>
+            <path d="M48 26 L53 34 L49 33 L45 37 Z" fill="#ffffff" fill-opacity=".9"/>
+            <path d="M20 54 L26 45 L32 54 Z" fill="#ffffff" fill-opacity=".35"/>
+          </svg>
+          <div>
+            <div class="eyebrow text-agency-gold mb-2 flex flex-wrap items-center gap-x-2 gap-y-1">
+              <span>Munds Park, Arizona</span>
+              <span class="text-white/40">·</span>
+              <span>Flagstaff · Scottsdale · Phoenix</span>
+            </div>
+            <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-white leading-tight">30-Day Content Tracker</h1>
+            <p class="font-display italic text-agency-gold text-base mt-1">Answers first. Then the keys.</p>
+            <p class="text-white/70 text-xs mt-1.5 tracking-wide">Mon–Fri · 6 Weeks · Nov 23, 2026 – Jan 1, 2027 · Office: 480-848-5780 · Book: TimeWithMichael.com</p>
+          </div>
+        </div>
+        <div class="flex flex-wrap lg:flex-nowrap items-center gap-2 shrink-0">
+          <button data-action="export-csv" class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-agency-gold text-agency-navy hover:bg-[#D98B55] text-xs sm:text-sm font-black tracking-wide shadow-sm transition cursor-pointer">Export CSV</button>
+          <button data-action="export-json" class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-transparent hover:bg-white/10 text-white border border-white/40 text-xs sm:text-sm font-bold transition cursor-pointer">Backup JSON</button>
+          <button data-action="import-json" class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-transparent hover:bg-white/10 text-white border border-white/40 text-xs sm:text-sm font-bold transition cursor-pointer">Restore JSON</button>
+          <button data-action="reset-all" class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-transparent hover:bg-agency-alert text-white/80 hover:text-white border border-white/20 hover:border-agency-alert text-xs sm:text-sm font-bold transition cursor-pointer">Reset</button>
+        </div>
       </div>
-      <div><span class="save" id="saveState">Saved Locally</span> <b id="progPct" style="margin-left:6px">0%</b></div>
     </div>
-    <div class="bar"><i id="progBar"></i></div>
-  </div>
+    <div class="h-1 bg-agency-gold"></div>
+  </header>
 
-  <div class="stages" id="stages"></div>
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
 
-  <div class="section-title">Format breakdown · Posted Live</div>
-  <div class="formats" id="formats"></div>
+    <!-- Top Analytics Dashboard -->
+    <section class="bg-white rounded-xl shadow-sm border border-agency-line p-5 sm:p-7 space-y-7">
+      <div>
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 mb-3">
+          <div>
+            <span class="eyebrow text-agency-goldink">Overall Campaign Execution · 30 Business Days</span>
+            <h2 class="text-2xl sm:text-3xl font-bold text-agency-navy mt-1" id="progress-headline">0 of 30 Posts Posted Live</h2>
+            <p class="text-xs text-agency-steel mt-1" id="lead-total">0 leads logged</p>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="text-xs font-bold text-agency-steel flex items-center gap-1.5">
+              <span id="storage-dot" class="w-2.5 h-2.5 rounded-full bg-agency-success inline-block"></span>
+              <span id="storage-label">Saved Locally</span>
+            </span>
+            <span id="progress-percent" class="font-display text-3xl sm:text-4xl font-bold text-agency-navy">0%</span>
+          </div>
+        </div>
+        <div class="w-full bg-agency-mist rounded-full h-3 overflow-hidden">
+          <div id="progress-bar-fill" class="bg-gradient-to-r from-agency-navy via-agency-blue to-agency-gold h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
+        </div>
+      </div>
 
-  <div class="controls">
-    <div class="row">
-      <input type="search" id="q" placeholder="Search hooks, captions, keywords, notes, leads…" aria-label="Search posts">
-      <select id="fWeek" aria-label="Week"></select>
-      <select id="fFormat" aria-label="Format"></select>
-      <select id="fStatus" aria-label="Workflow status"></select>
-      <button class="btn ghost sm" id="btnResetFilters">Reset Filters</button>
-      <button class="btn ghost sm" id="btnExpand">Expand All</button>
-      <button class="btn ghost sm" id="btnCollapse">Collapse All</button>
+      <div>
+        <h3 class="eyebrow gold-rule-left text-agency-steel mb-3">Workflow Stage Overview · Click a Card to Filter</h3>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          <button data-action="quick-status" data-value="pending" class="text-left rounded-lg p-4 border border-agency-line border-t-4 border-t-agency-gold bg-white hover:bg-agency-cream transition cursor-pointer">
+            <div class="flex items-center justify-between"><span class="eyebrow text-agency-goldink">⏳ Pending Post</span><span id="stat-pending-pct" class="text-xs font-bold text-agency-goldink">0%</span></div>
+            <p id="stat-pending-count" class="font-display text-3xl font-bold text-agency-navy mt-1.5">0 / 30</p>
+            <p class="text-xs text-slate-500 mt-0.5">Marked pending post</p>
+          </button>
+          <button data-action="quick-status" data-value="scheduled" class="text-left rounded-lg p-4 border border-agency-line border-t-4 border-t-agency-blue bg-white hover:bg-agency-mist transition cursor-pointer">
+            <div class="flex items-center justify-between"><span class="eyebrow text-agency-blue">🗓️ Scheduled</span><span id="stat-scheduled-pct" class="text-xs font-bold text-agency-blue">0%</span></div>
+            <p id="stat-scheduled-count" class="font-display text-3xl font-bold text-agency-navy mt-1.5">0 / 30</p>
+            <p class="text-xs text-slate-500 mt-0.5">Queued in Meta Business Suite</p>
+          </button>
+          <button data-action="quick-status" data-value="posted" class="text-left rounded-lg p-4 border border-agency-line border-t-4 border-t-agency-success bg-white hover:bg-[#EAF5EE] transition cursor-pointer">
+            <div class="flex items-center justify-between"><span class="eyebrow text-agency-success">✅ Posted Live</span><span id="stat-posted-pct" class="text-xs font-bold text-agency-success">0%</span></div>
+            <p id="stat-posted-count" class="font-display text-3xl font-bold text-agency-navy mt-1.5">0 / 30</p>
+            <p class="text-xs text-slate-500 mt-0.5">Published to FB & IG</p>
+          </button>
+          <button data-action="quick-status" data-value="compliance" class="text-left rounded-lg p-4 border border-agency-line border-t-4 border-t-agency-alert bg-white hover:bg-[#FBECEA] transition cursor-pointer">
+            <div class="flex items-center justify-between"><span class="eyebrow text-agency-alert">⚠️ Compliance</span><span id="stat-compliance-pct" class="text-xs font-bold text-agency-alert">0%</span></div>
+            <p id="stat-compliance-count" class="font-display text-3xl font-bold text-agency-navy mt-1.5">0 / 0</p>
+            <p class="text-xs text-slate-500 mt-0.5">Flagged posts approved</p>
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="eyebrow gold-rule-left text-agency-steel mb-3">Content Format Breakdown · Posted Live</h3>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3" id="format-cards"></div>
+      </div>
+
+      <div>
+        <h3 class="eyebrow gold-rule-left text-agency-steel mb-3">Before Posting · Rules From Michael's Script File</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3" id="before-posting"></div>
+      </div>
+    </section>
+
+    <!-- Search & Filter Controls -->
+    <section class="bg-white rounded-xl shadow-sm border border-agency-line p-4 sm:p-5 space-y-4">
+      <div class="flex flex-col lg:flex-row gap-3">
+        <div class="relative flex-1">
+          <svg class="w-5 h-5 text-agency-steel absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          <input type="text" id="search-input" placeholder="Search by day, topic, hook, keyword (e.g. TEST, CREDIT, Script 6), notes or leads..."
+            class="w-full pl-11 pr-10 py-2.5 rounded-lg border border-agency-line bg-agency-paper/50 text-sm sm:text-base text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-agency-gold focus:border-agency-gold focus:bg-white" />
+          <button id="clear-search-btn" data-action="clear-search" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-agency-navy p-1 cursor-pointer" aria-label="Clear search">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+        <div class="flex gap-2 shrink-0">
+          <button data-action="expand-all" class="px-4 py-2.5 rounded-lg border border-agency-navy/20 bg-white hover:bg-agency-mist text-agency-navy font-bold text-sm transition cursor-pointer">Expand All</button>
+          <button data-action="collapse-all" class="px-4 py-2.5 rounded-lg border border-agency-navy/20 bg-white hover:bg-agency-mist text-agency-navy font-bold text-sm transition cursor-pointer">Collapse All</button>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div>
+          <label for="week-filter" class="block eyebrow text-agency-steel mb-1.5">Filter by Week</label>
+          <select id="week-filter" class="w-full rounded-lg border border-agency-line bg-white px-3.5 py-2.5 text-sm font-bold text-agency-navy focus:outline-none focus:ring-2 focus:ring-agency-gold"></select>
+        </div>
+        <div>
+          <label for="format-filter" class="block eyebrow text-agency-steel mb-1.5">Filter by Format</label>
+          <select id="format-filter" class="w-full rounded-lg border border-agency-line bg-white px-3.5 py-2.5 text-sm font-bold text-agency-navy focus:outline-none focus:ring-2 focus:ring-agency-gold"></select>
+        </div>
+        <div>
+          <label for="status-filter" class="block eyebrow text-agency-steel mb-1.5">Filter by Workflow Status</label>
+          <select id="status-filter" class="w-full rounded-lg border border-agency-line bg-white px-3.5 py-2.5 text-sm font-bold text-agency-navy focus:outline-none focus:ring-2 focus:ring-agency-gold">
+            <option value="all">All Statuses (30)</option>
+            <option value="pending">⏳ Pending Post (Checked)</option>
+            <option value="scheduled">🗓️ Scheduled / Ready</option>
+            <option value="posted">✅ Posted Live</option>
+            <option value="not_posted">⭕ Not Yet Posted Live</option>
+            <option value="compliance">⚠️ Needs Compliance Review</option>
+          </select>
+        </div>
+      </div>
+      <div id="active-filter-bar" class="hidden flex items-center justify-between bg-agency-cream border border-agency-gold/50 rounded-lg px-4 py-2 text-sm">
+        <span id="filter-result-count" class="font-bold text-agency-navy">Showing filtered posts</span>
+        <button data-action="reset-filters" class="font-black text-agency-goldink hover:underline cursor-pointer">Reset Filters</button>
+      </div>
+    </section>
+
+    <section id="posts-list" class="space-y-4"></section>
+
+    <div id="empty-state" class="hidden bg-white rounded-xl border border-agency-line p-10 text-center">
+      <h3 class="text-2xl font-bold text-agency-navy">No posts match your current filters</h3>
+      <p class="text-slate-500 text-sm mt-1 mb-5">Clear your search box or reset the dropdown filters to view all 30 business days.</p>
+      <button data-action="reset-filters" class="px-5 py-2.5 rounded-lg bg-agency-navy text-white text-sm font-bold hover:bg-agency-deep transition cursor-pointer">Show All 30 Days</button>
     </div>
-    <div class="showing" id="showing"></div>
-  </div>
+  </main>
 
-  <div id="list"></div>
-</main>
-
-<footer>
-  <div class="wrap">
-    <b>Michael Vallee</b> · Answers first. Then the keys.<br>
-    Munds Park, AZ · Office: 480-848-5780 · Michael@ValleeRealty.com · TimeWithMichael.com · ValleeRealty.com
-    <div class="disc" id="footDisc"></div>
-  </div>
-</footer>
-
-<div class="modal" id="resetModal" role="dialog" aria-modal="true" aria-labelledby="rmTitle">
-  <div class="box">
-    <h3 id="rmTitle">Reset All Progress?</h3>
-    <p>This clears every checkbox, compliance approval, note and lead log in this browser <strong>and</strong> in the connected Firebase database. It can't be undone, so export a JSON backup first.</p>
-    <div class="acts">
-      <button class="btn ghost" id="rmCancel">Cancel</button>
-      <button class="btn danger" id="rmYes">Yes, Reset Everything</button>
+  <footer class="mt-12 bg-agency-navy text-white">
+    <div class="h-1 bg-agency-gold"></div>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex flex-col items-center text-center gap-4">
+      <p class="font-display italic text-agency-gold text-lg">Answers first. Then the keys.</p>
+      <div class="text-xs sm:text-sm text-white/75 space-y-1">
+        <p class="font-bold text-white">Michael Vallee</p>
+        <p>Munds Park, AZ · Office: 480-848-5780 · Michael@ValleeRealty.com · TimeWithMichael.com · ValleeRealty.com</p>
+        <p class="text-white/50 text-[11px] max-w-3xl" id="footer-disc"></p>
+      </div>
     </div>
-  </div>
-</div>
-<div class="toast" id="toast"></div>
+  </footer>
 
 <!-- =====================================================================
      HARDCODED CONTENT DB (30 posts, questions, disclosures)
@@ -619,12 +638,12 @@ const HARDCODED_DB = {
       hook: "5 money moves that can mess up your mortgage. (Save this before the holidays.)",
       caption: [
         "December is when good intentions meet holiday sales.",
-        "If you're planning to buy in 2027, here are five moves to talk to your lender about first.",
-        "1. Financing a new car or truck.",
-        "2. Opening a store card for that \"0% for 12 months\" deal.",
-        "3. Co-signing for a friend or family member.",
-        "4. Closing your oldest credit card.",
-        "5. Moving large amounts of cash around without a paper trail.",
+        "If you're planning to buy in 2027, here are five moves to talk to your lender about first (straight from my credit checklist).",
+        "1. Opening a new car loan.",
+        "2. Opening a store card for furniture.",
+        "3. Co-signing for anyone. A new financial obligation could affect your mortgage application.",
+        "4. Closing your oldest credit cards. Your account history can be a factor in your credit profile.",
+        "5. Making major financial changes without talking to your lender first.",
         "None of these is evil. But the timing matters.",
         "A quick call can save you a big headache later.",
         "Comment CREDIT and I'll send you the full 60-day prep checklist."
@@ -813,355 +832,1121 @@ const HARDCODED_DB = {
 };
 </script>
 
+<script>
+// =========================================================================
+// STEP-BY-STEP PRODUCTION GUIDES
+// Content source: Michael's script file (TIKTOK-New.pdf) — Scripts 1–10,
+// "Before Posting" rules, and the Business Profile. Where a post has no
+// matching script in the file, the guide says so and uses the approved caption.
+// =========================================================================
+const NMLS_DISCLOSURE = "Michael Vallee, Loan Officer | NMLS #2665457 | One Real Mortgage Corp. | NMLS #198414 | Equal Housing Opportunity. Terms, availability and eligibility vary by borrower and loan program.";
+const END_CARD = "📅 Book your free call → Link in bio";
+
+// Suggested creative kit (the script file has no brand colors or fonts, so these are suggestions — swap for Michael's brand kit if he has one)
+const KIT = {
+  pine: "Pine Green #24473B", clay: "Desert Clay #C1653A", sand: "Sand #EFE7DA", cream: "Off-White #FAF7F2", ink: "Charcoal #1D2824",
+  head: "Playfair Display Bold", body: "Lato"
+};
+
+// Shared production steps for every HeyGen Reel (from "Before Posting" in the script file)
+const REEL_STEPS = (o) => [
+  ...(o.orm ? ["Send the script to ORM Marketing & Compliance and wait for written approval before you produce anything (the file says this script discusses " + o.orm + ")."] : []),
+  "Open HeyGen → New video → 9:16 vertical → choose Michael's avatar → paste the approved script exactly as written below.",
+  "Add the on-screen hook as bold text for the first 3 seconds: \"" + o.hook + "\" (" + KIT.head + ", white with a " + KIT.clay + " highlight bar, top third of the frame).",
+  "Turn on burned-in captions (" + KIT.body + ", white with a dark shadow, lower third) so the video works with the sound off.",
+  ...(o.orm ? ["Add the NMLS disclosure as on-screen text for the whole video or at least the last 5 seconds (small white text, bottom of frame): " + NMLS_DISCLOSURE] : []),
+  "Last 5 seconds: show the end card \"" + END_CARD + "\" on a " + KIT.pine + " background.",
+  ...(o.ab ? ["Hook test (the file recommends this script for A/B testing): export a second version that changes ONLY the first line to: \"" + o.ab + "\". Post version A on the scheduled day and keep version B for a re-post 2–3 weeks later; compare 3-second hold rate."] : []),
+  "Quality check before export (from the file): listen for pronunciation, pacing, caption accuracy, and confirm the spoken narration matches the approved script word for word.",
+  "Confirm the Instagram and Facebook bio link goes straight to TimeWithMichael.com (one tap to the calendar).",
+  "Paste the caption + hashtags from the Copy tab, then schedule in Meta Business Suite for FB Reels and IG Reels at the date and time on this card.",
+  "Tick ⏳ Pending Post when the export is done, 🗓️ Scheduled when it's queued, ✅ Posted Live once it publishes."
+];
+
+const GUIDES = {
+  // ---------------- WEEK 1 ----------------
+  day01: {
+    topic: "Q1 — Should I Wait to Buy? (Script 1)",
+    source: "Script 1: Should I Wait to Buy?",
+    guide: {
+      mediaType: "HeyGen Avatar Reel · 9:16 vertical · about 60 seconds",
+      deliveryTone: "Calm, honest, no pressure. Michael is giving people a test they can run themselves, not pushing them to buy.",
+      visualBreakdown: "Michael's avatar speaking to camera. Put a number graphic on screen as each question starts (\"1\", \"2\", \"3\") and show \"Monthly rent × 12\" as text during question three.",
+      steps: REEL_STEPS({ hook: "STOP WAITING FOR \"THE PERFECT TIME\"" }),
+      script: "[0:00–0:05] Stop waiting for the perfect time to buy a home. The truth is, there's no way to know exactly when that time will come.\n[0:05–0:12] Here's a three-question test that can help you decide whether buying now or waiting makes more sense. And the most important question has nothing to do with the market.\n[0:12–0:25] Question one. Will you stay at least five years? Buying and selling both cost money. The longer you stay, the more time you have to build equity and potentially offset those costs. If you plan to move within three years, waiting may be the smarter choice.\n[0:25–0:33] Question two. Is the monthly payment comfortable today? Not someday. Today. Don't buy hoping things will get cheaper later. Focus on what works for your budget right now.\n[0:33–0:44] Question three, the big one. What would another year of renting cost you? Take your monthly rent and multiply it by twelve. That's what you'll spend on housing over another year without building ownership equity.\n[0:44–0:50] If you answered yes, yes, and that rent number made you think twice, it may be time to stop waiting and start planning.\n[0:50–0:55] Tap the link in my bio and book a quick call with me. We'll run this test using your real numbers so you can better understand your options.\n[0:55–1:00] END CARD: " + END_CARD
+    }
+  },
+  day02: {
+    topic: "Q6 — Which Area Fits My Life? (Script 6 + Business Profile)",
+    source: "Business Profile (markets: Flagstaff, Munds Park, Scottsdale, Phoenix) + Script 6 five checks",
+    guide: {
+      mediaType: "7-Slide Carousel · 1080×1350 px portrait · PNG",
+      deliveryTone: "Friendly local guide. Describe places and features only, never the people who live there (Fair Housing).",
+      visualBreakdown: "One slide per market with a real photo of that area, then a checklist slide built from Script 6 and a booking slide.",
+      steps: [
+        "Collect photos: use Michael's own photos of each market or licensed stock (Canva Pro / Unsplash). Avoid photos where people are the main subject.",
+        "In Canva: Create design → Instagram Post (Portrait 1080×1350). Build the 7 slides below.",
+        "Fonts: headlines " + KIT.head + "; body " + KIT.body + ". Colors: " + KIT.pine + ", " + KIT.clay + ", " + KIT.sand + ", " + KIT.cream + ".",
+        "Add a small \"Swipe →\" arrow bottom-right on slides 1–6.",
+        "Compliance check (recommended): no \"family-friendly / great for retirees / safe area\" wording on any slide. Add \"Real Broker, LLC\" on the last slide.",
+        "Export all slides as PNG, upload as one multi-photo post to FB and IG, paste the caption + hashtags.",
+        "Schedule in Meta Business Suite for the date and time on this card, then tick the boxes."
+      ],
+      carouselPlan: [
+        { slide: 1, background: KIT.pine + " solid", image: "No photo — text only.", text: "Same state. Four completely different lives.", designNote: "White " + KIT.head + " 64pt, centered. Thin " + KIT.clay + " rule under the headline. Small 'Swipe →' bottom-right." },
+        { slide: 2, background: "Full-bleed photo with a 40% " + KIT.ink + " overlay", image: "Flagstaff: pine trees or downtown street in snow.", text: "FLAGSTAFF — four real seasons, ponderosa pines, and yes, you will own a snow shovel.", designNote: "Town name in white " + KIT.head + " 54pt top-left; line in " + KIT.body + " 28pt below." },
+        { slide: 3, background: "Full-bleed photo with a 40% overlay", image: "Munds Park: pines, a quiet street or the lake area.", text: "MUNDS PARK — small and quiet, tucked in the pines just south of Flagstaff off I-17.", designNote: "Same layout as slide 2. Optional small badge in " + KIT.clay + ": \"Where Michael lives\"." },
+        { slide: 4, background: "Full-bleed photo with a 40% overlay", image: "Scottsdale: desert, golf course or sunny street.", text: "SCOTTSDALE — sunshine, golf, restaurants, and summers that will make you question your life choices.", designNote: "Same layout as slide 2." },
+        { slide: 5, background: "Full-bleed photo with a 40% overlay", image: "Phoenix: skyline or freeway at rush hour.", text: "PHOENIX — big-city jobs, big-city options, and a commute you'll want to test-drive before you sign anything.", designNote: "Same layout as slide 2." },
+        { slide: 6, background: KIT.cream + " solid", image: "Five small line icons: car, map pin, document, moon, speech bubble.", text: "Check these anywhere (Script 6): 1. Drive your commute at rush hour. 2. Find out what's planned nearby. 3. Read the HOA rules and fees. 4. Come back after dark. 5. Talk to a neighbor.", designNote: KIT.ink + " " + KIT.body + " 30pt numbered list; icons in " + KIT.clay + "." },
+        { slide: 7, background: KIT.pine + " solid", image: "Michael's headshot, circle crop, top center.", text: "Which one fits you? Comment TOWN. 📅 Book your free call → Link in bio", designNote: "White " + KIT.head + " 48pt. Small footer in " + KIT.body + " 16pt: \"Michael Vallee | Real Broker, LLC\"." }
+      ]
+    }
+  },
+  day03: {
+    topic: "Q8 — Renting or Buying? (Script 8 poll)",
+    source: "Script 8: Should I Keep Renting or Buy?",
+    guide: {
+      mediaType: "4-Frame Instagram + Facebook Story · 1080×1920 px",
+      deliveryTone: "Light, curious, zero pressure. It's a conversation starter.",
+      visualBreakdown: "Simple text frames with native Instagram stickers (poll, quiz, link).",
+      steps: [
+        "Build each frame in Canva (Instagram Story 1080×1920) or directly in the Instagram app.",
+        "Background: " + KIT.sand + " with " + KIT.ink + " text, " + KIT.head + " for headlines, " + KIT.body + " for smaller text.",
+        "Add the native stickers in the app (Canva can't add live stickers): Poll on frame 1, Quiz on frame 2, Link sticker on frame 4 → TimeWithMichael.com.",
+        "Post frames in order at the scheduled time and share to Facebook Stories.",
+        "Next morning: DM everyone who voted \"Renting\" with a short thank-you and the Day 1 three-question test."
+      ],
+      storyPlan: [
+        { frame: 1, background: KIT.sand, text: "Quick poll: are you renting right now? 👀", sticker: "Poll: Renting / I own", designNote: KIT.head + " 72pt, centered upper half." },
+        { frame: 2, background: KIT.sand, text: "What's the #1 thing stopping you from buying?", sticker: "Quiz: Down payment · Credit · Timing · No idea where to start", designNote: "Headline top third; quiz sticker centered." },
+        { frame: 3, background: KIT.pine, text: "Real talk: all four are fixable. Most just need a plan.", sticker: "None", designNote: "White " + KIT.head + " 64pt." },
+        { frame: 4, background: KIT.pine, text: "I'll build that plan with you for free. 15 minutes.", sticker: "Link sticker → TimeWithMichael.com", designNote: "White text; link sticker centered below." }
+      ]
+    }
+  },
+  day04: {
+    topic: "Brand — Thanksgiving Thank-You",
+    source: "Business Profile (Munds Park base; family moved from Washington to Arizona — Script 6)",
+    guide: {
+      mediaType: "Photo + Text Post · 1080×1350 px",
+      deliveryTone: "Warm and personal. No sales link, no pitch.",
+      visualBreakdown: "A real photo of Michael (family or Munds Park scenery) with a small text overlay.",
+      steps: [
+        "Ask Michael for one real photo (family, home or Munds Park). Do not use stock for this post.",
+        "Fill the [personalize] line in the caption with one true detail about the Washington → Arizona move from Michael.",
+        "Add the overlay in Canva per the graphic spec below and export as PNG.",
+        "Post to Facebook and Instagram at the scheduled time; no link in the caption.",
+        "Reply to comments the same day."
+      ],
+      graphicSpec: { background: "Michael's real photo, full-bleed.", image: "Real family or Munds Park photo.", text: "Happy Thanksgiving from Munds Park.", textStyle: "White " + KIT.head + " 56pt, bottom-left, on a soft dark gradient.", designNote: "Keep it simple; no logos or contact info on this one." }
+    }
+  },
+  day05: {
+    topic: "Q2 — Can I Actually Afford a House? (Script 2)",
+    source: "Script 2: Can I Actually Afford a House?",
+    guide: {
+      mediaType: "HeyGen Avatar Reel · 9:16 vertical · about 60 seconds",
+      deliveryTone: "Straightforward and practical. Give viewers homework they can do tonight.",
+      visualBreakdown: "Avatar to camera. On-screen list builds as Michael talks: \"1 Credit · 2 Savings · 3 Monthly debts\".",
+      steps: REEL_STEPS({ hook: "SAME PAYCHECK. DIFFERENT ANSWER.", orm: "financing", ab: "Same income. Different mortgage decision. Here's why." }),
+      script: "[0:00–0:05] Two people earn the exact same paycheck. One may qualify for a mortgage, while the other may not. Here's why.\n[0:05–0:10] It often comes down to three important factors. And if you check them tonight, you'll have a clearer picture of where you stand.\n[0:10–0:18] Number one. Your credit history. Pull your free credit reports and look for late payments or errors. Errors can be disputed, and correcting them may help your overall credit profile.\n[0:18–0:27] Number two. Your savings. You need to consider more than just the down payment. Plan for closing costs, the inspection, moving expenses, and a financial cushion for after you get the keys.\n[0:27–0:40] Number three, the one that surprises everyone. Your monthly debts. Add up your car payment, student loans, and minimum credit card payments. Lenders consider your monthly debt obligations in relation to your income. That's one reason two people earning the same paycheck may receive different mortgage decisions.\n[0:40–0:46] Here's your homework. Write those three things on one page: your credit, your savings, and your monthly debts.\n[0:46–0:55] Then tap the link in my bio and book a fifteen-minute call with me. Bring that information, and we'll discuss where you stand and what steps you may need to take.\n[0:55–1:00] END CARD: " + END_CARD + "  ·  NMLS disclosure on screen"
+    }
+  },
+  // ---------------- WEEK 2 ----------------
+  day06: {
+    topic: "Q4 — How Much Do I Really Need Saved? (Script 4)",
+    source: "Script 4: How Much Do I Really Need Saved?",
+    guide: {
+      mediaType: "9-Slide Save-Worthy Carousel · 1080×1350 px portrait · PNG",
+      deliveryTone: "Helpful checklist. The goal is saves and shares.",
+      visualBreakdown: "Hook slide, one slide per cost (six), a good-news slide, and a booking slide with the NMLS disclosure.",
+      steps: [
+        "Send slide text + caption to ORM Marketing & Compliance first (the file flags Script 4 for financing).",
+        "In Canva: Instagram Post (Portrait 1080×1350). Build the 9 slides below with " + KIT.head + " headlines and " + KIT.body + " body text.",
+        "Use one icon per cost slide (Canva Elements → line icons) in " + KIT.clay + ".",
+        "Put the NMLS disclosure in small text (14pt) on slide 9: " + NMLS_DISCLOSURE,
+        "Do not name specific programs or amounts unless ORM approves them.",
+        "Export PNGs, upload as one multi-photo post to FB and IG, paste caption + hashtags, schedule for the time on this card."
+      ],
+      carouselPlan: [
+        { slide: 1, background: KIT.pine + " solid", image: "No image.", text: "SIX COSTS TO PLAN FOR BEFORE BUYING", designNote: "White " + KIT.head + " 64pt, centered. Subline in " + KIT.sand + " " + KIT.body + " 26pt: \"The down payment is just one of them.\"" },
+        { slide: 2, background: KIT.cream, image: "Icon: house with a dollar sign.", text: "1. The down payment. It depends on the loan program, and the amount can be different than people expect.", designNote: "Big \"1\" in " + KIT.clay + " " + KIT.head + " 120pt top-left; text " + KIT.ink + " 32pt." },
+        { slide: 3, background: KIT.cream, image: "Icon: handshake.", text: "2. Earnest money. A deposit you put down when your offer is accepted. It usually goes toward your purchase at closing.", designNote: "Same layout as slide 2." },
+        { slide: 4, background: KIT.cream, image: "Icon: magnifying glass over a house.", text: "3. Inspection and appraisal. Expenses that may need to be paid before closing.", designNote: "Same layout as slide 2." },
+        { slide: 5, background: KIT.cream, image: "Icon: document with a pen.", text: "4. Closing costs. The fees for finalizing your loan and transferring ownership of the home.", designNote: "Same layout as slide 2." },
+        { slide: 6, background: KIT.cream, image: "Icon: moving box and lightbulb.", text: "5. Moving costs and utility deposits.", designNote: "Same layout as slide 2." },
+        { slide: 7, background: KIT.sand, image: "Icon: wrench and piggy bank.", text: "6. The one people often forget: a financial cushion. Unexpected maintenance and repairs can come up in the first few months.", designNote: "Same layout; add a " + KIT.clay + " tag: \"Most overlooked\"." },
+        { slide: 8, background: KIT.pine + " solid", image: "Icon: gift or star.", text: "The good part: many states, counties and cities offer down payment assistance and first-time buyer programs for qualified buyers. Your state's housing finance agency is a great place to start.", designNote: "White " + KIT.body + " 30pt; \"The good part\" in " + KIT.head + " 44pt." },
+        { slide: 9, background: KIT.cream, image: "Michael's headshot, circle crop.", text: "Comment COSTS for the checklist. 📅 Book your free call → Link in bio", designNote: KIT.ink + " " + KIT.head + " 44pt. NMLS disclosure 14pt at the bottom." }
+      ]
+    }
+  },
+  day07: {
+    topic: "Q6 — Pines or Palms? (Business Profile markets)",
+    source: "Business Profile (markets) — engagement story, no script in the file",
+    guide: {
+      mediaType: "4-Frame Story · 1080×1920 px",
+      deliveryTone: "Fun and quick.",
+      visualBreakdown: "Split-photo frames with poll and slider stickers.",
+      steps: [
+        "Frame 1 background: split screen, pines photo on the left and palms/desert photo on the right (Canva Story template).",
+        "Add native stickers in the Instagram app: Poll (frames 1–2), Emoji slider (frame 3).",
+        "Frame 4: " + KIT.pine + " background, white " + KIT.head + " text.",
+        "Post at the scheduled time, share to Facebook Stories, and screenshot the results for Day 2 comment replies.",
+        "Reply to every \"TOUR\" DM the same day."
+      ],
+      storyPlan: [
+        { frame: 1, background: "Split photo: pines | palms", text: "This or that: Pines 🌲 or Palms 🌴?", sticker: "Poll: Pines (Flagstaff / Munds Park) · Palms (Scottsdale / Phoenix)", designNote: "White " + KIT.head + " 64pt across the middle." },
+        { frame: 2, background: "Split photo: snow | pool", text: "Snow days or pool days?", sticker: "Poll: Snow days · Pool days", designNote: "Same style as frame 1." },
+        { frame: 3, background: KIT.sand, text: "How long a commute could you live with? 🚗", sticker: "Emoji slider 🚗", designNote: KIT.ink + " text, slider centered." },
+        { frame: 4, background: KIT.pine, text: "Whatever you picked, I can show you around. DM me 'TOUR'.", sticker: "None (or link sticker → TimeWithMichael.com)", designNote: "White " + KIT.head + " 60pt." }
+      ]
+    }
+  },
+  day08: {
+    topic: "Q3 — Is My Credit Good Enough? (Script 3)",
+    source: "Script 3: Is My Credit Good Enough?",
+    guide: {
+      mediaType: "HeyGen Avatar Reel · 9:16 vertical · about 60 seconds",
+      deliveryTone: "Reassuring and judgment-free (\"Everybody starts somewhere\").",
+      visualBreakdown: "Avatar to camera. Number each of the five steps on screen; highlight \"60-DAY MOVE\" on step five.",
+      steps: REEL_STEPS({ hook: "YOUR CREDIT SCORE ISN'T THE WHOLE STORY", orm: "financing" }),
+      script: "[0:00–0:04] Your credit score isn't the only thing lenders consider when you're applying for a home loan.\n[0:04–0:10] Here's what lenders look at, five steps you can take starting today, and one move about sixty days before you apply that may make a difference.\n[0:10–0:16] Lenders consider your payment history, how much of your available credit you're using, and your total debts compared to your income.\n[0:16–0:18] So here's what to do.\n[0:18–0:22] One. Pull your free credit reports and dispute any errors you find.\n[0:22–0:27] Two. Set your accounts to autopay at least the minimum payment, so you can help avoid missed payments.\n[0:27–0:32] Three. Think carefully before closing your oldest credit cards. Your account history can be a factor in your credit profile.\n[0:32–0:37] Four. Avoid co-signing for anyone while you're preparing to buy a home. A new financial obligation could affect your mortgage application.\n[0:37–0:47] And five, the sixty-day move. Consider paying down your credit card balances before applying, and avoid opening new credit accounts unless you've discussed it with your lender. No new car loan. No store card for furniture. Talk to your lender before making major financial changes.\n[0:47–0:51] If your credit isn't where you want it yet, that's okay. No judgment. Everybody starts somewhere.\n[0:51–0:56] Tap the link in my bio and book a call with me. I'll help you build a personal game plan to get mortgage-ready.\n[0:56–1:00] END CARD: " + END_CARD + "  ·  NMLS disclosure on screen"
+    }
+  },
+  day09: {
+    topic: "Q1 — The First-Call Question (Script 1 theme)",
+    source: "Script 1 theme (buy now or wait). The question itself is from this post's caption, not the PDF.",
+    guide: {
+      mediaType: "Quote Card + Long-Form Text Post · 1080×1080 px",
+      deliveryTone: "Generous and direct: hand over the whole tool for free.",
+      visualBreakdown: "One clean quote graphic with the question, paired with the full caption.",
+      steps: [
+        "Build the quote card in Canva (Instagram Post Square 1080×1080) using the spec below.",
+        "On Facebook, post the caption as a text post with the image attached; on Instagram, post the image with the same caption.",
+        "Schedule for the time on this card.",
+        "After it posts, pin it to the top of both profiles for the month."
+      ],
+      graphicSpec: { background: KIT.pine + " solid.", image: "No photo. Large opening quote mark in " + KIT.clay + " top-left.", text: "\"If nothing about the market changed for the next 12 months, would you still want to move?\"", textStyle: "White " + KIT.head + " 48pt, left-aligned. Under it in " + KIT.sand + " " + KIT.body + " 22pt: \"The question I ask every buyer on our first call.\"", designNote: "Lots of empty space. Small footer: \"Michael Vallee | Real Broker, LLC\" 14pt." }
+    }
+  },
+  day10: {
+    topic: "Q5 — Am I Going to Overpay? (Script 5)",
+    source: "Script 5: Am I Going to Overpay?",
+    guide: {
+      mediaType: "8-Slide Checklist Carousel · 1080×1350 px portrait · PNG",
+      deliveryTone: "Smart-buyer detective. Help people feel confident about the numbers.",
+      visualBreakdown: "Hook, four checks, seller concessions, a motivation line and a booking slide. Magnifying-glass icon on every check slide.",
+      steps: [
+        "Recommended: quick ORM look at slide 6 (seller concessions depend on the loan program, per Script 5).",
+        "In Canva: Instagram Post (Portrait). Build the 8 slides below with " + KIT.head + " / " + KIT.body + ".",
+        "Use a magnifying-glass icon in " + KIT.clay + " on slides 2–5.",
+        "Don't show a specific listing unless the listing broker is credited.",
+        "Export PNGs, post to FB + IG as one multi-photo post, paste caption + hashtags, schedule."
+      ],
+      carouselPlan: [
+        { slide: 1, background: KIT.pine + " solid", image: "Magnifying glass icon over a house outline.", text: "BEFORE YOU PAY THE ASKING PRICE...", designNote: "White " + KIT.head + " 60pt; icon in " + KIT.clay + "." },
+        { slide: 2, background: KIT.cream, image: "Magnifying glass icon.", text: "1. Look beyond what similar homes are listed for. Check what they actually sold for in the last three to six months.", designNote: KIT.ink + " 32pt; number in " + KIT.clay + " 100pt." },
+        { slide: 3, background: KIT.cream, image: "Calendar icon.", text: "2. Check days on market. If a home has been sitting much longer than others nearby, the seller may be more open to negotiating.", designNote: "Same layout as slide 2." },
+        { slide: 4, background: KIT.cream, image: "Downward arrow / price tag icon.", text: "3. Look at the price history. Has the price already been reduced?", designNote: "Same layout as slide 2." },
+        { slide: 5, background: KIT.cream, image: "Ruler / square-foot icon.", text: "4. Compare price per square foot with recently sold homes of similar age, size, and condition. If it's much higher, find out why.", designNote: "Same layout as slide 2." },
+        { slide: 6, background: KIT.sand, image: "Handshake icon.", text: "Bonus: ask about seller concessions. In some transactions, sellers may help cover closing costs or certain repairs instead of reducing the price.", designNote: "Small note 16pt: \"Depends on the loan program and transaction.\"" },
+        { slide: 7, background: KIT.pine + " solid", image: "No image.", text: "You worked hard for your money. Make sure you understand the market before making an offer.", designNote: "White " + KIT.head + " 52pt centered." },
+        { slide: 8, background: KIT.cream, image: "Michael's headshot.", text: "Comment COMPS. 📅 Book your free call → Link in bio", designNote: "Footer 14pt: \"Michael Vallee | Real Broker, LLC\"." }
+      ]
+    }
+  },
+  // ---------------- WEEK 3 ----------------
+  day11: {
+    topic: "Q6 — Wrong House or Wrong Neighborhood? (Script 6)",
+    source: "Script 6: Wrong House... or Wrong Neighborhood?",
+    guide: {
+      mediaType: "HeyGen Avatar Reel · 9:16 vertical · about 55 seconds",
+      deliveryTone: "Experienced friend sharing lessons learned firsthand (the family's move from Washington to Arizona).",
+      visualBreakdown: "Avatar to camera. Optional B-roll of a street at dusk/night behind the hook. Number each of the five checks on screen.",
+      steps: REEL_STEPS({ hook: "GO BACK AFTER DARK" }).concat(["Fair Housing: talk about noise, lighting, parking and traffic only. Never describe who lives in an area or call it \"safe\"."]),
+      script: "[0:00–0:04] Before you buy a house, go back and see the neighborhood at night. Here's why.\n[0:04–0:10] A great house isn't enough if the neighborhood doesn't fit your lifestyle. And you can't remodel a location.\n[0:10–0:13] Here are five things to check before choosing where to live.\n[0:13–0:18] Number one. Drive your commute at rush hour. Not on a Sunday afternoon. Try it on a regular weekday morning.\n[0:18–0:24] Number two. Find out what's planned nearby. Check the city or county planning website for proposed roads, construction, or rezoning.\n[0:24–0:31] Number three. If there's an HOA, review the rules and fees before you fall in love with the property. Parking, rentals, pets, paint colors. These details can affect your everyday life.\n[0:31–0:37] Number four. Come back after dark. Check the noise, lighting, parking, and traffic. A street can feel completely different at night.\n[0:37–0:43] Number five. Talk to a neighbor if possible. Ask what they love about the area and what they would change. A short conversation may give you valuable insight.\n[0:43–0:46] When my family moved from Washington to Arizona, I learned these lessons firsthand.\n[0:46–0:52] Screenshot this list. Then tap the link in my bio and book a call with me. Let's find you a home in a neighborhood that fits your needs.\n[0:52–0:57] END CARD: " + END_CARD
+    }
+  },
+  day12: {
+    topic: "Q2 — What Lenders Look At (Script 2 quiz)",
+    source: "Script 2: Can I Actually Afford a House?",
+    guide: {
+      mediaType: "4-Frame Story · 1080×1920 px",
+      deliveryTone: "Playful quiz that teaches one fact from Script 2.",
+      visualBreakdown: "Quiz frame, answer frame, question box, link frame.",
+      steps: [
+        "Send the frame text to ORM first (financing content, Script 2).",
+        "Build frames in Canva Story size, then add native Quiz, Question and Link stickers in the Instagram app.",
+        "Add the NMLS disclosure as small text on frame 2 and frame 4.",
+        "Post at the scheduled time; share to Facebook Stories.",
+        "Save the question-box replies — answer the best ones as future Reels."
+      ],
+      storyPlan: [
+        { frame: 1, background: KIT.sand, text: "Pop quiz 🧠 Besides income, what do lenders look at?", sticker: "Quiz: A) Your car's color · B) Monthly debts · C) Your zodiac sign (correct: B)", designNote: KIT.head + " 64pt." },
+        { frame: 2, background: KIT.pine, text: "Lenders consider your monthly debt obligations in relation to your income. Car payment, student loans, minimum card payments.", sticker: "None", designNote: "White " + KIT.body + " 40pt. NMLS disclosure 14pt at the bottom." },
+        { frame: 3, background: KIT.sand, text: "What's your biggest question about qualifying?", sticker: "Question box", designNote: "Centered." },
+        { frame: 4, background: KIT.pine, text: "Get a straight answer in 15 minutes.", sticker: "Link sticker → TimeWithMichael.com", designNote: "White text; NMLS disclosure 14pt." }
+      ]
+    }
+  },
+  day13: {
+    topic: "Q10 — A Home That Pays You Back (Script 10)",
+    source: "Script 10: A Home That Pays You Back",
+    guide: {
+      mediaType: "HeyGen Avatar Reel · 9:16 vertical · about 65 seconds",
+      deliveryTone: "Investor sharing what he's done with his own properties; careful, no promises.",
+      visualBreakdown: "Avatar to camera. Show \"Strategy 1 / 2 / 3\" labels; on strategy two, show a simple duplex icon.",
+      steps: REEL_STEPS({ hook: "HOW RENTAL INCOME COULD HELP WITH YOUR MORTGAGE", orm: "rental income helping cover mortgage expenses" }).concat(["Add on-screen text during the last strategy: \"Rental income isn't guaranteed.\""]),
+      script: "[0:00–0:04] What if the people living in your house could help cover some of your housing expenses?\n[0:04–0:11] Here are three ways some homeowners use their properties to generate rental income. I've done this with my own properties, and the second strategy is one many people overlook.\n[0:11–0:19] Strategy one. Rent out a room. Live in the home and let a roommate help cover some of your housing costs. Depending on your situation and local rules, this could be an option from the day you move in.\n[0:19–0:29] Strategy two, the one most people miss. Buy a small multi-unit property, like a duplex, triplex, or fourplex. Live in one unit and rent out the others. Rental income may help offset some of your expenses while you build equity.\n[0:29–0:34] Strategy three. Buy a home with a guest house or separate living space you can rent out, where local rules allow it.\n[0:34–0:43] Before you buy, do three things. Check local rental rules and HOA restrictions. Look up what similar units actually rent for. And budget for vacancies and repairs, because these expenses can happen.\n[0:43–0:49] Remember, rental income isn't guaranteed, and you'll need to consider the costs and responsibilities of being a landlord.\n[0:49–0:55] This is one strategy some homeowners use to work toward building wealth and creating more financial flexibility. Purpose is found in the pursuit.\n[0:55–1:00] Tap the link in my bio and book a call with me. Let's explore whether a property that fits one of these strategies makes sense for you.\n[1:00–1:05] END CARD: " + END_CARD + "  ·  NMLS disclosure on screen"
+    }
+  },
+  day14: {
+    topic: "Q8 — Sometimes Renting Is Smarter (Script 8)",
+    source: "Script 8: Should I Keep Renting or Buy?",
+    guide: {
+      mediaType: "Checklist Graphic + Long-Form Text Post · 1080×1350 px",
+      deliveryTone: "Honest and contrarian: \"sometimes renting is the right move\" (Script 8).",
+      visualBreakdown: "One checklist graphic with Script 8's four questions.",
+      steps: [
+        "Send graphic text + caption to ORM first (Script 8 is flagged for financing).",
+        "Build the graphic in Canva per the spec below; add the NMLS disclosure at the bottom.",
+        "Facebook: text post with the image attached. Instagram: image + same caption.",
+        "Optional (from the file's hook-test tip for Script 8): also produce a HeyGen Reel of Script 8 with two different first lines and test them later in the month.",
+        "Schedule for the time on this card."
+      ],
+      graphicSpec: { background: KIT.cream + " solid.", image: "Four checkbox icons in " + KIT.clay + ".", text: "Buying may make sense if you can say yes to all four: ☐ You plan to stay at least five years. ☐ Your income is steady. ☐ You can cover upfront costs and still have an emergency cushion. ☐ The monthly payment fits your budget, including taxes, insurance, and maintenance.", textStyle: "Headline \"RENTING OR BUYING? KNOW THE DIFFERENCE.\" in " + KIT.pine + " " + KIT.head + " 44pt; list in " + KIT.ink + " " + KIT.body + " 28pt.", designNote: "NMLS disclosure 13pt at the bottom." }
+    }
+  },
+  day15: {
+    topic: "Q7 — The Inspection Found Problems (Script 7)",
+    source: "Script 7: The Inspection Found Problems... Now What?",
+    guide: {
+      mediaType: "HeyGen Avatar Reel · 9:16 vertical · about 60 seconds",
+      deliveryTone: "Calm expert who has bought 50+ houses. Turn panic into a plan.",
+      visualBreakdown: "Avatar to camera. Show three labeled buckets on screen: SMALL STUFF / BIG-TICKET / WALK-AWAY.",
+      steps: REEL_STEPS({ hook: "BAD INSPECTION? YOU MAY HAVE OPTIONS." }).concat(["Recommended: broker review of the deadline line (keep \"depending on your contract\")."]),
+      script: "[0:00–0:05] Your home inspection came back with problems? Don't panic. Those findings may give you an opportunity to negotiate.\n[0:05–0:11] I've bought more than fifty houses myself. Here's how I sort inspection reports into three buckets, and the one issue that would make me take a step back.\n[0:11–0:19] Bucket one. Small stuff. Loose railings, dripping faucets, and missing outlet covers. Many homes have minor maintenance issues. These may be manageable after you move in.\n[0:19–0:30] Bucket two. Big-ticket items. An aging roof, an old water heater, outdated electrical, or an air conditioner near the end of its life. These are worth discussing. Depending on the situation, you may be able to ask the seller for repairs, a credit, or a price adjustment.\n[0:30–0:41] Bucket three. Potential walk-away items. For me, that includes serious structural or foundation problems. They can be expensive and difficult to evaluate. If an inspector flags one, consider bringing in a qualified structural engineer before making a decision.\n[0:41–0:48] One more tip. Know your inspection deadline. Once it passes, your options and negotiating leverage may become more limited, depending on your contract.\n[0:48–0:55] Under contract and not sure what to do next? Tap the link in my bio and book a call with me. I'll help you understand your options before your deadline hits.\n[0:55–1:00] END CARD: " + END_CARD
+    }
+  },
+  // ---------------- WEEK 4 ----------------
+  day16: {
+    topic: "Q9 — Will I Get Outbid Again? (Script 9)",
+    source: "Script 9: Will I Get Outbid Again?",
+    guide: {
+      mediaType: "9-Slide Carousel · 1080×1350 px portrait · PNG",
+      deliveryTone: "Empathetic coach: \"Losing a home you loved hurts. I get it.\"",
+      visualBreakdown: "Hook, why sellers choose, five ways to stand out, one warning, and a booking slide.",
+      steps: [
+        "Recommended: broker review (negotiation advice; mentions lender preparation).",
+        "Build the 9 slides in Canva with " + KIT.head + " / " + KIT.body + ".",
+        "Hook test (the file recommends Script 9): make a second slide 1 that says \"You didn't lose the house because of price.\" Save it for a re-post later in the month.",
+        "Export PNGs, upload as one multi-photo post to FB + IG, paste caption + hashtags, schedule."
+      ],
+      carouselPlan: [
+        { slide: 1, background: KIT.pine + " solid", image: "Trophy or 'SOLD' sign icon.", text: "THE HIGHEST OFFER DOESN'T ALWAYS WIN", designNote: "White " + KIT.head + " 60pt." },
+        { slide: 2, background: KIT.cream, image: "Scale/balance icon.", text: "Sellers often consider more than just the price. They may choose the offer that feels most reliable and works best for their situation.", designNote: KIT.ink + " 32pt." },
+        { slide: 3, background: KIT.cream, image: "Checkmark document icon.", text: "1. Get fully prepared with your lender before you start shopping. Not just a quick online estimate.", designNote: "Number in " + KIT.clay + " 100pt." },
+        { slide: 4, background: KIT.cream, image: "Speech bubble icon.", text: "2. Ask the listing agent what matters most to the seller. Timing? Certainty? A rent-back?", designNote: "Same layout." },
+        { slide: 5, background: KIT.cream, image: "Calendar icon.", text: "3. Be flexible on your closing date when possible. Timing can matter as much as price.", designNote: "Same layout." },
+        { slide: 6, background: KIT.cream, image: "Clean single-page icon.", text: "4. Keep your offer clear and simple. Fewer complications make it easier for everyone.", designNote: "Same layout." },
+        { slide: 7, background: KIT.cream, image: "Lightning bolt icon.", text: "5. Be prepared to move quickly. Desirable homes can receive multiple offers.", designNote: "Same layout." },
+        { slide: 8, background: KIT.sand, image: "Shield icon.", text: "One thing I don't recommend: giving up protections you can't afford to lose just to win. Understand every tradeoff.", designNote: KIT.pine + " " + KIT.head + " 40pt." },
+        { slide: 9, background: KIT.pine + " solid", image: "Michael's headshot.", text: "Losing a home you loved hurts. The next one could go differently. Comment OFFER. 📅 Book your free call → Link in bio", designNote: "White text; footer \"Michael Vallee | Real Broker, LLC\" 14pt." }
+      ]
+    }
+  },
+  day17: {
+    topic: "Q9 — Ever Lost a House You Loved? (Script 9 story)",
+    source: "Script 9: Will I Get Outbid Again?",
+    guide: {
+      mediaType: "4-Frame Story · 1080×1920 px",
+      deliveryTone: "Empathetic and personal.",
+      visualBreakdown: "Poll, question box, Script 9 insight, link.",
+      steps: [
+        "Build frames in Canva Story size; add native Poll, Question and Link stickers in the app.",
+        "Post at the scheduled time; share to Facebook Stories.",
+        "Personally reply to everyone who votes \"Yep, it hurt\" — these are warm leads. Log them in the Leads tab."
+      ],
+      storyPlan: [
+        { frame: 1, background: KIT.sand, text: "Real question: have you ever lost a house you loved? 💔", sticker: "Poll: Yep, it hurt · Not yet", designNote: KIT.head + " 64pt." },
+        { frame: 2, background: KIT.sand, text: "What happened?", sticker: "Question box", designNote: "Centered." },
+        { frame: 3, background: KIT.pine, text: "The highest offer doesn't always win. Preparation matters.", sticker: "None", designNote: "White " + KIT.head + " 60pt." },
+        { frame: 4, background: KIT.pine, text: "Want a game plan before the next one? Tap here.", sticker: "Link sticker → TimeWithMichael.com", designNote: "White text." }
+      ]
+    }
+  },
+  day18: {
+    topic: "Q10 — Short-Term Rentals (Business Profile: Michael's book)",
+    source: "Business Profile: main niche is short-term rental investing; he wrote \"How to Be a Short-Term Rental Tycoon\". No script for this post in the PDF — the script below is this post's caption.",
+    guide: {
+      mediaType: "HeyGen Avatar Reel · 9:16 vertical · about 50 seconds",
+      deliveryTone: "Authority: the guy who wrote the book. Careful with any income claims.",
+      visualBreakdown: "Open on a photo of the book cover next to the avatar for the first 2 seconds, then avatar to camera with \"Lesson 1–4\" labels.",
+      steps: REEL_STEPS({ hook: "I LITERALLY WROTE THE BOOK ON SHORT-TERM RENTALS" }).concat(["Add on-screen text near the end: \"Rental income is never guaranteed.\" No income or ROI figures anywhere."]),
+      script: "[0:00–0:05] I literally wrote the book on short-term rentals. Here's what nobody tells you before you buy one.\n[0:05–0:10] The book is called How to Be a Short-Term Rental Tycoon. And the first lesson isn't about pretty photos. It's this: the rules come before the house.\n[0:10–0:17] Many Arizona cities, counties and HOAs have their own short-term rental rules, permits and taxes. Check them before you write an offer.\n[0:17–0:23] Lesson two: seasonality is real. A cabin near Flagstaff and a condo in Scottsdale can have totally different busy seasons.\n[0:23–0:28] Lesson three: budget for the boring stuff. Cleaning, supplies, repairs, management and empty nights.\n[0:28–0:33] Lesson four: run the numbers conservatively. If it only works in a perfect month, it doesn't work.\n[0:33–0:40] Rental income is never guaranteed. But a well-chosen property, bought with your eyes open, can be a powerful tool.\n[0:40–0:45] Comment TYCOON and I'll send you my pre-purchase STR checklist.\n[0:45–0:50] END CARD: " + END_CARD
+    }
+  },
+  day19: {
+    topic: "Recruiting — Agents: Get Your Mortgage License (Business Profile)",
+    source: "Business Profile: ORM team building (about 32 people, goal 50) — top priority #2",
+    guide: {
+      mediaType: "Text Post + Simple Graphic · 1080×1080 px",
+      deliveryTone: "Peer to peer, honest about the work involved. No income claims.",
+      visualBreakdown: "A single bold graphic aimed at real estate agents.",
+      steps: [
+        "Send to ORM for approval (recruiting + licensing description).",
+        "Build the graphic per the spec below.",
+        "Post to Facebook (and cross-post to LinkedIn if Michael wants — the profile lists LinkedIn automation as his agency).",
+        "Schedule for the time on this card; log agent replies in the Leads tab with interest \"recruit\"."
+      ],
+      graphicSpec: { background: KIT.pine + " solid.", image: "Simple icon of a house and a key side by side in " + KIT.clay + ".", text: "Agents: what if you could handle the loan side too?", textStyle: "White " + KIT.head + " 52pt centered; subline " + KIT.sand + " " + KIT.body + " 24pt: \"Join our One Real Mortgage team.\"", designNote: "Footer 14pt: NMLS disclosure line." }
+    }
+  },
+  day20: {
+    topic: "Q3 — 5 Money Moves to Avoid Before Applying (Script 3)",
+    source: "Script 3: Is My Credit Good Enough? (steps 3–5 and the sixty-day move)",
+    guide: {
+      mediaType: "7-Slide Carousel · 1080×1350 px portrait · PNG",
+      deliveryTone: "Friendly warning before the holiday shopping season.",
+      visualBreakdown: "Hook slide, five \"red X\" moves from Script 3, and a booking slide with the NMLS disclosure.",
+      steps: [
+        "Send to ORM first (Script 3 is flagged for financing).",
+        "Build the 7 slides; put a " + KIT.clay + " ✕ icon on slides 2–6.",
+        "NMLS disclosure 14pt on slide 7.",
+        "Export PNGs, upload as one multi-photo post, paste caption + hashtags, schedule."
+      ],
+      carouselPlan: [
+        { slide: 1, background: KIT.pine + " solid", image: "Shopping bag with a red ✕.", text: "5 money moves that can mess up your mortgage", designNote: "White " + KIT.head + " 58pt; subline " + KIT.sand + ": \"Save this before the holidays.\"" },
+        { slide: 2, background: KIT.cream, image: "Car icon with ✕.", text: "1. Opening a new car loan. (No new car loan.)", designNote: KIT.ink + " " + KIT.body + " 34pt." },
+        { slide: 3, background: KIT.cream, image: "Sofa icon with ✕.", text: "2. Opening a store card for furniture.", designNote: "Same layout." },
+        { slide: 4, background: KIT.cream, image: "Two-signature icon with ✕.", text: "3. Co-signing for anyone. A new obligation could affect your mortgage application.", designNote: "Same layout." },
+        { slide: 5, background: KIT.cream, image: "Scissors-on-card icon with ✕.", text: "4. Closing your oldest credit cards. Account history can be a factor.", designNote: "Same layout." },
+        { slide: 6, background: KIT.cream, image: "Phone icon with ✕.", text: "5. Making major financial changes without talking to your lender first.", designNote: "Same layout." },
+        { slide: 7, background: KIT.pine + " solid", image: "Michael's headshot.", text: "Comment CREDIT for the 60-day prep checklist. 📅 Book your free call → Link in bio", designNote: "White text; NMLS disclosure 14pt." }
+      ]
+    }
+  },
+  // ---------------- WEEK 5 ----------------
+  day21: {
+    topic: "Q4 — The 20% Down Myth (Script 4 story)",
+    source: "Script 4: How Much Do I Really Need Saved?",
+    guide: {
+      mediaType: "4-Frame Story · 1080×1920 px",
+      deliveryTone: "Myth-buster.",
+      visualBreakdown: "True/false quiz, answer, assistance-program frame, link.",
+      steps: [
+        "Send to ORM first (down payment and loan program claims).",
+        "Build frames in Canva Story size; add native Quiz and Link stickers in the app.",
+        "Don't state any specific percentage unless ORM approves it.",
+        "NMLS disclosure 14pt on frames 2–4. Post at the scheduled time; share to Facebook Stories."
+      ],
+      storyPlan: [
+        { frame: 1, background: KIT.sand, text: "True or false: you need 20% down to buy a home. 🤔", sticker: "Quiz: True · False (correct: False)", designNote: KIT.head + " 64pt." },
+        { frame: 2, background: KIT.pine, text: "The down payment depends on the loan program, and the amount can be different than people expect.", sticker: "None", designNote: "White " + KIT.body + " 40pt; NMLS disclosure 14pt." },
+        { frame: 3, background: KIT.pine, text: "Many states, counties and cities offer down payment assistance for qualified buyers.", sticker: "None", designNote: "Same style." },
+        { frame: 4, background: KIT.pine, text: "Want to explore which programs you may qualify for?", sticker: "Link sticker → TimeWithMichael.com", designNote: "White text; NMLS disclosure 14pt." }
+      ]
+    }
+  },
+  day22: {
+    topic: "Q1 — December House-Hunting (no script in the PDF)",
+    source: "No matching script in the PDF. The script below is this post's approved caption; Script 1's buy-or-wait theme.",
+    guide: {
+      mediaType: "HeyGen Avatar Reel · 9:16 vertical · about 40 seconds",
+      deliveryTone: "Contrarian but hedged (\"may\", \"not always\").",
+      visualBreakdown: "Avatar to camera; optional split B-roll of a snowy Flagstaff street and a sunny Scottsdale street.",
+      steps: REEL_STEPS({ hook: "EVERYONE STOPS HOUSE-HUNTING IN DECEMBER" }).concat(["Add no market statistics unless they're sourced and dated."]),
+      script: "[0:00–0:05] Everyone stops house-hunting in December. That might be exactly why you shouldn't.\n[0:05–0:12] Think about it. Most buyers are busy with holidays, travel and shopping. So the people still out looking often face fewer competing buyers.\n[0:12–0:20] And a seller who lists in December? They may have a real reason to move. That can mean more willingness to negotiate. Not always. Every house and every seller is different.\n[0:20–0:30] But if you're ready, December can be a quiet advantage. And if you're not ready yet, it's the perfect month to get ready so you're first in line in the spring.\n[0:30–0:35] Either way, comment READY and I'll tell you which camp you're in.\n[0:35–0:40] END CARD: " + END_CARD
+    }
+  },
+  day23: {
+    topic: "Q10 — Questions for Your CPA (Business Profile: Tax Strategy Playbook webinar)",
+    source: "Business Profile: \"Real Estate Tax Strategy Playbook\" webinar is a lead source. The three questions come from this post's caption, not the PDF.",
+    guide: {
+      mediaType: "6-Slide Carousel · 1080×1350 px portrait · PNG",
+      deliveryTone: "Thoughtful investor education with a clear \"not tax advice\" line.",
+      visualBreakdown: "Hook, three question slides, disclaimer slide, webinar CTA.",
+      steps: [
+        "Broker review (tax-related content). Add the tax disclaimer on slide 5.",
+        "Build the 6 slides in Canva.",
+        "Get the next webinar date from Michael before scheduling so DMs can include it.",
+        "Export PNGs, upload as one multi-photo post, paste caption + hashtags, schedule."
+      ],
+      carouselPlan: [
+        { slide: 1, background: KIT.pine + " solid", image: "Calculator icon.", text: "3 questions to ask your CPA BEFORE you buy an investment property", designNote: "White " + KIT.head + " 54pt." },
+        { slide: 2, background: KIT.cream, image: "Calendar icon.", text: "1. \"How would owning this property affect my taxes this year and next?\"", designNote: KIT.ink + " " + KIT.head + " 38pt in quotes." },
+        { slide: 3, background: KIT.cream, image: "Folder icon.", text: "2. \"What records should I keep from day one?\"", designNote: "Same layout." },
+        { slide: 4, background: KIT.cream, image: "House + key icon.", text: "3. \"Does the way I use this property (long-term rental, short-term rental, or living in part of it) change how it's treated?\"", designNote: "Same layout." },
+        { slide: 5, background: KIT.sand, image: "No image.", text: "I'm not a CPA, and this isn't tax advice. Ask these early.", designNote: "Tax disclaimer 16pt: \"Educational only. Not tax, legal or financial advice.\"" },
+        { slide: 6, background: KIT.pine + " solid", image: "Michael's headshot.", text: "Free Real Estate Tax Strategy Playbook webinar. Comment PLAYBOOK for the next date.", designNote: "White text; footer \"Michael Vallee | Real Broker, LLC\"." }
+      ]
+    }
+  },
+  day24: {
+    topic: "Q2 — The Affordability Math (Script 1 + Script 2)",
+    source: "Script 1 (\"Is the monthly payment comfortable today?\") and Script 2 (savings and monthly debts)",
+    guide: {
+      mediaType: "Quote Card + Text Post · 1080×1080 px",
+      deliveryTone: "Grounded, practical. \"A ceiling, not a target.\"",
+      visualBreakdown: "One quote graphic with the key line.",
+      steps: [
+        "Send to ORM first (affordability / approval content).",
+        "Build the quote card per the spec; add the NMLS disclosure.",
+        "Post to FB (text + image) and IG (image + caption); schedule."
+      ],
+      graphicSpec: { background: KIT.cream + " solid.", image: "Small house icon in " + KIT.clay + ".", text: "Your approval amount is a ceiling, not a target.", textStyle: KIT.pine + " " + KIT.head + " 56pt centered; subline " + KIT.body + " 22pt: \"Is the monthly payment comfortable today? Not someday. Today.\"", designNote: "NMLS disclosure 13pt at the bottom." }
+    }
+  },
+  day25: {
+    topic: "Brand — Merry Christmas",
+    source: "Business Profile (Munds Park base)",
+    guide: {
+      mediaType: "Photo + Text Post · 1080×1350 px",
+      deliveryTone: "Warm thank-you. No pitch, no link.",
+      visualBreakdown: "A real holiday photo from Michael with a short overlay.",
+      steps: [
+        "Ask Michael for a real holiday photo (family, home or snowy Munds Park).",
+        "Add the overlay per the spec and export as PNG.",
+        "Post to FB + IG at the scheduled time; reply to comments."
+      ],
+      graphicSpec: { background: "Michael's real holiday photo, full-bleed.", image: "Real photo only.", text: "Merry Christmas from Munds Park. 🎄", textStyle: "White " + KIT.head + " 56pt bottom-left on a soft dark gradient.", designNote: "No logo or contact info." }
+    }
+  },
+  // ---------------- WEEK 6 ----------------
+  day26: {
+    topic: "Q6 — Ask Me Anything About Arizona (Business Profile markets)",
+    source: "Business Profile (markets: Flagstaff, Munds Park, Scottsdale, Phoenix)",
+    guide: {
+      mediaType: "3-Frame Story + video replies · 1080×1920 px",
+      deliveryTone: "Helpful local expert.",
+      visualBreakdown: "Question sticker, 3–5 short answer frames, link frame.",
+      steps: [
+        "Post frame 1 with a native Question sticker in the morning.",
+        "By afternoon, answer 3–5 questions using the sticker reply feature (short videos or text frames).",
+        "Fair Housing: never describe who lives where or call areas \"safe\"; point school questions to official sources.",
+        "Finish with the link frame; save all answers to a Highlight called \"Arizona Q&A\"."
+      ],
+      storyPlan: [
+        { frame: 1, background: KIT.pine, text: "AMA 🎤 Ask me anything about living or buying in Flagstaff, Munds Park, Scottsdale or Phoenix.", sticker: "Question box", designNote: "White " + KIT.head + " 56pt." },
+        { frame: 2, background: "Michael's video reply or " + KIT.sand, text: "Answer 3–5 questions (one per frame).", sticker: "Question reply", designNote: "Keep answers under 15 seconds each." },
+        { frame: 3, background: KIT.pine, text: "Thinking about a move in 2027? Let's map it out.", sticker: "Link sticker → TimeWithMichael.com", designNote: "White text." }
+      ]
+    }
+  },
+  day27: {
+    topic: "Q8 — Your 2027 Home Game Plan (Scripts 1, 3, 4, 5, 6, 7)",
+    source: "Recap of Scripts 1, 3, 4, 5, 6 and 7",
+    guide: {
+      mediaType: "6-Slide Recap Carousel · 1080×1350 px portrait · PNG",
+      deliveryTone: "New-year motivation; simple and doable.",
+      visualBreakdown: "Hook, four monthly steps that point back to the month's scripts, and a CTA.",
+      steps: [
+        "Send to ORM first (credit and lender steps). Ask ORM how to word dual-role (agent + loan officer) mentions.",
+        "Build the 6 slides with a month label on each step slide.",
+        "NMLS disclosure 14pt on slide 6.",
+        "Export PNGs, upload as one multi-photo post, paste caption + hashtags, schedule."
+      ],
+      carouselPlan: [
+        { slide: 1, background: KIT.pine + " solid", image: "Calendar '2027' graphic.", text: "Your 2027 Home Game Plan: from renting to keys in 4 steps", designNote: "White " + KIT.head + " 56pt." },
+        { slide: 2, background: KIT.cream, image: "Month tag: JANUARY.", text: "Step 1: Pull your free credit reports and dispute any errors. (Script 3)", designNote: "Month tag in " + KIT.clay + " pill; text " + KIT.body + " 32pt." },
+        { slide: 3, background: KIT.cream, image: "Month tag: FEBRUARY.", text: "Step 2: Set your savings target: down payment, closing costs, and a financial cushion. (Script 4)", designNote: "Same layout." },
+        { slide: 4, background: KIT.cream, image: "Month tag: MARCH.", text: "Step 3: Get fully prepared with your lender so you know a comfortable monthly payment. (Scripts 1 & 9)", designNote: "Same layout." },
+        { slide: 5, background: KIT.cream, image: "Month tag: SPRING.", text: "Step 4: Shop smart: check recent sales (Script 5), go back after dark (Script 6), and sort the inspection into three buckets (Script 7).", designNote: "Same layout." },
+        { slide: 6, background: KIT.pine + " solid", image: "Michael's headshot.", text: "Comment 2027 for the printable plan. 📅 Book your free call → Link in bio", designNote: "White text; NMLS disclosure 14pt." }
+      ]
+    }
+  },
+  day28: {
+    topic: "Q2 — Free First-Time Buyer Class (Business Profile lead source)",
+    source: "Business Profile: first-time buyer webinar is a lead source. Class topics come from Scripts 1, 4 and 9.",
+    guide: {
+      mediaType: "Event Graphic + Text Post · 1080×1350 px",
+      deliveryTone: "Kern-style qualifier: who it's for and who should skip it.",
+      visualBreakdown: "One event graphic with the date, plus the full caption.",
+      steps: [
+        "Get the January class date and time from Michael and replace [INSERT DATE + TIME] in the caption and graphic.",
+        "Send to ORM first (credit, costs and qualification topics).",
+        "Build the event graphic per the spec; add the NMLS disclosure.",
+        "Post to FB + IG; schedule. DM the registration link to everyone who comments CLASS."
+      ],
+      graphicSpec: { background: KIT.pine + " solid.", image: "Laptop icon in " + KIT.clay + ".", text: "FREE First-Time Buyer Class · [DATE + TIME] · Online", textStyle: "White " + KIT.head + " 56pt; three bullet lines in " + KIT.sand + " " + KIT.body + " 24pt: \"The buy-or-wait test · Six costs to plan for · How to make an offer stand out\"", designNote: "NMLS disclosure 13pt at the bottom." }
+    }
+  },
+  day29: {
+    topic: "Recruiting — Close the Loan Too? (Business Profile)",
+    source: "Business Profile: ORM team building (about 32 → 50)",
+    guide: {
+      mediaType: "3-Frame Story · 1080×1920 px",
+      deliveryTone: "Casual question to agents in his audience.",
+      visualBreakdown: "Poll, personal line, DM prompt.",
+      steps: [
+        "Send to ORM first (recruiting).",
+        "Get one honest, non-income benefit from Michael for frame 2 (replace [personalize]).",
+        "Add native Poll sticker; post; DM only people who vote \"Yes\". Log them with interest \"recruit\"."
+      ],
+      storyPlan: [
+        { frame: 1, background: KIT.sand, text: "Agents 👋 Ever wished you could close the loan too?", sticker: "Poll: Yes, constantly · Nah, I'm good", designNote: KIT.head + " 60pt." },
+        { frame: 2, background: KIT.pine, text: "I'm a licensed agent AND a licensed loan officer. Here's what changed when I added the loan side. [personalize]", sticker: "None", designNote: "White " + KIT.body + " 40pt; NMLS disclosure 14pt." },
+        { frame: 3, background: KIT.pine, text: "Our team is growing. Curious about getting your mortgage license? DM me 'LICENSE'.", sticker: "None", designNote: "White text." }
+      ]
+    }
+  },
+  day30: {
+    topic: "Q1 — Book the Call (no script in the PDF)",
+    source: "No matching script in the PDF. Script below is this post's approved caption; CTA and end card follow the file's \"Before Posting\" rules.",
+    guide: {
+      mediaType: "HeyGen Avatar Reel · 9:16 vertical · about 45 seconds",
+      deliveryTone: "Kern-style take-away close: relaxed, no pressure.",
+      visualBreakdown: "Avatar to camera, ideally with an outdoor Munds Park pines background in HeyGen.",
+      steps: REEL_STEPS({ hook: "STILL HAVEN'T BOOKED A CALL? THIS ONE'S FOR YOU." }),
+      script: "[0:00–0:05] If you've watched my videos all month and still haven't booked a call… this one's for you.\n[0:05–0:12] First, thank you. Seriously. Second, I get it. Booking a call feels like walking into a car dealership. Someone's about to sell you something.\n[0:12–0:20] That's not how I do it. Here's what actually happens: we talk for 15 minutes about where you are, where you want to be, and whether now even makes sense.\n[0:20–0:30] Sometimes the answer is \"buy this spring.\" Sometimes it's \"wait a year and here's exactly what to work on.\" Either way you walk away with a plan, and you never have to talk to me again if you don't want to.\n[0:30–0:38] Happy New Year. If 2027 is the year, the link's right there. TimeWithMichael.com.\n[0:38–0:43] END CARD: " + END_CARD
+    }
+  }
+};
+
+// Posting rules straight from the file's "BEFORE POSTING" section
+const BEFORE_POSTING = [
+  { t: "Booking link", d: "Make sure the link in the bio goes straight to Michael's booking page, TimeWithMichael.com. One tap from the video should take viewers directly to the calendar." },
+  { t: "Compliance review", d: "Scripts 2, 3, 4 and 8 discuss financing. Script 10 discusses rental income helping cover mortgage expenses. Add the NMLS disclosure as on-screen text and submit those scripts to ORM Marketing & Compliance before posting." },
+  { t: "Last five seconds of every video", d: "Display: " + END_CARD },
+  { t: "Test different hooks", d: "Film two versions of the strongest scripts, changing only the first line. Scripts 2, 8 and 9 are good choices." },
+  { t: "Final quality check", d: "Before publishing, review the HeyGen output for pronunciation, pacing, captions, and whether the spoken narration matches the approved script." }
+];
+
+</script>
+
 <!-- =====================================================================
-     TRACKER APP (local-first; Firebase sync is optional — see bottom)
+     TRACKER APP
      ===================================================================== -->
 <script>
-(function(){
+(function () {
   const DB = HARDCODED_DB;
-  const LS_KEY = "mv-content-tracker-v1";
-  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const LS_KEY = "mv-content-tracker-v1";            // same key as earlier versions, so saved progress carries over
+  const LS_RESET_KEY = "mv-content-tracker-reset-id";
   const $ = id => document.getElementById(id);
-  const toast = m => { const t=$('toast'); t.textContent=m; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),1800); };
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-  const POSTS = Object.entries(DB.posts).map(([id,p])=>({id,...p})).sort((a,b)=>a.day-b.day);
+  const POSTS = Object.entries(DB.posts).map(([id, p]) => ({ id, ...p, ...(GUIDES[id] || {}) })).sort((a, b) => a.day - b.day);
+  const byId = id => POSTS.find(p => p.id === id);
+  const WEEKS = [1, 2, 3, 4, 5, 6].map(n => ({ n, from: (n - 1) * 5 + 1, to: n * 5 }));
+  const WEEK_RANGES = { 1: "Nov 23 – 27", 2: "Nov 30 – Dec 4", 3: "Dec 7 – 11", 4: "Dec 14 – 18", 5: "Dec 21 – 25", 6: "Dec 28 – Jan 1" };
   const FORMATS = [
-    {k:"Reel", icon:"🎬", cls:"p-reel"}, {k:"Carousel", icon:"🎠", cls:"p-carousel"},
-    {k:"Text post", icon:"📝", cls:"p-text"}, {k:"Story", icon:"⭕", cls:"p-story", pl:"Stories"}
+    { key: "Reel", label: "🎬 Reels", one: "🎬 Reel", text: "text-agency-navy", bar: "bg-agency-navy", hover: "hover:bg-agency-mist" },
+    { key: "Carousel", label: "🎠 Carousels", one: "🎠 Carousel", text: "text-agency-blue", bar: "bg-agency-blue", hover: "hover:bg-agency-mist" },
+    { key: "Text post", label: "📝 Text Posts", one: "📝 Text Post", text: "text-agency-goldink", bar: "bg-agency-gold", hover: "hover:bg-agency-cream" },
+    { key: "Story", label: "⭕ Stories", one: "⭕ Story", text: "text-agency-steel", bar: "bg-agency-steel", hover: "hover:bg-agency-mist" }
   ];
-  const fmt = k => FORMATS.find(f=>f.k===k) || {icon:"",cls:""};
-  // Business weeks (Mon–Fri only, no weekend posts)
-  const WEEKS = [
-    {n:1, label:"Week 1", range:"Nov 23 – 27", days:[1,5]},
-    {n:2, label:"Week 2", range:"Nov 30 – Dec 4", days:[6,10]},
-    {n:3, label:"Week 3", range:"Dec 7 – 11", days:[11,15]},
-    {n:4, label:"Week 4", range:"Dec 14 – 18", days:[16,20]},
-    {n:5, label:"Week 5", range:"Dec 21 – 25", days:[21,25]},
-    {n:6, label:"Week 6", range:"Dec 28 – Jan 1", days:[26,30]}
-  ];
-  const weekOf = d => WEEKS.find(w => d>=w.days[0] && d<=w.days[1]).n;
-  const REQUIRED = POSTS.filter(p=>p.compliance.level==="required");
+  const needsReview = p => p.compliance.level === "required";
 
   // ---------- state ----------
-  const blank = () => ({ pending:false, scheduled:false, posted:false, compliance:false, approvedBy:"", approvedOn:"", notes:"", leads:[], updatedAt:0 });
+  const blank = () => ({ pending: false, scheduled: false, posted: false, compliance: false, approvedBy: "", approvedOn: "", notes: "", leads: [], links: [], updatedAt: 0 });
   let STATE = {};
-  function load(){ try { STATE = JSON.parse(localStorage.getItem(LS_KEY)||"{}") || {}; } catch(e){ STATE = {}; } }
-  function persistLocal(){ try { localStorage.setItem(LS_KEY, JSON.stringify(STATE)); } catch(e){} }
-  const st = id => (STATE[id] = Object.assign(blank(), STATE[id]||{}));
+  const asArray = v => Array.isArray(v) ? v.filter(Boolean) : (v && typeof v === "object" ? Object.values(v).filter(Boolean) : []);
+  function normalize(s) { const o = Object.assign(blank(), s || {}); o.leads = asArray(o.leads); o.links = asArray(o.links); return o; }
+  function load() { try { const raw = JSON.parse(localStorage.getItem(LS_KEY) || "{}") || {}; STATE = {}; Object.keys(raw).forEach(k => { if (DB.posts[k]) STATE[k] = normalize(raw[k]); }); } catch (e) { STATE = {}; } }
+  function persistLocal() { try { localStorage.setItem(LS_KEY, JSON.stringify(STATE)); } catch (e) {} }
+  const st = id => (STATE[id] = normalize(STATE[id]));
+  const getResetId = () => { try { return localStorage.getItem(LS_RESET_KEY) || ""; } catch (e) { return ""; } };
+  const setResetId = v => { try { localStorage.setItem(LS_RESET_KEY, v); } catch (e) {} };
 
-  function setSave(kind, text){ const el=$('saveState'); el.className="save "+(kind||""); el.textContent=text; }
-  function savedLabel(){ setSave(window.FB && FB.ready ? "cloud" : "", window.FB && FB.ready ? "Synced to Firebase ✓" : "Saved Locally ✓"); }
+  let filters = { search: "", week: "all", format: "all", status: "all" };
+  const expanded = new Set(["day01"]);
+  const activeTab = {};
 
+  // ---------- storage indicator ----------
+  function setStorageStatus(kind, text) {
+    const dot = $('storage-dot');
+    dot.className = "w-2.5 h-2.5 rounded-full inline-block " + (kind === "live" ? "bg-agency-success animate-pulse" : kind === "warn" ? "bg-agency-gold" : kind === "err" ? "bg-agency-alert" : "bg-agency-success");
+    $('storage-label').textContent = text;
+  }
+  const savedLabel = () => (window.FB && FB.ready) ? setStorageStatus("live", "Live Team Synced") : setStorageStatus("local", "Saved Locally");
+
+  // ---------- commit (local first, then Firebase) ----------
   const timers = {}, EDITS = {};
-  function commit(id, {debounce=false, rerender=true}={}){
+  function commit(id, { debounce = false, rerender = true } = {}) {
     STATE[id].updatedAt = Date.now();
-    STATE[id]._dirty = true;                 // not yet confirmed by Firebase
+    STATE[id]._dirty = true;
     persistLocal();
-    if (rerender) { renderStats(); renderList(); }
-    if (window.FB && FB.ready){
-      setSave("saving","Saving…");
+    if (rerender) renderAll(); else updateStats();
+    if (window.FB && FB.ready) {
+      setStorageStatus("warn", "Saving…");
       clearTimeout(timers[id]);
-      timers[id] = setTimeout(()=>{
-        const ver = EDITS[id] = (EDITS[id]||0) + 1;
-        FB.save(id, STATE[id]).then(()=>{
-          if (EDITS[id]===ver && STATE[id]) { delete STATE[id]._dirty; persistLocal(); }
+      timers[id] = setTimeout(() => {
+        const ver = EDITS[id] = (EDITS[id] || 0) + 1;
+        FB.save(id, STATE[id]).then(() => {
+          if (EDITS[id] === ver && STATE[id]) { delete STATE[id]._dirty; persistLocal(); }
           savedLabel();
-        }).catch(e=>{ console.warn(e); setSave("err", FB.lastError || "Firebase error · saved locally"); });
+        }).catch(e => { console.warn(e); setStorageStatus("err", FB.lastError || "Sync error · Saved Locally"); });
       }, debounce ? 700 : 0);
     } else savedLabel();
   }
-  // Re-render after a remote change without wiping a field someone is typing in
-  let renderPending = false;
-  function safeRerender(){
-    renderStats();
-    const a = document.activeElement;
-    if (a && $('list').contains(a) && a.matches('textarea, input[type=text], input[type=date], select')){
-      if (!renderPending){ renderPending = true; a.addEventListener('blur', ()=>{ renderPending=false; setTimeout(renderList,0); }, {once:true}); }
-      return;
-    }
-    renderList();
+
+  // ---------- toast ----------
+  function showToast(message, type = "success") {
+    const toast = document.createElement("div");
+    const colors = type === "error" ? "bg-agency-alert text-white" : type === "info" ? "bg-agency-navy text-white" : "bg-agency-navy text-white border-l-4 border-agency-gold";
+    toast.className = `${colors} px-4 py-3 rounded-lg shadow-lg text-sm font-bold flex items-center gap-2 transition-all duration-300`;
+    toast.textContent = message;
+    $('toast-container').appendChild(toast);
+    setTimeout(() => { toast.style.opacity = "0"; toast.style.transform = "translateY(8px)"; setTimeout(() => toast.remove(), 300); }, 2600);
   }
 
-  function statusKey(p){ const s=st(p.id); return s.posted?"posted":s.scheduled?"scheduled":s.pending?"pending":"none"; }
-  const STATUS_LABEL = { posted:"✅ Posted Live", scheduled:"🗓️ Scheduled", pending:"⏳ Pending Post", none:"⭕ Not started" };
+  // ---------- in-page confirm (replaces window.confirm, which silently returns "Cancel" in previews and when pop-ups are blocked) ----------
+  let confirmResolve = null;
+  function askConfirm({ title, message, ok = "Yes", danger = true }) {
+    $('confirm-title').textContent = title;
+    $('confirm-message').textContent = message;
+    const okBtn = $('confirm-ok');
+    okBtn.textContent = ok;
+    okBtn.className = "px-4 py-2.5 rounded-lg font-bold text-white text-sm transition cursor-pointer " + (danger ? "bg-agency-alert hover:bg-[#8F2E24]" : "bg-agency-navy hover:bg-agency-deep");
+    $('confirm-box').className = "bg-white rounded-xl max-w-md w-full p-6 shadow-2xl border-t-4 " + (danger ? "border-agency-alert" : "border-agency-gold");
+    $('confirm-icon').setAttribute("class", "w-7 h-7 shrink-0 " + (danger ? "text-agency-alert" : "text-agency-goldink"));
+    const m = $('confirm-modal'); m.classList.remove("hidden"); m.classList.add("flex");
+    setTimeout(() => okBtn.focus(), 30);
+    return new Promise(res => { confirmResolve = res; });
+  }
+  function closeConfirm(result) {
+    const m = $('confirm-modal'); m.classList.add("hidden"); m.classList.remove("flex");
+    if (confirmResolve) { const r = confirmResolve; confirmResolve = null; r(result); }
+  }
+  $('confirm-ok').addEventListener("click", () => closeConfirm(true));
+  $('confirm-cancel').addEventListener("click", () => closeConfirm(false));
+  $('confirm-modal').addEventListener("click", e => { if (e.target.id === "confirm-modal") closeConfirm(false); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && confirmResolve) closeConfirm(false); });
 
-  // ---------- stats ----------
-  function renderStats(){
-    const n = POSTS.length;
-    const c = k => POSTS.filter(p=>st(p.id)[k]).length;
-    const posted=c("posted"), sched=c("scheduled"), pend=c("pending");
-    const compDone = REQUIRED.filter(p=>st(p.id).compliance).length;
-    const pct = Math.round(posted/n*100);
-    $('progHead').textContent = `${posted} of ${n} Posts Posted Live`;
-    $('progPct').textContent = pct+"%"; $('progBar').style.width = pct+"%";
-    const leads = POSTS.reduce((a,p)=>a+st(p.id).leads.length,0);
-    $('leadTotal').textContent = `${leads} lead${leads===1?"":"s"} logged`;
-    const cur = $('fStatus').value;
-    const cards = [
-      {k:"pending", label:"⏳ Pending Post", v:pend, of:n, desc:"Content drafted & ready to queue"},
-      {k:"scheduled", label:"🗓️ Scheduled", v:sched, of:n, desc:"Queued in Meta Business Suite"},
-      {k:"posted", label:"✅ Posted Live", v:posted, of:n, desc:"Published to FB & IG"},
-      {k:"compliance", label:"⚠️ Compliance", v:compDone, of:REQUIRED.length, desc:"Required reviews approved"}
-    ];
-    $('stages').innerHTML = cards.map(x=>{
-      const p = x.of ? Math.round(x.v/x.of*100) : 0;
-      const filterVal = x.k==="compliance" ? "needs-compliance" : x.k;
-      return `<button class="stage ${cur===filterVal?"active":""}" data-stage="${filterVal}">
-        <div class="lbl">${x.label}</div>
-        <div class="num">${x.v} <small>/ ${x.of}</small></div>
-        <div class="desc">${x.desc}</div>
-        <div class="mini"><i style="width:${p}%"></i></div><div class="pct">${p}%</div>
-      </button>`;
-    }).join("");
-    $('formats').innerHTML = FORMATS.map(f=>{
-      const all = POSTS.filter(p=>p.format===f.k); const done = all.filter(p=>st(p.id).posted).length;
-      return `<div class="fmt">${f.icon} ${f.pl || f.k+"s"}<b>${done} / ${all.length}</b></div>`;
-    }).join("") + `<div class="fmt">🧲 Leads<b>${leads}</b></div>`;
+  // ---------- links helpers ----------
+  function normalizeUrl(raw) {
+    let url = String(raw || "").trim(); if (!url) return null;
+    if (!/^[a-z][a-z0-9+.-]*:/i.test(url)) url = "https://" + url;
+    try { const u = new URL(url); return (u.protocol === "http:" || u.protocol === "https:") ? u.href : null; } catch (e) { return null; }
+  }
+  function guessLinkLabel(url) {
+    try {
+      const host = new URL(url).hostname.replace(/^www\./, "");
+      if (host.includes("canva.")) return "Canva Design";
+      if (host.includes("heygen.")) return "HeyGen Video";
+      if (host.includes("drive.google.") || host.includes("docs.google.")) return "Google Drive";
+      if (host.includes("dropbox.")) return "Dropbox";
+      if (host.includes("facebook.")) return "Facebook Post";
+      if (host.includes("instagram.")) return "Instagram Post";
+      return host;
+    } catch (e) { return "Link"; }
+  }
+  function linkIcon(url) {
+    const u = String(url).toLowerCase();
+    if (u.includes("canva.")) return "🎨"; if (u.includes("heygen.")) return "🎬";
+    if (u.includes("drive.google.") || u.includes("docs.google.") || u.includes("dropbox.")) return "📁";
+    if (u.includes("facebook.") || u.includes("instagram.")) return "📣";
+    return "🔗";
   }
 
   // ---------- filters ----------
-  function buildFilters(){
-    $('fWeek').innerHTML = `<option value="">All 6 Weeks (Days 1–30) · Mon–Fri</option>` + WEEKS.map(w=>`<option value="${w.n}">${w.label} (Days ${w.days[0]}–${w.days[1]}) · ${w.range} · Mon–Fri</option>`).join("");
-    $('fFormat').innerHTML = `<option value="">All Formats (${POSTS.length})</option>` + FORMATS.map(f=>`<option value="${f.k}">${f.icon} ${f.k} (${POSTS.filter(p=>p.format===f.k).length})</option>`).join("");
-    $('fStatus').innerHTML = `<option value="">All Statuses (${POSTS.length})</option>
-      <option value="pending">⏳ Pending Post</option>
-      <option value="scheduled">🗓️ Scheduled / Ready</option>
-      <option value="posted">✅ Posted Live</option>
-      <option value="not-posted">⭕ Not Yet Posted Live</option>
-      <option value="needs-compliance">⚠️ Needs Compliance Review</option>`;
+  function buildFilters() {
+    $('week-filter').innerHTML = `<option value="all">All 6 Weeks (Days 1–30)</option>` + WEEKS.map(w => `<option value="${w.n}">Week ${w.n} (Days ${w.from}–${w.to} • Mon–Fri)</option>`).join("");
+    $('format-filter').innerHTML = `<option value="all">All Formats (${POSTS.length})</option>` + FORMATS.map(f => `<option value="${f.key}">${f.one} (${POSTS.filter(p => p.format === f.key).length})</option>`).join("");
   }
-  function matches(p){
-    const q=$('q').value.trim().toLowerCase(), w=$('fWeek').value, f=$('fFormat').value, s=$('fStatus').value;
-    const S = st(p.id);
-    if (w && weekOf(p.day)!=+w) return false;
-    if (f && p.format!==f) return false;
-    if (s==="pending" && !(S.pending && !S.scheduled && !S.posted)) return false;
-    if (s==="scheduled" && !(S.scheduled && !S.posted)) return false;
-    if (s==="posted" && !S.posted) return false;
-    if (s==="not-posted" && S.posted) return false;
-    if (s==="needs-compliance" && !(p.compliance.level==="required" && !S.compliance)) return false;
-    if (q){
-      const hay = [p.hook,p.caption.join(" "),p.cta,p.hashtags.join(" "),p.notes,S.notes,S.leads.map(l=>Object.values(l).join(" ")).join(" "),"day "+p.day].join(" ").toLowerCase();
-      if (!hay.includes(q)) return false;
-    }
-    return true;
+  function getFiltered() {
+    const q = filters.search.trim().toLowerCase();
+    return POSTS.filter(p => {
+      const S = st(p.id);
+      if (filters.week !== "all" && String(p.week) !== String(filters.week)) return false;
+      if (filters.format !== "all" && p.format !== filters.format) return false;
+      if (filters.status === "pending" && !S.pending) return false;
+      if (filters.status === "scheduled" && !S.scheduled) return false;
+      if (filters.status === "posted" && !S.posted) return false;
+      if (filters.status === "not_posted" && S.posted) return false;
+      if (filters.status === "compliance" && (!needsReview(p) || S.compliance)) return false;
+      if (q) {
+        const hay = [`day ${p.day}`, p.weekday, p.format, p.topic, p.source, p.hook, p.caption.join(" "), p.cta, p.hashtags.join(" "), p.notes,
+          S.notes, S.approvedBy, S.leads.map(l => Object.values(l).join(" ")).join(" "), S.links.map(l => l.label + " " + l.url).join(" ")].join(" ").toLowerCase();
+        if (!hay.includes(q)) return false;
+      }
+      return true;
+    });
   }
+  function syncFilterControls() {
+    $('search-input').value = filters.search; $('week-filter').value = filters.week; $('format-filter').value = filters.format; $('status-filter').value = filters.status;
+    $('clear-search-btn').classList.toggle("hidden", !filters.search);
+  }
+  function resetFilters() { filters = { search: "", week: "all", format: "all", status: "all" }; syncFilterControls(); renderPosts(); }
 
-  // ---------- post rendering ----------
-  const OPEN = new Set();
-  function postHTML(p){
-    const S = st(p.id), sk = statusKey(p), F = fmt(p.format);
-    const d = new Date(p.date+"T12:00:00");
-    const mon = d.toLocaleDateString("en-US",{month:"short"}), dd = d.getDate();
-    const compPill = p.compliance.level==="required" ? (S.compliance?`<span class="pill p-ok">✔ Compliance approved</span>`:`<span class="pill p-req">⚠ Compliance required</span>`)
-                   : p.compliance.level==="recommended" ? `<span class="pill p-rec">• Review recommended</span>` : "";
-    const needsComp = p.compliance.level !== "none";
-    const q = DB.questions[p.question];
-    const answers = q ? `Q${q.n}: ${q.q}` : p.question==="recruit" ? "Agent recruiting" : "Brand / story";
-    return `<article class="post ${sk!=="none"?sk:""} ${OPEN.has(p.id)?"open":""}" id="post-${p.id}" data-id="${p.id}">
-      <div class="phead" data-toggle="${p.id}" role="button" tabindex="0" aria-expanded="${OPEN.has(p.id)}">
-        <div class="dnum"><div><b>${p.day}</b><span>DAY</span></div></div>
-        <div class="t">
-          <div class="hook">${esc(p.hook)}</div>
-          <div class="when">${esc(p.weekday)}, ${mon} ${dd} · ${esc(p.time)} MST · ${esc(p.platforms)}</div>
-        </div>
-        <div class="pills">
-          <span class="pill ${F.cls}">${F.icon} ${esc(p.format)}</span>
-          ${compPill}
-          <span class="pill p-st-${sk}">${STATUS_LABEL[sk]}</span>
-          ${S.leads.length?`<span class="pill p-ok">🧲 ${S.leads.length}</span>`:""}
-          <span class="chev">▶</span>
-        </div>
-      </div>
-      <div class="pbody">
-        <div>
-          <div class="lbl2">Hook</div>
-          <p class="bighook">${esc(p.hook)}</p>
-          <div class="lbl2">Full caption</div>
-          <div class="caption">${esc(p.caption.join("\n\n"))}</div>
-          <div class="lbl2">Call to action</div>
-          <div><b>${esc(p.ctaType)}:</b> ${esc(p.cta)}</div>
-          <div class="lbl2">Hashtags</div>
-          <div class="tags">${esc(p.hashtags.join(" "))}</div>
-          <div class="lbl2">Answers · Production notes</div>
-          <div style="font-size:13.5px"><b>${esc(answers)}</b><br>${esc(p.notes)}</div>
-          <div class="flag ${p.compliance.level}"><b>${p.compliance.level==="required"?"⚠ Compliance review required.":p.compliance.level==="recommended"?"• Review recommended.":"✓ No review flagged."}</b> ${esc(p.compliance.reason)}</div>
-          <div class="btnrow">
-            <button class="btn sm" data-copy="${p.id}">Copy full post + disclosures</button>
-            <button class="btn ghost sm" data-copycap="${p.id}">Copy caption</button>
-            <button class="btn ghost sm" data-copytags="${p.id}">Copy hashtags</button>
-          </div>
-        </div>
-        <div>
-          <div class="lbl2">Production checklist</div>
-          <div class="checks">
-            ${needsComp ? `<label class="check comp ${S.compliance?"done":""}"><input type="checkbox" data-f="compliance" ${S.compliance?"checked":""}>
-              <span><b>${p.compliance.level==="required"?"⚠️ Compliance approved":"Reviewed (optional)"}</b><small>${p.compliance.level==="required"?"ORM / designated broker sign-off before scheduling":"Recommended quick check"}</small>
-              <span class="approver"><input type="text" placeholder="Approved by" value="${esc(S.approvedBy)}" data-txt="approvedBy"><input type="date" value="${esc(S.approvedOn)}" data-txt="approvedOn"></span></span></label>` : ""}
-            <label class="check ${S.pending?"done":""}"><input type="checkbox" data-f="pending" ${S.pending?"checked":""}><span><b>⏳ Pending post</b><small>Graphics / video done, caption final</small></span></label>
-            <label class="check ${S.scheduled?"done":""}"><input type="checkbox" data-f="scheduled" ${S.scheduled?"checked":""}><span><b>🗓️ Scheduled</b><small>Queued in Meta Business Suite for ${esc(p.weekday.split(" ")[0])} ${esc(p.time)}</small></span></label>
-            <label class="check ${S.posted?"done":""}"><input type="checkbox" data-f="posted" ${S.posted?"checked":""}><span><b>✅ Posted live</b><small>Published to Facebook &amp; Instagram</small></span></label>
-          </div>
-          <div class="lbl2">Notes</div>
-          <textarea class="notes" data-txt="notes" placeholder="Edits, asset links, performance notes…">${esc(S.notes)}</textarea>
-          <div class="lbl2">Lead log (${S.leads.length})</div>
-          <div class="leadform" data-leadform="${p.id}">
-            <input type="text" placeholder="Name / handle" data-l="name">
-            <input type="text" placeholder="Phone / email" data-l="contact">
-            <select data-l="source"><option>Comment keyword</option><option>DM</option><option>Booked call</option><option>Story reply</option><option>Website</option><option>Other</option></select>
-            <input type="text" placeholder="Interest (buy / sell / loan / recruit)" data-l="interest">
-            <input type="text" class="full" placeholder="Note" data-l="note">
-            <button class="btn sm full" data-addlead="${p.id}">+ Add lead</button>
-          </div>
-          <ul class="leads">${S.leads.map(l=>`<li><span><b>${esc(l.name||"(no name)")}</b> · ${esc(l.source)}${l.interest?" · "+esc(l.interest):""}${l.contact?"<br>"+esc(l.contact):""}${l.note?"<br><i>"+esc(l.note)+"</i>":""}<br><small style="color:var(--muted)">${esc(l.date)}</small></span><button class="x" title="Remove" data-dellead="${p.id}|${l.id}">✕</button></li>`).join("")}</ul>
-        </div>
-      </div>
-    </article>`;
-  }
-  function renderList(){
-    const shown = POSTS.filter(matches);
-    const filtered = $('q').value || $('fWeek').value || $('fFormat').value || $('fStatus').value;
-    $('showing').textContent = filtered ? `Showing ${shown.length} of ${POSTS.length} filtered posts` : `Showing all ${POSTS.length} posts`;
-    if (!shown.length){
-      $('list').innerHTML = `<div class="empty"><b>No posts match your current filters.</b><br>Clear the search box or reset the dropdowns.<br><br><button class="btn" id="btnShowAll">Show All 30 Days</button></div>`;
-      return;
-    }
-    $('list').innerHTML = WEEKS.map(w=>{
-      const ps = shown.filter(p=>weekOf(p.day)===w.n); if (!ps.length) return "";
-      const done = POSTS.filter(p=>weekOf(p.day)===w.n && st(p.id).posted).length, tot = POSTS.filter(p=>weekOf(p.day)===w.n).length;
-      return `<section class="week"><h3>${w.label} <span class="wk-meta">${w.range} · Days ${w.days[0]}–${w.days[1]} · ${done}/${tot} posted</span></h3>${ps.map(postHTML).join("")}</section>`;
+  // ---------- stats ----------
+  function updateStats() {
+    const n = POSTS.length; let pend = 0, sch = 0, pos = 0, cT = 0, cA = 0, leads = 0;
+    POSTS.forEach(p => { const S = st(p.id); if (S.pending) pend++; if (S.scheduled) sch++; if (S.posted) pos++; if (needsReview(p)) { cT++; if (S.compliance) cA++; } leads += S.leads.length; });
+    const pct = v => Math.round(v / n * 100);
+    $('progress-headline').textContent = `${pos} of ${n} Posts Posted Live`;
+    $('progress-percent').textContent = pct(pos) + "%"; $('progress-bar-fill').style.width = pct(pos) + "%";
+    $('lead-total').textContent = `${leads} lead${leads === 1 ? "" : "s"} logged`;
+    $('stat-pending-count').textContent = `${pend} / ${n}`; $('stat-pending-pct').textContent = pct(pend) + "%";
+    $('stat-scheduled-count').textContent = `${sch} / ${n}`; $('stat-scheduled-pct').textContent = pct(sch) + "%";
+    $('stat-posted-count').textContent = `${pos} / ${n}`; $('stat-posted-pct').textContent = pct(pos) + "%";
+    $('stat-compliance-count').textContent = `${cA} / ${cT}`; $('stat-compliance-pct').textContent = (cT ? Math.round(cA / cT * 100) : 0) + "%";
+    $('format-cards').innerHTML = FORMATS.map(f => {
+      const all = POSTS.filter(p => p.format === f.key), done = all.filter(p => st(p.id).posted).length, p = all.length ? Math.round(done / all.length * 100) : 0;
+      return `<button data-action="quick-format" data-value="${f.key}" class="text-left rounded-lg p-3.5 border border-agency-line bg-agency-paper/60 ${f.hover} transition cursor-pointer">
+        <div class="flex items-center justify-between"><span class="eyebrow ${f.text}">${f.label}</span><span class="text-xs font-bold ${f.text}">${p}%</span></div>
+        <p class="font-display text-2xl font-bold text-agency-navy mt-1">${done} / ${all.length}</p>
+        <div class="w-full bg-agency-line rounded-full h-1.5 mt-2"><div class="${f.bar} h-1.5 rounded-full transition-all" style="width:${p}%"></div></div>
+      </button>`;
     }).join("");
   }
-  function refreshPost(id){
-    const el = document.getElementById('post-'+id);
-    const p = POSTS.find(x=>x.id===id);
-    if (!el) return;
-    if (!matches(p)) { renderList(); return; }
-    const active = document.activeElement, keep = active && el.contains(active) ? active.dataset.txt || active.dataset.l : null;
-    el.outerHTML = postHTML(p);
-    if (keep){ const n = document.querySelector(`#post-${id} [data-txt="${keep}"], #post-${id} [data-l="${keep}"]`); if(n){ n.focus(); if(n.setSelectionRange && n.value) n.setSelectionRange(n.value.length,n.value.length);} }
-    // keep week counters fresh
-    document.querySelectorAll('.week .wk-meta').forEach((m,i)=>{});
+
+  // ---------- rendering ----------
+  function formatBadge(fmt) {
+    switch (fmt) {
+      case "Reel": return `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-agency-navy text-white text-[11px] font-black tracking-widest">🎬 REEL</span>`;
+      case "Carousel": return `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-agency-blue text-white text-[11px] font-black tracking-widest">🎠 CAROUSEL</span>`;
+      case "Text post": return `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-agency-gold text-agency-navy text-[11px] font-black tracking-widest">📝 TEXT POST</span>`;
+      case "Story": return `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-white text-agency-steel border border-agency-steel/50 text-[11px] font-black tracking-widest">⭕ STORY</span>`;
+      default: return `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-agency-mist text-agency-navy text-xs font-bold">${esc(fmt)}</span>`;
+    }
   }
-  function renderAll(){ renderStats(); renderList(); }
+  function complianceBadge(p, S) {
+    if (p.compliance.level === "required") return S.compliance
+      ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#EAF5EE] text-agency-success border border-agency-success/30 text-xs font-bold">✅ Compliance Approved</span>`
+      : `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#FBECEA] text-agency-alert border border-agency-alert/30 text-xs font-bold">⚠️ Compliance Review</span>`;
+    if (p.compliance.level === "recommended") return S.compliance
+      ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#EAF5EE] text-agency-success border border-agency-success/30 text-xs font-bold">✅ Reviewed</span>`
+      : `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-agency-cream text-agency-goldink border border-agency-gold/40 text-xs font-bold">• Review Recommended</span>`;
+    return `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-agency-paper text-agency-steel text-xs font-bold">No Compliance Flag</span>`;
+  }
+  const tabBtn = (id, key, label, cur) => `<button data-action="tab" data-id="${id}" data-value="${key}" class="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold transition cursor-pointer ${cur === key ? 'bg-agency-navy text-white shadow-sm ring-1 ring-agency-navy border-b-2 border-agency-gold' : 'bg-white text-agency-navy border border-agency-line hover:bg-agency-mist'}">${label}</button>`;
+  function checkBox(id, field, on, label, onCls, accent, disabled) {
+    if (disabled) return `<label class="flex items-center gap-2.5 p-2.5 rounded-lg border select-none bg-agency-paper border-agency-line text-agency-steel opacity-70"><input type="checkbox" disabled class="w-4 h-4 rounded" /><span class="text-xs sm:text-sm">🛡️ No Review Needed</span></label>`;
+    return `<label class="flex items-center gap-2.5 p-2.5 rounded-lg border cursor-pointer transition select-none ${on ? onCls : 'bg-white border-agency-line text-slate-700 hover:bg-agency-paper'}">
+      <input type="checkbox" ${on ? 'checked' : ''} data-action="check" data-id="${id}" data-field="${field}" class="w-4 h-4 rounded accent-[${accent}] cursor-pointer" />
+      <span class="text-xs sm:text-sm">${label}</span></label>`;
+  }
+
+  function guideHTML(p) {
+    const g = p.guide; if (!g) return `<p class="text-sm text-agency-steel italic">No guide for this post.</p>`;
+    let out = `<div class="space-y-4">
+      <div class="bg-agency-cream border border-agency-gold/50 rounded-lg px-4 py-2.5 text-sm"><span class="eyebrow text-agency-goldink mr-2">Source</span><span class="text-agency-navy font-bold">${esc(p.source)}</span></div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+        <div class="bg-white border border-agency-line rounded-lg p-4 space-y-1"><span class="eyebrow text-agency-navy">1. Media Format & Specs</span><p class="font-display text-base text-agency-navy font-semibold">${esc(g.mediaType)}</p></div>
+        <div class="bg-white border border-agency-line rounded-lg p-4 space-y-1"><span class="eyebrow text-agency-blue">2. Approach & Tone</span><p class="text-sm text-slate-700 leading-relaxed">${esc(g.deliveryTone)}</p></div>
+        <div class="bg-white border border-agency-line rounded-lg p-4 space-y-1 md:col-span-2"><span class="eyebrow text-agency-goldink">3. What to Film / Design (Visual Breakdown)</span><p class="text-sm text-slate-700 leading-relaxed">${esc(g.visualBreakdown)}</p></div>
+        <div class="bg-white border border-agency-line rounded-lg p-4 space-y-2 md:col-span-2"><span class="eyebrow text-agency-success">4. Step-by-Step VA & Posting Action Plan</span>
+          <ol class="space-y-2">${g.steps.map((s, i) => `<li class="flex gap-3 text-sm text-slate-700 leading-relaxed"><span class="shrink-0 w-6 h-6 rounded-full bg-agency-navy text-agency-gold text-[11px] font-black flex items-center justify-center">${i + 1}</span><span>${esc(s)}</span></li>`).join("")}</ol>
+        </div>
+      </div>`;
+    if (g.script) out += `<div class="bg-white border border-agency-line rounded-lg p-4 space-y-2"><div class="flex flex-wrap items-center justify-between gap-2"><span class="eyebrow text-agency-navy">🎬 HeyGen Script (paste exactly as approved)</span>
+        <button data-action="copy-script" data-id="${p.id}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-agency-gold hover:bg-[#D98B55] text-agency-navy text-xs font-black tracking-wide transition cursor-pointer">Copy Script</button></div>
+        <pre class="whitespace-pre-wrap font-sans text-sm text-slate-800 leading-relaxed bg-agency-paper border-l-4 border-agency-gold p-3 rounded-md">${esc(g.script)}</pre></div>`;
+    if (g.carouselPlan) out += `<div class="bg-white border border-agency-line rounded-lg p-4 space-y-3"><span class="eyebrow text-agency-blue">🎠 Detailed Carousel Slide Plan</span>
+        ${g.carouselPlan.map(s => `<div class="border border-agency-line rounded-md p-3 bg-agency-paper/60"><div class="flex flex-wrap items-center gap-2 mb-1"><span class="bg-agency-navy text-agency-gold text-[11px] font-black tracking-wider px-2 py-0.5 rounded">SLIDE ${s.slide}</span><span class="text-xs font-bold text-agency-steel">Background: ${esc(s.background)}</span></div>
+          <p class="text-sm text-slate-700"><strong>Image:</strong> ${esc(s.image)}</p><p class="text-sm text-slate-700"><strong>Text:</strong> ${esc(s.text)}</p><p class="text-xs text-slate-500 mt-1"><strong>Fonts, Colors & Layout:</strong> ${esc(s.designNote)}</p></div>`).join("")}</div>`;
+    if (g.storyPlan) out += `<div class="bg-white border border-agency-line rounded-lg p-4 space-y-3"><span class="eyebrow text-agency-steel">⭕ Story Frame-by-Frame Plan</span>
+        ${g.storyPlan.map(s => `<div class="border border-agency-line rounded-md p-3 bg-agency-paper/60"><div class="flex flex-wrap items-center gap-2 mb-1"><span class="bg-agency-navy text-agency-gold text-[11px] font-black tracking-wider px-2 py-0.5 rounded">FRAME ${s.frame}</span><span class="text-xs font-bold text-agency-steel">Background: ${esc(s.background)}</span></div>
+          <p class="text-sm text-slate-700"><strong>Text:</strong> ${esc(s.text)}</p><p class="text-sm text-slate-700"><strong>Sticker:</strong> ${esc(s.sticker)}</p><p class="text-xs text-slate-500 mt-1"><strong>Fonts & Layout:</strong> ${esc(s.designNote)}</p></div>`).join("")}</div>`;
+    if (g.graphicSpec) out += `<div class="bg-white border border-agency-line rounded-lg p-4 space-y-2"><span class="eyebrow text-agency-goldink">📝 One-Graphic Image Specification</span><div class="text-sm text-slate-700 space-y-1">
+        <p><strong>Background:</strong> ${esc(g.graphicSpec.background)}</p><p><strong>Image/Visual:</strong> ${esc(g.graphicSpec.image)}</p><p><strong>Text:</strong> ${esc(g.graphicSpec.text)}</p><p><strong>Text Style:</strong> ${esc(g.graphicSpec.textStyle)}</p><p><strong>Design Note:</strong> ${esc(g.graphicSpec.designNote)}</p></div></div>`;
+    out += `<p class="text-[11px] text-agency-steel">Colors and fonts are suggestions: the script file doesn't specify a brand kit. Swap in Michael's brand colors if he has them.</p></div>`;
+    return out;
+  }
+
+  function handoffHTML(p, S) {
+    const comp = p.compliance.level !== "none" ? `
+      <div class="bg-white border border-agency-line rounded-lg p-4 space-y-2">
+        <span class="eyebrow text-agency-alert">🛡️ Compliance Sign-Off</span>
+        <p class="text-xs text-agency-steel">${esc(p.compliance.reason)}</p>
+        <div class="flex flex-col sm:flex-row gap-2">
+          <input type="text" data-field-text="approvedBy" data-id="${p.id}" value="${esc(S.approvedBy)}" placeholder="Approved by (name / ORM ticket)" class="flex-1 rounded-lg border border-agency-line bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-agency-gold" />
+          <input type="date" data-field-text="approvedOn" data-id="${p.id}" value="${esc(S.approvedOn)}" class="sm:w-44 rounded-lg border border-agency-line bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-agency-gold" />
+          ${(S.approvedBy || S.approvedOn) ? `<button data-action="clear-approval" data-id="${p.id}" class="px-3 py-2 rounded-lg border border-agency-line text-agency-alert text-xs font-bold hover:bg-[#FBECEA] transition cursor-pointer">Clear</button>` : ""}
+        </div>
+      </div>` : "";
+    return `
+      <div class="bg-white border border-agency-line rounded-lg p-4 space-y-3">
+        <div class="flex flex-wrap items-baseline justify-between gap-2"><span class="eyebrow text-agency-navy">🔗 Design & Asset Links</span><span class="text-xs text-agency-steel">Canva designs, HeyGen videos, Drive folders, live post URLs</span></div>
+        ${S.links.length ? `<ul class="divide-y divide-agency-line border border-agency-line rounded-md">${S.links.map(l => `
+          <li class="flex items-center gap-3 px-3 py-2"><span class="text-base">${linkIcon(l.url)}</span>
+            <div class="min-w-0 flex-1"><a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer" class="block text-sm font-bold text-agency-navy hover:text-agency-blue hover:underline truncate">${esc(l.label)}</a><span class="block text-xs text-agency-steel truncate">${esc(l.url)}</span></div>
+            <a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer" class="shrink-0 px-3 py-1.5 rounded-md bg-agency-navy text-white text-xs font-bold hover:bg-agency-deep transition">Open</a>
+            <button data-action="remove-link" data-id="${p.id}" data-item="${esc(l.id)}" class="shrink-0 px-2.5 py-1.5 rounded-md border border-agency-line text-agency-alert text-xs font-bold hover:bg-[#FBECEA] transition cursor-pointer">Remove</button></li>`).join("")}</ul>`
+        : `<p class="text-xs text-agency-steel italic">No links yet. Paste a Canva or HeyGen share link below so the team can open it.</p>`}
+        <div class="flex flex-col sm:flex-row gap-2">
+          <input id="link-label-${p.id}" type="text" placeholder="Label (e.g. Canva – Slides 1–7)" data-enter="add-link" data-id="${p.id}" class="sm:w-56 rounded-lg border border-agency-line bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-agency-gold" />
+          <input id="link-url-${p.id}" type="url" placeholder="Paste link, e.g. https://www.canva.com/design/..." data-enter="add-link" data-id="${p.id}" class="flex-1 rounded-lg border border-agency-line bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-agency-gold" />
+          <button data-action="add-link" data-id="${p.id}" class="px-4 py-2 rounded-lg bg-agency-gold hover:bg-[#D98B55] text-agency-navy text-sm font-black transition cursor-pointer">+ Add Link</button>
+        </div>
+      </div>
+      ${comp}
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block eyebrow text-agency-steel mb-1.5">VA & Owner Handoff Notes</label>
+          <textarea rows="6" data-field-text="notes" data-id="${p.id}" placeholder="Compliance feedback, edits, scheduling notes..." class="w-full rounded-lg border border-agency-line bg-white p-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-agency-gold">${esc(S.notes)}</textarea>
+        </div>
+        <div class="space-y-2">
+          <label class="block eyebrow text-agency-steel">Engagement, Keywords & Leads Logged (${S.leads.length})</label>
+          <div class="grid grid-cols-2 gap-2">
+            <input id="lead-name-${p.id}" type="text" placeholder="Name / handle" data-enter="add-lead" data-id="${p.id}" class="rounded-lg border border-agency-line bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-agency-gold" />
+            <input id="lead-contact-${p.id}" type="text" placeholder="Phone / email" data-enter="add-lead" data-id="${p.id}" class="rounded-lg border border-agency-line bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-agency-gold" />
+            <select id="lead-source-${p.id}" class="rounded-lg border border-agency-line bg-white px-3 py-2 text-sm font-bold text-agency-navy focus:outline-none focus:ring-2 focus:ring-agency-gold"><option>Comment keyword</option><option>DM</option><option>Booked call</option><option>Story reply</option><option>Website</option><option>Other</option></select>
+            <input id="lead-note-${p.id}" type="text" placeholder="Interest / note" data-enter="add-lead" data-id="${p.id}" class="rounded-lg border border-agency-line bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-agency-gold" />
+          </div>
+          <button data-action="add-lead" data-id="${p.id}" class="w-full px-4 py-2 rounded-lg bg-agency-navy hover:bg-agency-deep text-white text-sm font-bold transition cursor-pointer">+ Log Lead</button>
+          ${S.leads.length ? `<ul class="divide-y divide-agency-line border border-agency-line rounded-md bg-white">${S.leads.map(l => `
+            <li class="flex items-start gap-3 px-3 py-2"><div class="min-w-0 flex-1 text-sm"><span class="font-bold text-agency-navy">${esc(l.name || "(no name)")}</span> <span class="text-agency-steel">· ${esc(l.source)}</span>
+              ${l.contact ? `<span class="block text-xs text-slate-600">${esc(l.contact)}</span>` : ""}${l.note ? `<span class="block text-xs italic text-slate-600">${esc(l.note)}</span>` : ""}<span class="block text-[11px] text-agency-steel">${esc(l.date)}</span></div>
+              <button data-action="remove-lead" data-id="${p.id}" data-item="${esc(l.id)}" class="shrink-0 px-2.5 py-1.5 rounded-md border border-agency-line text-agency-alert text-xs font-bold hover:bg-[#FBECEA] transition cursor-pointer">Remove</button></li>`).join("")}</ul>` : ""}
+        </div>
+      </div>`;
+  }
+
+  function postHTML(p) {
+    const S = st(p.id), open = expanded.has(p.id), tab = activeTab[p.id] || "copy";
+    const border = S.posted ? "border-agency-line border-l-4 border-l-agency-success bg-white" : "border-agency-line border-l-4 border-l-agency-gold/0 bg-white hover:border-l-agency-gold";
+    const d = new Date(p.date + "T12:00:00");
+    const sched = `Week ${p.week} • ${d.toLocaleDateString("en-US", { month: "short", day: "numeric" })} • ${p.time} MST`;
+    return `
+      <article id="post-${p.id}" class="rounded-xl border ${border} shadow-sm overflow-hidden transition scroll-mt-4">
+        <div class="p-4 sm:p-5 space-y-4">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="px-3 py-1 rounded-md bg-agency-navy text-agency-gold text-[11px] font-black tracking-widest">DAY ${p.day} • ${esc(p.weekday.toUpperCase())}</span>
+              ${formatBadge(p.format)}
+              <span class="text-xs font-bold text-agency-steel">${esc(sched)}</span>
+              ${complianceBadge(p, S)}
+            </div>
+            <button data-action="toggle" data-id="${p.id}" class="self-start md:self-auto inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-agency-navy/20 bg-white hover:bg-agency-mist text-agency-navy text-xs font-bold transition cursor-pointer">
+              <span>${open ? 'Hide Details & Guide' : 'Open Caption & Step-by-Step Guide'}</span>
+              <svg class="w-4 h-4 transition-transform ${open ? 'rotate-180' : ''}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+          </div>
+          <div>
+            <h3 class="text-lg sm:text-xl font-bold text-agency-navy leading-snug">${esc(p.topic)}</h3>
+            <p class="font-display italic text-[15px] sm:text-base text-slate-700 mt-1.5"><span class="eyebrow not-italic text-agency-goldink mr-1.5" style="font-style:normal">Hook</span>“${esc(p.hook)}”</p>
+            <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2.5 text-xs text-agency-steel">
+              <span><strong class="text-agency-navy font-black">CTA:</strong> ${esc(p.cta)}</span>
+              <span><strong class="text-agency-navy font-black">Platforms:</strong> ${esc(p.platforms)}</span>
+              <span><strong class="text-agency-navy font-black">Tags:</strong> ${esc(p.hashtags.join(" "))}</span>
+            </div>
+            ${S.links.length ? `<div class="flex flex-wrap items-center gap-2 mt-3"><span class="eyebrow text-agency-goldink mr-1">Links</span>${S.links.map(l => `
+              <a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer" title="${esc(l.url)}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-agency-cream border border-agency-gold/60 text-agency-navy text-xs font-bold hover:bg-agency-gold hover:border-agency-gold transition"><span>${linkIcon(l.url)}</span><span class="max-w-[220px] truncate">${esc(l.label)}</span></a>`).join("")}</div>` : ""}
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 pt-1">
+            ${checkBox(p.id, "pending", S.pending, "⏳ Pending Post", "bg-agency-cream border-agency-gold text-agency-goldink font-bold", "#C9773F")}
+            ${checkBox(p.id, "scheduled", S.scheduled, "🗓️ Scheduled / Ready", "bg-agency-mist border-agency-blue text-agency-navy font-bold", "#2D6A64")}
+            ${checkBox(p.id, "posted", S.posted, "✅ Posted Live", "bg-[#EAF5EE] border-agency-success text-agency-success font-bold", "#2E7D4F")}
+            ${checkBox(p.id, "compliance", S.compliance, p.compliance.level === "required" ? "🛡️ Compliance Approved" : "🛡️ Reviewed (Optional)", "bg-[#EAF5EE] border-agency-success text-agency-success font-bold", "#2E7D4F", p.compliance.level === "none")}
+          </div>
+        </div>
+        ${open ? `
+          <div class="border-t border-agency-line bg-agency-paper p-4 sm:p-5 space-y-4">
+            <div class="flex flex-wrap gap-2 border-b border-agency-line pb-3">
+              ${tabBtn(p.id, "copy", "📋 Copy & Caption", tab)}${tabBtn(p.id, "guide", "🎬 Step-by-Step Production Guide", tab)}${tabBtn(p.id, "handoff", "🔗 Links, Handoff & Leads", tab)}
+            </div>
+            ${tab === "copy" ? `
+              <div class="space-y-3">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                  <span class="eyebrow text-agency-steel">Full Caption · Blank Line Between Sentences</span>
+                  <div class="flex gap-2">
+                    <button data-action="copy-caption" data-id="${p.id}" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-agency-gold hover:bg-[#D98B55] text-agency-navy text-xs font-black tracking-wide transition cursor-pointer">Copy Caption + Hashtags</button>
+                    <button data-action="copy-full" data-id="${p.id}" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-white border border-agency-line hover:bg-agency-mist text-agency-navy text-xs font-bold transition cursor-pointer">Copy + Disclosures</button>
+                  </div>
+                </div>
+                <pre class="whitespace-pre-wrap font-sans text-sm text-slate-800 bg-white border border-agency-line rounded-lg p-4 leading-relaxed">${esc(p.hook + "\n\n" + p.caption.join("\n\n") + "\n\n" + p.hashtags.join(" "))}</pre>
+                <div class="rounded-lg px-4 py-3 text-sm ${p.compliance.level === 'required' ? 'bg-[#FBECEA] border border-agency-alert/30' : p.compliance.level === 'recommended' ? 'bg-agency-cream border border-agency-gold/40' : 'bg-[#EAF5EE] border border-agency-success/30'}">
+                  <span class="eyebrow ${p.compliance.level === 'required' ? 'text-agency-alert' : p.compliance.level === 'recommended' ? 'text-agency-goldink' : 'text-agency-success'} mr-2">${p.compliance.level === 'required' ? 'Compliance Required' : p.compliance.level === 'recommended' ? 'Review Recommended' : 'No Review Flagged'}</span>${esc(p.compliance.reason)}
+                </div>
+              </div>` : ""}
+            ${tab === "guide" ? guideHTML(p) : ""}
+            ${tab === "handoff" ? `<div class="space-y-4">${handoffHTML(p, S)}</div>` : ""}
+          </div>` : ""}
+      </article>`;
+  }
+
+  function renderPosts() {
+    const list = getFiltered();
+    const active = filters.search.trim() || filters.week !== "all" || filters.format !== "all" || filters.status !== "all";
+    $('active-filter-bar').classList.toggle("hidden", !active);
+    if (active) $('filter-result-count').textContent = `Showing ${list.length} of ${POSTS.length} business days`;
+    if (!list.length) { $('posts-list').innerHTML = ""; $('empty-state').classList.remove("hidden"); return; }
+    $('empty-state').classList.add("hidden");
+    $('posts-list').innerHTML = WEEKS.map(w => {
+      const ps = list.filter(p => p.week === w.n); if (!ps.length) return "";
+      const done = POSTS.filter(p => p.week === w.n && st(p.id).posted).length;
+      return `<div class="pt-2"><h3 class="eyebrow gold-rule-left text-agency-navy mb-3">Week ${w.n} · ${WEEK_RANGES[w.n]} · Days ${w.from}–${w.to} · ${done}/5 Posted</h3><div class="space-y-4">${ps.map(postHTML).join("")}</div></div>`;
+    }).join("");
+  }
+  function renderAll() { updateStats(); renderPosts(); }
+
+  // Re-render after a remote change without wiping a field someone is typing in
+  let renderPending = false;
+  function safeRerender() {
+    updateStats();
+    const a = document.activeElement;
+    if (a && $('posts-list').contains(a) && a.matches('textarea, input[type=text], input[type=url], input[type=date], select')) {
+      if (!renderPending) { renderPending = true; a.addEventListener("blur", () => { renderPending = false; setTimeout(renderPosts, 0); }, { once: true }); }
+      return;
+    }
+    renderPosts();
+  }
 
   // ---------- copy ----------
-  function fullCopy(p){
-    const d = DB.meta.info.disclosures;
-    let out = p.hook+"\n\n"+p.caption.join("\n\n")+"\n\n"+p.hashtags.join(" ");
-    if (p.compliance.level==="required" && (/ORM|NMLS/.test(p.compliance.reason) || p.question==="recruit")) out += "\n\n"+d.mortgage;
-    if (/tax/i.test(p.compliance.reason)) out += "\n\n"+d.tax;
-    if (p.question==="q10") out += "\n\n"+d.rental;
-    return out + "\n\n" + d.realEstate;
+  const D = DB.meta.info.disclosures;
+  function fullCopy(p) {
+    let out = p.hook + "\n\n" + p.caption.join("\n\n") + "\n\n" + p.hashtags.join(" ");
+    if (p.compliance.level === "required" && (/ORM|NMLS/.test(p.compliance.reason) || p.question === "recruit")) out += "\n\n" + D.mortgage;
+    if (/tax/i.test(p.compliance.reason)) out += "\n\n" + D.tax;
+    if (p.question === "q10") out += "\n\n" + D.rental;
+    return out + "\n\n" + D.realEstate;
   }
-  async function copy(t){ try{ await navigator.clipboard.writeText(t); toast("Copied ✓"); } catch(e){ const a=document.createElement('textarea'); a.value=t; document.body.appendChild(a); a.select(); try{document.execCommand('copy');toast("Copied ✓");}catch(_){toast("Copy failed");} a.remove(); } }
+  async function copyText(t, msg = "Copied to clipboard") {
+    try { await navigator.clipboard.writeText(t); showToast(msg); }
+    catch (e) { const a = document.createElement("textarea"); a.value = t; document.body.appendChild(a); a.select(); try { document.execCommand("copy"); showToast(msg); } catch (_) { showToast("Copy failed. Select the text and copy manually.", "error"); } a.remove(); }
+  }
 
-  // ---------- events ----------
-  document.addEventListener('click', e=>{
-    const tg = e.target.closest('[data-toggle]');
-    if (tg && !e.target.closest('input,select,textarea,button')){ const id=tg.dataset.toggle; OPEN.has(id)?OPEN.delete(id):OPEN.add(id); const el=$('post-'+id); el.classList.toggle('open'); tg.setAttribute('aria-expanded', OPEN.has(id)); return; }
-    const stg = e.target.closest('[data-stage]');
-    if (stg){ const v=stg.dataset.stage; $('fStatus').value = $('fStatus').value===v ? "" : v; renderAll(); document.querySelector('.controls').scrollIntoView({behavior:"smooth"}); return; }
-    const c1=e.target.closest('[data-copy]'); if(c1) return copy(fullCopy(DB.posts[c1.dataset.copy]));
-    const c2=e.target.closest('[data-copycap]'); if(c2){ const p=DB.posts[c2.dataset.copycap]; return copy(p.hook+"\n\n"+p.caption.join("\n\n")); }
-    const c3=e.target.closest('[data-copytags]'); if(c3) return copy(DB.posts[c3.dataset.copytags].hashtags.join(" "));
-    const al=e.target.closest('[data-addlead]');
-    if (al){
-      const id=al.dataset.addlead, f=document.querySelector(`[data-leadform="${id}"]`);
-      const v=k=>f.querySelector(`[data-l="${k}"]`).value.trim();
-      if (!v("name") && !v("contact")) { toast("Add a name or contact"); return; }
-      st(id).leads.push({ id: Date.now().toString(36), date: new Date().toLocaleString("en-US",{dateStyle:"medium",timeStyle:"short"}), name:v("name"), contact:v("contact"), source:v("source"), interest:v("interest"), note:v("note") });
-      commit(id); toast("Lead logged 🧲"); return;
+  // ---------- actions ----------
+  const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  function addLink(id) {
+    const urlEl = $('link-url-' + id), labelEl = $('link-label-' + id);
+    const url = normalizeUrl(urlEl && urlEl.value);
+    if (!url) { showToast("Please paste a valid link (e.g. https://www.canva.com/design/...)", "error"); urlEl && urlEl.focus(); return; }
+    st(id).links.push({ id: uid(), label: (labelEl && labelEl.value.trim()) || guessLinkLabel(url), url, addedAt: Date.now() });
+    commit(id); showToast(`Link added to Day ${byId(id).day}`);
+  }
+  function addLead(id) {
+    const v = k => ($(`lead-${k}-${id}`) || {}).value?.trim() || "";
+    if (!v("name") && !v("contact")) { showToast("Add a name or contact first", "error"); return; }
+    st(id).leads.push({ id: uid(), date: new Date().toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" }), name: v("name"), contact: v("contact"), source: $(`lead-source-${id}`).value, note: v("note") });
+    commit(id); showToast("Lead logged 🧲");
+  }
+  async function removeItem(id, kind, itemId) {
+    const S = st(id), arr = kind === "lead" ? S.leads : S.links;
+    const item = arr.find(x => String(x.id) === String(itemId)); if (!item) return;
+    const name = kind === "lead" ? (item.name || item.contact || "this lead") : (item.label || "this link");
+    const ok = await askConfirm({ title: kind === "lead" ? "Remove Lead?" : "Remove Link?", message: `Remove "${name}" from Day ${byId(id).day}? This also removes it for everyone on the synced tracker.`, ok: "Yes, Remove" });
+    if (!ok) return;
+    const fresh = st(id);
+    if (kind === "lead") fresh.leads = fresh.leads.filter(x => String(x.id) !== String(itemId));
+    else fresh.links = fresh.links.filter(x => String(x.id) !== String(itemId));
+    commit(id); showToast(kind === "lead" ? "Lead removed" : "Link removed", "info");
+  }
+
+  document.addEventListener("click", async e => {
+    const el = e.target.closest("[data-action]"); if (!el || el.disabled) return;
+    const a = el.dataset.action, id = el.dataset.id, v = el.dataset.value;
+    if (a === "check") return; // handled on change
+    switch (a) {
+      case "toggle": expanded.has(id) ? expanded.delete(id) : expanded.add(id); renderPosts(); break;
+      case "tab": activeTab[id] = v; renderPosts(); break;
+      case "expand-all": getFiltered().forEach(p => expanded.add(p.id)); renderPosts(); break;
+      case "collapse-all": expanded.clear(); renderPosts(); break;
+      case "quick-status": filters.status = filters.status === v ? "all" : v; syncFilterControls(); renderPosts(); $('posts-list').scrollIntoView({ behavior: "smooth" }); break;
+      case "quick-format": filters.format = filters.format === v ? "all" : v; syncFilterControls(); renderPosts(); $('posts-list').scrollIntoView({ behavior: "smooth" }); break;
+      case "reset-filters": resetFilters(); break;
+      case "clear-search": filters.search = ""; syncFilterControls(); renderPosts(); break;
+      case "copy-caption": { const p = byId(id); copyText(p.hook + "\n\n" + p.caption.join("\n\n") + "\n\n" + p.hashtags.join(" "), "Caption + hashtags copied"); break; }
+      case "copy-full": copyText(fullCopy(byId(id)), "Caption + disclosures copied"); break;
+      case "copy-script": copyText(byId(id).guide.script.replace(/^\[[^\]]+\]\s*/gm, "").replace(/^END CARD:.*$/m, "").trim(), "Script copied (timestamps removed)"); break;
+      case "add-link": addLink(id); break;
+      case "add-lead": addLead(id); break;
+      case "remove-link": removeItem(id, "link", el.dataset.item); break;
+      case "remove-lead": removeItem(id, "lead", el.dataset.item); break;
+      case "clear-approval": { const ok = await askConfirm({ title: "Clear Approval Details?", message: "Clear the approver name and date for this post?", ok: "Yes, Clear" }); if (ok) { const S = st(id); S.approvedBy = ""; S.approvedOn = ""; commit(id); } break; }
+      case "export-csv": exportCSV(); break;
+      case "export-json": exportJSON(); break;
+      case "import-json": $('import-file-input').click(); break;
+      case "reset-all": resetAll(); break;
     }
-    const dl=e.target.closest('[data-dellead]');
-    if (dl){ const [id,lid]=dl.dataset.dellead.split("|"); if(!confirm("Remove this lead?")) return; st(id).leads = st(id).leads.filter(l=>l.id!==lid); commit(id); return; }
-    if (e.target.id==="btnShowAll"){ resetFilters(); return; }
   });
-  document.addEventListener('keydown', e=>{ if((e.key==="Enter"||e.key===" ") && e.target.matches('[data-toggle]')){ e.preventDefault(); e.target.click(); } });
 
-  document.addEventListener('change', e=>{
-    const cb = e.target.closest('input[type=checkbox][data-f]');
-    if (cb){
-      const id = cb.closest('.post').dataset.id, f = cb.dataset.f, S = st(id), p = DB.posts[id];
-      if (cb.checked && (f==="scheduled"||f==="posted") && p.compliance.level==="required" && !S.compliance){
-        if (!confirm(`Day ${p.day} needs compliance approval (ORM / broker) before it goes out.\n\nMark it ${f} anyway?`)){ cb.checked=false; return; }
+  document.addEventListener("change", async e => {
+    const cb = e.target.closest('input[type=checkbox][data-action="check"]');
+    if (cb) {
+      const id = cb.dataset.id, f = cb.dataset.field, p = byId(id), want = cb.checked;
+      if (want && (f === "scheduled" || f === "posted") && needsReview(p) && !st(id).compliance) {
+        cb.checked = false;
+        const ok = await askConfirm({ title: "Compliance Not Approved Yet", message: `Day ${p.day} needs ORM / broker approval before it goes out.\n\nMark it "${f === "posted" ? "Posted Live" : "Scheduled"}" anyway?`, ok: "Mark Anyway" });
+        if (!ok) return;
       }
-      S[f] = cb.checked;
-      // cascade: posted implies scheduled & pending; scheduled implies pending
-      if (cb.checked && f==="posted"){ S.scheduled=true; S.pending=true; }
-      if (cb.checked && f==="scheduled"){ S.pending=true; }
-      if (!cb.checked && f==="pending"){ S.scheduled=false; S.posted=false; }
-      if (!cb.checked && f==="scheduled"){ S.posted=false; }
-      if (f==="compliance" && cb.checked && !S.approvedOn) S.approvedOn = new Date().toISOString().slice(0,10);
-      commit(id); return;
+      const S = st(id);
+      S[f] = want;
+      if (want && f === "posted") { S.scheduled = true; S.pending = true; }
+      if (want && f === "scheduled") S.pending = true;
+      if (want && f === "compliance" && !S.approvedOn) S.approvedOn = new Date().toISOString().slice(0, 10);
+      commit(id);
+      return;
     }
-    const tx = e.target.closest('[data-txt]');
-    if (tx && tx.type==="date"){ const id=tx.closest('.post').dataset.id; st(id)[tx.dataset.txt]=tx.value; commit(id,{rerender:false}); return; }
-    if (["fWeek","fFormat","fStatus"].includes(e.target.id)) renderAll();
+    const dt = e.target.closest('input[type=date][data-field-text]');
+    if (dt) { st(dt.dataset.id)[dt.dataset.fieldText] = dt.value; commit(dt.dataset.id, { rerender: false }); return; }
+    if (e.target.id === "week-filter") { filters.week = e.target.value; renderPosts(); }
+    if (e.target.id === "format-filter") { filters.format = e.target.value; renderPosts(); }
+    if (e.target.id === "status-filter") { filters.status = e.target.value; renderPosts(); }
   });
-  document.addEventListener('input', e=>{
-    const tx = e.target.closest('textarea[data-txt], input[type=text][data-txt]');
-    if (tx){ const id=tx.closest('.post').dataset.id; st(id)[tx.dataset.txt]=tx.value; setSave("saving","Saving…"); commit(id,{debounce:true, rerender:false}); }
+  document.addEventListener("input", e => {
+    const t = e.target.closest('textarea[data-field-text], input[type=text][data-field-text]');
+    if (t) { st(t.dataset.id)[t.dataset.fieldText] = t.value; commit(t.dataset.id, { debounce: true, rerender: false }); return; }
+    if (e.target.id === "search-input") { filters.search = e.target.value; $('clear-search-btn').classList.toggle("hidden", !filters.search); renderPosts(); }
   });
-  $('q').addEventListener('input', renderList);
-  function resetFilters(){ ['q','fWeek','fFormat','fStatus'].forEach(i=>$(i).value=""); renderAll(); }
-  $('btnResetFilters').onclick = resetFilters;
-  $('btnExpand').onclick = ()=>{ POSTS.filter(matches).forEach(p=>OPEN.add(p.id)); renderList(); };
-  $('btnCollapse').onclick = ()=>{ OPEN.clear(); renderList(); };
+  document.addEventListener("keydown", e => {
+    const t = e.target.closest("[data-enter]");
+    if (t && e.key === "Enter") { e.preventDefault(); t.dataset.enter === "add-link" ? addLink(t.dataset.id) : addLead(t.dataset.id); }
+  });
 
-  // ---------- backup / restore / reset ----------
-  function download(name, text, type){ const b=new Blob([text],{type}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=name; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000); }
-  const stamp = () => new Date().toISOString().slice(0,10);
-  $('btnCsv').onclick = ()=>{
-    const cols = ["Day","Date","Weekday","Time (MST)","Format","Platforms","Hook","CTA","Compliance level","Pending","Scheduled","Posted live","Compliance approved","Approved by","Approved on","Notes","Lead count","Leads"];
-    const q = v => `"${String(v??"").replace(/"/g,'""')}"`;
-    const rows = POSTS.map(p=>{ const S=st(p.id); return [p.day,p.date,p.weekday,p.time,p.format,p.platforms,p.hook,p.cta,p.compliance.level,S.pending?"Yes":"No",S.scheduled?"Yes":"No",S.posted?"Yes":"No",S.compliance?"Yes":"No",S.approvedBy,S.approvedOn,S.notes,S.leads.length,S.leads.map(l=>[l.name,l.contact,l.source,l.interest,l.note,l.date].filter(Boolean).join(" | ")).join(" ;; ")].map(q).join(","); });
-    download(`mv-content-tracker-${stamp()}.csv`, "﻿"+cols.map(q).join(",")+"\n"+rows.join("\n"), "text/csv");
-  };
-  $('btnJson').onclick = ()=> download(`mv-content-tracker-backup-${stamp()}.json`, JSON.stringify({app:"mv-content-tracker", version:1, exportedAt:new Date().toISOString(), progress:JSON.parse(JSON.stringify(STATE,(k,v)=>k==="_dirty"?undefined:v))},null,2), "application/json");
-  $('btnRestore').onclick = ()=> $('fileRestore').click();
-  $('fileRestore').onchange = async e=>{
-    const file = e.target.files[0]; if(!file) return;
-    try{
-      const data = JSON.parse(await file.text());
-      const prog = data.progress || data;
-      if (typeof prog!=="object" || !Object.keys(prog).some(k=>DB.posts[k])) throw new Error("This doesn't look like a tracker backup.");
-      if (!confirm("Restore this backup? It replaces the current progress.")) return;
-      STATE = {}; Object.keys(DB.posts).forEach(k=>{ if(prog[k]) STATE[k]=Object.assign(blank(),prog[k]); });
-      persistLocal(); renderAll();
-      if (window.FB && FB.ready){ setSave("saving","Saving…"); Object.values(STATE).forEach(s=>s._dirty=true); await FB.bulk(STATE); Object.values(STATE).forEach(s=>delete s._dirty); persistLocal(); }
-      savedLabel(); toast("Backup restored ✓");
-    } catch(err){ alert("Restore failed: "+err.message); }
-    e.target.value="";
-  };
-  $('btnReset').onclick = ()=> $('resetModal').classList.add('show');
-  $('rmCancel').onclick = ()=> $('resetModal').classList.remove('show');
-  $('resetModal').addEventListener('click', e=>{ if(e.target.id==="resetModal") $('resetModal').classList.remove('show'); });
-  $('rmYes').onclick = async ()=>{
-    STATE = {}; persistLocal(); OPEN.clear(); renderAll(); $('resetModal').classList.remove('show');
-    if (window.FB && FB.ready){ try{ setSave("saving","Resetting…"); await FB.resetAll(); }catch(err){ console.warn(err); setSave("err","Firebase reset failed"); return; } }
-    savedLabel(); toast("All progress reset");
-  };
+  // ---------- export / import / reset ----------
+  function download(name, text, type) { const b = new Blob([text], { type }); const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000); }
+  const stamp = () => new Date().toISOString().slice(0, 10);
+  function exportCSV() {
+    const cols = ["Day", "Date", "Weekday", "Time (MST)", "Format", "Topic", "Source", "Hook", "CTA", "Compliance level", "Pending", "Scheduled", "Posted live", "Compliance approved", "Approved by", "Approved on", "Notes", "Links", "Lead count", "Leads"];
+    const q = v => `"${String(v ?? "").replace(/"/g, '""')}"`;
+    const rows = POSTS.map(p => { const S = st(p.id); return [p.day, p.date, p.weekday, p.time, p.format, p.topic, p.source, p.hook, p.cta, p.compliance.level, S.pending ? "Yes" : "No", S.scheduled ? "Yes" : "No", S.posted ? "Yes" : "No", S.compliance ? "Yes" : "No", S.approvedBy, S.approvedOn, S.notes, S.links.map(l => `${l.label}: ${l.url}`).join(" ;; "), S.leads.length, S.leads.map(l => [l.name, l.contact, l.source, l.note, l.date].filter(Boolean).join(" | ")).join(" ;; ")].map(q).join(","); });
+    download(`content-tracker-${stamp()}.csv`, "﻿" + cols.map(q).join(",") + "\n" + rows.join("\n"), "text/csv");
+    showToast("CSV exported");
+  }
+  function exportJSON() {
+    const clean = JSON.parse(JSON.stringify(STATE, (k, v) => k === "_dirty" ? undefined : v));
+    download(`content-tracker-backup-${stamp()}.json`, JSON.stringify({ app: "mv-content-tracker", version: 2, exportedAt: new Date().toISOString(), progress: clean }, null, 2), "application/json");
+    showToast("JSON backup downloaded");
+  }
+  $('import-file-input').addEventListener("change", async e => {
+    const file = e.target.files[0]; e.target.value = ""; if (!file) return;
+    let prog;
+    try { const data = JSON.parse(await file.text()); prog = data.progress || data; if (typeof prog !== "object" || !Object.keys(prog).some(k => DB.posts[k])) throw new Error("This doesn't look like a tracker backup."); }
+    catch (err) { showToast("Restore failed: " + err.message, "error"); return; }
+    const ok = await askConfirm({ title: "Restore Backup?", message: `Replace current progress with "${file.name}"? This updates everyone on the synced tracker.`, ok: "Yes, Restore", danger: false });
+    if (!ok) return;
+    STATE = {}; Object.keys(DB.posts).forEach(k => { if (prog[k]) { STATE[k] = normalize(prog[k]); STATE[k]._dirty = true; } });
+    persistLocal(); renderAll();
+    if (window.FB && FB.ready) { try { await FB.restore(STATE); Object.values(STATE).forEach(s => delete s._dirty); persistLocal(); savedLabel(); } catch (err) { console.warn(err); setStorageStatus("err", FB.lastError || "Sync error · Saved Locally"); } }
+    showToast("Backup restored");
+  });
+  async function resetAll() {
+    const ok = await askConfirm({ title: "Reset All Progress?", message: "This clears all checkboxes, compliance approvals, notes, links, and lead logs across your local browser and connected Firebase database. Export a JSON backup first if you want a copy.", ok: "Yes, Reset Everything" });
+    if (!ok) return;
+    const resetId = uid();
+    STATE = {}; setResetId(resetId); persistLocal(); expanded.clear(); renderAll();
+    if (window.FB && FB.ready) { try { setStorageStatus("warn", "Resetting…"); await FB.resetAll(resetId); savedLabel(); } catch (err) { console.warn(err); setStorageStatus("err", "Firebase reset failed"); return; } }
+    showToast("All 30 days reset.", "info");
+  }
 
-  // ---------- public hooks for Firebase module ----------
+  // ---------- hooks for the Firebase module ----------
   window.TRACKER = {
     posts: Object.keys(DB.posts),
-    getState: ()=>STATE,
-    applyRemote(id, data){
+    getState: () => STATE,
+    applyRemote(id, data) {
       const local = STATE[id];
-      if (local && local._dirty) return false;            // our own pending write will land shortly
-      const next = Object.assign(blank(), data);
-      if (!Array.isArray(next.leads)) next.leads = Object.values(next.leads || {});
-      STATE[id] = next; return true;
+      if (local && local._dirty) return false;     // this device has an unsaved change in flight
+      STATE[id] = normalize(data); return true;
     },
-    clearDirty(ids){ ids.forEach(id=>{ if (STATE[id]) delete STATE[id]._dirty; }); persistLocal(); },
-    rerender: safeRerender,
-    persist: persistLocal,
-    savedLabel, setSave
+    removeLocal(id) { if (STATE[id] && !STATE[id]._dirty) { delete STATE[id]; return true; } return false; },
+    // A Reset happened on another device: drop everything here (including unsynced edits made before that reset)
+    adoptReset(remoteId) { if (remoteId && remoteId !== getResetId()) { setResetId(remoteId); STATE = {}; persistLocal(); return true; } return false; },
+    clearDirty(ids) { ids.forEach(id => { if (STATE[id]) delete STATE[id]._dirty; }); persistLocal(); },
+    isFirstSync() { try { return !localStorage.getItem(LS_KEY + "-synced"); } catch (e) { return false; } },
+    markSynced() { try { localStorage.setItem(LS_KEY + "-synced", "1"); } catch (e) {} },
+    rerender: safeRerender, persist: persistLocal, savedLabel, setStorageStatus
   };
 
-  $('footDisc').textContent = DB.meta.info.disclosures.realEstate + "  ·  " + DB.meta.info.disclosures.mortgage;
-  load(); buildFilters(); renderAll(); savedLabel();
+  // ---------- init ----------
+  $('before-posting').innerHTML = BEFORE_POSTING.map((b, i) => `<div class="rounded-lg p-3.5 border border-agency-line bg-agency-paper/60"><span class="eyebrow text-agency-goldink">${i + 1}. ${esc(b.t)}</span><p class="text-xs text-slate-600 mt-1.5 leading-relaxed">${esc(b.d)}</p></div>`).join("");
+  $('footer-disc').textContent = D.realEstate + "  ·  " + D.mortgage;
+  load(); buildFilters(); syncFilterControls(); renderAll(); savedLabel();
 })();
 </script>
 
@@ -1181,79 +1966,70 @@ const HARDCODED_DB = {
      Only edit the URL line. The checks below never need changing.
      ===================================================================== -->
 <script>
-(function(){
+(function () {
     // =========================================================================
     // 👇 HARDCODE YOUR FIREBASE REALTIME DATABASE URL BETWEEN THE QUOTES 👇
     // Example: const FIREBASE_DB_URL = "https://vallee-content-sync-default-rtdb.firebaseio.com";
     // =========================================================================
     const FIREBASE_DB_URL = "https://day-plan-e6d53-default-rtdb.firebaseio.com/";
 
-    const NODE = "trackerProgress";   // progress lives under /trackerProgress/{day01…day30}
+    const NODE = "trackerProgress";   // /trackerProgress/{day01…day30} + /trackerProgress/_reset
     const base = FIREBASE_DB_URL.trim().replace(/\/+$/, "");
     const looksValid = /^https:\/\/[a-z0-9-]+(\.[a-z0-9-]+)*\.(firebaseio\.com|firebasedatabase\.app)$/i.test(base);
-    const isPlaceholder = /YOUR[-_]/i.test(base);
-    if (!base || isPlaceholder || !looksValid) {
-        console.info("[sync] Firebase URL not set or invalid — running local-only:", base);
-        return;
-    }
-    const url = (path = "") => `${base}/${NODE}${path}.json`;
-    const clean = d => { const o = JSON.parse(JSON.stringify(d)); delete o._dirty; o.updatedAt = { ".sv": "timestamp" }; return o; };   // server clock, not device clock
+    if (!base || /YOUR[-_]/i.test(base) || !looksValid) { console.info("[sync] Firebase URL not set or invalid — running local-only:", base); return; }
 
-    async function req(method, path, body){
+    const url = (path = "") => `${base}/${NODE}${path}.json`;
+    const clean = d => { const o = JSON.parse(JSON.stringify(d)); delete o._dirty; o.updatedAt = { ".sv": "timestamp" }; return o; };
+    async function req(method, path, body) {
         const r = await fetch(url(path), { method, headers: { "Content-Type": "application/json" }, body: body === undefined ? undefined : JSON.stringify(body) });
-        if (!r.ok) {
-            const txt = await r.text();
-            window.FB.lastError = r.status === 401 || /permission/i.test(txt) ? "Firebase: permission denied · check DB rules" : `Firebase error ${r.status}`;
-            throw new Error(`[sync] ${method} ${r.status}: ${txt}`);
-        }
+        if (!r.ok) { const txt = await r.text(); window.FB.lastError = (r.status === 401 || /permission/i.test(txt)) ? "Permission denied · check DB rules" : `Firebase error ${r.status}`; throw new Error(`[sync] ${method} ${r.status}: ${txt}`); }
         return r.json();
     }
-
     window.FB = {
         ready: true, lastError: "",
-        save:     (id, data) => req("PUT",   `/${id}`, clean(data)),
-        bulk:     (state)    => req("PATCH", "", Object.fromEntries(Object.entries(state).map(([k, v]) => [k, clean(v)]))),
-        resetAll: ()         => req("DELETE", "")
+        save: (id, data) => req("PUT", `/${id}`, clean(data)),
+        bulk: state => req("PATCH", "", Object.fromEntries(Object.entries(state).map(([k, v]) => [k, clean(v)]))),
+        // Restore replaces every post node (posts missing from the backup are removed) but keeps the reset marker
+        restore: state => req("PATCH", "", Object.fromEntries(TRACKER.posts.map(k => [k, state[k] ? clean(state[k]) : null]))),
+        // Reset writes ONLY a new reset marker, so other devices know to wipe and never re-upload old data
+        resetAll: resetId => req("PUT", "", { _reset: { id: resetId, at: { ".sv": "timestamp" } } })
     };
 
-    // ---- live stream (Server-Sent Events) ----
     let mirror = {}, initial = true;
     const setAt = (obj, parts, val) => {
         if (!parts.length) return val;
-        const [k, ...rest] = parts;
-        const o = (obj && typeof obj === "object") ? obj : {};
-        const v = setAt(o[k], rest, val);
-        if (v === null || v === undefined) delete o[k]; else o[k] = v;
-        return o;
+        const [k, ...rest] = parts; const o = (obj && typeof obj === "object") ? obj : {};
+        const v = setAt(o[k], rest, val); if (v === null || v === undefined) delete o[k]; else o[k] = v; return o;
     };
-    function applyTouched(ids){
-        const S = TRACKER.getState(); let changed = false;
+    function applyTouched(ids) {
+        let changed = false;
+        if (mirror._reset && TRACKER.adoptReset(mirror._reset.id)) changed = true;
         ids.forEach(id => {
             if (!TRACKER.posts.includes(id)) return;
             const remote = mirror[id];
-            if (remote == null) { if (S[id] && !S[id]._dirty) { delete S[id]; changed = true; } }
+            if (remote == null) { if (TRACKER.removeLocal(id)) changed = true; }
             else if (TRACKER.applyRemote(id, remote)) changed = true;
         });
         if (changed) { TRACKER.persist(); TRACKER.rerender(); }
         TRACKER.savedLabel();
     }
-    function onEvent(kind, msg){
-        let payload; try { payload = JSON.parse(msg.data); } catch(e){ return; }
+    function onEvent(kind, msg) {
+        let payload; try { payload = JSON.parse(msg.data); } catch (e) { return; }
         if (!payload) return;
         const parts = payload.path.split("/").filter(Boolean);
-
         if (kind === "put" && !parts.length && initial) {
-            // First snapshot: take Firebase's data, then upload anything this browser
-            // changed while offline (or that Firebase doesn't have yet).
             initial = false;
             mirror = payload.data || {};
-            const S = TRACKER.getState(), push = {};
-            Object.entries(S).forEach(([id, d]) => { if (d._dirty || (!mirror[id] && d.updatedAt > 0)) push[id] = d; });
-            applyTouched(Object.keys(mirror));
-            if (Object.keys(push).length) {
-                window.FB.bulk(push).then(() => { TRACKER.clearDirty(Object.keys(push)); TRACKER.savedLabel(); })
-                    .catch(e => { console.warn(e); TRACKER.setSave("err", window.FB.lastError || "Firebase write error · saved locally"); });
-            }
+            // Wipe local data if another device reset the tracker since this browser last synced
+            const wiped = mirror._reset ? TRACKER.adoptReset(mirror._reset.id) : false;
+            // Upload ONLY edits this browser made that never reached Firebase (no resurrecting old/removed data)
+            const S = TRACKER.getState(), push = {}, first = TRACKER.isFirstSync();
+            Object.entries(S).forEach(([id, d]) => { if (d._dirty || (first && !mirror[id] && d.updatedAt > 0)) { d._dirty = true; push[id] = d; } });
+            TRACKER.markSynced();
+            applyTouched(Object.keys(mirror).concat(TRACKER.posts));
+            if (wiped) { TRACKER.persist(); TRACKER.rerender(); }
+            if (Object.keys(push).length) window.FB.bulk(push).then(() => { TRACKER.clearDirty(Object.keys(push)); TRACKER.savedLabel(); })
+                .catch(e => { console.warn(e); TRACKER.setStorageStatus("err", window.FB.lastError || "Sync error · Saved Locally"); });
             return;
         }
         if (kind === "put") {
@@ -1261,33 +2037,24 @@ const HARDCODED_DB = {
             else { mirror = setAt(mirror, parts, payload.data) || {}; applyTouched([parts[0]]); }
         } else if (kind === "patch") {
             const touched = new Set();
-            Object.entries(payload.data || {}).forEach(([k, v]) => {
-                const full = [...parts, ...k.split("/").filter(Boolean)];
-                mirror = setAt(mirror, full, v) || {}; touched.add(full[0]);
-            });
+            Object.entries(payload.data || {}).forEach(([k, v]) => { const full = [...parts, ...k.split("/").filter(Boolean)]; mirror = setAt(mirror, full, v) || {}; touched.add(full[0]); });
             applyTouched([...touched]);
         }
     }
 
-    // ---- connect: test access first so problems show up clearly in the badge ----
-    TRACKER.setSave("saving", "Connecting to Firebase…");
+    TRACKER.setStorageStatus("warn", "Connecting to Firebase…");
     fetch(url() + "?shallow=true").then(async r => {
-        if (r.status === 401 || r.status === 403) { TRACKER.setSave("err", "Firebase: permission denied · check DB rules"); console.warn("[sync] Permission denied. Set the Realtime Database rules shown in the comment above this script."); return; }
-        if (r.status === 404) { TRACKER.setSave("err", "Firebase: database URL not found"); console.warn("[sync] 404 — check FIREBASE_DB_URL:", base); return; }
-        if (!r.ok) { TRACKER.setSave("err", `Firebase error ${r.status}`); console.warn("[sync]", await r.text()); return; }
-        console.info("[sync] Connected to", base);
+        if (r.status === 401 || r.status === 403) { TRACKER.setStorageStatus("err", "Permission denied · check DB rules"); return; }
+        if (r.status === 404) { TRACKER.setStorageStatus("err", "Database URL not found"); return; }
+        if (!r.ok) { TRACKER.setStorageStatus("err", `Firebase error ${r.status}`); console.warn("[sync]", await r.text()); return; }
         const es = new EventSource(url());
-        es.addEventListener("put",   m => onEvent("put", m));
+        es.addEventListener("put", m => onEvent("put", m));
         es.addEventListener("patch", m => onEvent("patch", m));
         es.addEventListener("keep-alive", () => {});
-        es.addEventListener("cancel", () => TRACKER.setSave("err", "Firebase: permission denied · check DB rules"));
-        es.addEventListener("auth_revoked", () => TRACKER.setSave("err", "Firebase auth revoked"));
-        es.onerror = () => TRACKER.setSave(es.readyState === EventSource.CLOSED ? "err" : "saving", es.readyState === EventSource.CLOSED ? "Firebase offline · Saved Locally" : "Reconnecting to Firebase…");
-        es.onopen  = () => TRACKER.savedLabel();
-    }).catch(err => {
-        console.warn("[sync] Could not reach Firebase:", err);
-        TRACKER.setSave("err", "Firebase unreachable · Saved Locally");
-    });
+        es.addEventListener("cancel", () => TRACKER.setStorageStatus("err", "Permission denied · check DB rules"));
+        es.onerror = () => TRACKER.setStorageStatus(es.readyState === EventSource.CLOSED ? "err" : "warn", es.readyState === EventSource.CLOSED ? "Offline · Saved Locally" : "Reconnecting…");
+        es.onopen = () => TRACKER.savedLabel();
+    }).catch(err => { console.warn("[sync] Could not reach Firebase:", err); TRACKER.setStorageStatus("err", "Firebase unreachable · Saved Locally"); });
 })();
 </script>
 </body>
