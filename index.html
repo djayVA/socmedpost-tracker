@@ -852,18 +852,34 @@ const HARDCODED_DB = {
   function setSave(kind, text){ const el=$('saveState'); el.className="save "+(kind||""); el.textContent=text; }
   function savedLabel(){ setSave(window.FB && FB.ready ? "cloud" : "", window.FB && FB.ready ? "Synced to Firebase ✓" : "Saved Locally ✓"); }
 
-  const timers = {};
+  const timers = {}, EDITS = {};
   function commit(id, {debounce=false, rerender=true}={}){
     STATE[id].updatedAt = Date.now();
+    STATE[id]._dirty = true;                 // not yet confirmed by Firebase
     persistLocal();
     if (rerender) { renderStats(); renderList(); }
     if (window.FB && FB.ready){
       setSave("saving","Saving…");
       clearTimeout(timers[id]);
       timers[id] = setTimeout(()=>{
-        FB.save(id, STATE[id]).then(savedLabel).catch(e=>{ console.warn(e); setSave("err","Firebase error · saved locally"); });
+        const ver = EDITS[id] = (EDITS[id]||0) + 1;
+        FB.save(id, STATE[id]).then(()=>{
+          if (EDITS[id]===ver && STATE[id]) { delete STATE[id]._dirty; persistLocal(); }
+          savedLabel();
+        }).catch(e=>{ console.warn(e); setSave("err", FB.lastError || "Firebase error · saved locally"); });
       }, debounce ? 700 : 0);
     } else savedLabel();
+  }
+  // Re-render after a remote change without wiping a field someone is typing in
+  let renderPending = false;
+  function safeRerender(){
+    renderStats();
+    const a = document.activeElement;
+    if (a && $('list').contains(a) && a.matches('textarea, input[type=text], input[type=date], select')){
+      if (!renderPending){ renderPending = true; a.addEventListener('blur', ()=>{ renderPending=false; setTimeout(renderList,0); }, {once:true}); }
+      return;
+    }
+    renderList();
   }
 
   function statusKey(p){ const s=st(p.id); return s.posted?"posted":s.scheduled?"scheduled":s.pending?"pending":"none"; }
@@ -1102,7 +1118,7 @@ const HARDCODED_DB = {
     const rows = POSTS.map(p=>{ const S=st(p.id); return [p.day,p.date,p.weekday,p.time,p.format,p.platforms,p.hook,p.cta,p.compliance.level,S.pending?"Yes":"No",S.scheduled?"Yes":"No",S.posted?"Yes":"No",S.compliance?"Yes":"No",S.approvedBy,S.approvedOn,S.notes,S.leads.length,S.leads.map(l=>[l.name,l.contact,l.source,l.interest,l.note,l.date].filter(Boolean).join(" | ")).join(" ;; ")].map(q).join(","); });
     download(`mv-content-tracker-${stamp()}.csv`, "﻿"+cols.map(q).join(",")+"\n"+rows.join("\n"), "text/csv");
   };
-  $('btnJson').onclick = ()=> download(`mv-content-tracker-backup-${stamp()}.json`, JSON.stringify({app:"mv-content-tracker", version:1, exportedAt:new Date().toISOString(), progress:STATE},null,2), "application/json");
+  $('btnJson').onclick = ()=> download(`mv-content-tracker-backup-${stamp()}.json`, JSON.stringify({app:"mv-content-tracker", version:1, exportedAt:new Date().toISOString(), progress:JSON.parse(JSON.stringify(STATE,(k,v)=>k==="_dirty"?undefined:v))},null,2), "application/json");
   $('btnRestore').onclick = ()=> $('fileRestore').click();
   $('fileRestore').onchange = async e=>{
     const file = e.target.files[0]; if(!file) return;
@@ -1113,7 +1129,7 @@ const HARDCODED_DB = {
       if (!confirm("Restore this backup? It replaces the current progress.")) return;
       STATE = {}; Object.keys(DB.posts).forEach(k=>{ if(prog[k]) STATE[k]=Object.assign(blank(),prog[k]); });
       persistLocal(); renderAll();
-      if (window.FB && FB.ready){ setSave("saving","Saving…"); await FB.bulk(STATE); }
+      if (window.FB && FB.ready){ setSave("saving","Saving…"); Object.values(STATE).forEach(s=>s._dirty=true); await FB.bulk(STATE); Object.values(STATE).forEach(s=>delete s._dirty); persistLocal(); }
       savedLabel(); toast("Backup restored ✓");
     } catch(err){ alert("Restore failed: "+err.message); }
     e.target.value="";
@@ -1133,11 +1149,13 @@ const HARDCODED_DB = {
     getState: ()=>STATE,
     applyRemote(id, data){
       const local = STATE[id];
-      if (local && local.updatedAt > (data.updatedAt||0)) return false;   // local newer
-      STATE[id] = Object.assign(blank(), data); persistLocal(); return true;
+      if (local && local._dirty) return false;            // our own pending write will land shortly
+      const next = Object.assign(blank(), data);
+      if (!Array.isArray(next.leads)) next.leads = Object.values(next.leads || {});
+      STATE[id] = next; return true;
     },
-    clearRemoteMissing(ids){ /* noop: keep local-only entries; they get pushed on connect */ },
-    rerender: ()=>{ renderStats(); renderList(); },
+    clearDirty(ids){ ids.forEach(id=>{ if (STATE[id]) delete STATE[id]._dirty; }); persistLocal(); },
+    rerender: safeRerender,
     persist: persistLocal,
     savedLabel, setSave
   };
@@ -1148,12 +1166,11 @@ const HARDCODED_DB = {
 </script>
 
 <!-- =====================================================================
-     FIREBASE REALTIME DATABASE SYNC (optional, live team sync, no SDK needed)
+     FIREBASE REALTIME DATABASE SYNC (live team sync, no SDK needed)
      Setup:
-       1) console.firebase.google.com → Add project
-       2) Build → Realtime Database → Create Database
-       3) Copy the database URL (looks like https://your-project-default-rtdb.firebaseio.com/)
-       4) Rules tab → paste:
+       1) console.firebase.google.com → your project → Build → Realtime Database
+       2) Copy the database URL into FIREBASE_DB_URL below
+       3) Rules tab → paste this and click Publish (the default "locked mode" blocks all syncing):
           {
             "rules": {
               "trackerProgress": { ".read": true, ".write": true },
@@ -1161,7 +1178,7 @@ const HARDCODED_DB = {
             }
           }
           (Anyone with the URL can edit progress, so keep the page link within the team.)
-     Leave the URL as the placeholder and the tracker runs local-only (browser storage).
+     Only edit the URL line. The checks below never need changing.
      ===================================================================== -->
 <script>
 (function(){
@@ -1171,29 +1188,36 @@ const HARDCODED_DB = {
     // =========================================================================
     const FIREBASE_DB_URL = "https://day-plan-e6d53-default-rtdb.firebaseio.com/";
 
-    const NODE = "trackerProgress";   // all progress lives under /trackerProgress/{day01…day30}
+    const NODE = "trackerProgress";   // progress lives under /trackerProgress/{day01…day30}
     const base = FIREBASE_DB_URL.trim().replace(/\/+$/, "");
-    if (!base || /day-plan-e6d53/i.test(base) || !/^https:\/\/.+\.(firebaseio\.com|firebasedatabase\.app)$/i.test(base)) {
-        console.info("Firebase URL not set — running local-only.");
+    const looksValid = /^https:\/\/[a-z0-9-]+(\.[a-z0-9-]+)*\.(firebaseio\.com|firebasedatabase\.app)$/i.test(base);
+    const isPlaceholder = /YOUR[-_]/i.test(base);
+    if (!base || isPlaceholder || !looksValid) {
+        console.info("[sync] Firebase URL not set or invalid — running local-only:", base);
         return;
     }
     const url = (path = "") => `${base}/${NODE}${path}.json`;
-    const req = async (method, path, body) => {
+    const clean = d => { const o = JSON.parse(JSON.stringify(d)); delete o._dirty; o.updatedAt = { ".sv": "timestamp" }; return o; };   // server clock, not device clock
+
+    async function req(method, path, body){
         const r = await fetch(url(path), { method, headers: { "Content-Type": "application/json" }, body: body === undefined ? undefined : JSON.stringify(body) });
-        if (!r.ok) throw new Error(`Firebase ${method} ${r.status}: ${await r.text()}`);
+        if (!r.ok) {
+            const txt = await r.text();
+            window.FB.lastError = r.status === 401 || /permission/i.test(txt) ? "Firebase: permission denied · check DB rules" : `Firebase error ${r.status}`;
+            throw new Error(`[sync] ${method} ${r.status}: ${txt}`);
+        }
         return r.json();
-    };
+    }
 
     window.FB = {
-        ready: true,
-        save:     (id, data) => req("PUT",   `/${id}`, data),
-        bulk:     (state)    => req("PATCH", "",       state),
+        ready: true, lastError: "",
+        save:     (id, data) => req("PUT",   `/${id}`, clean(data)),
+        bulk:     (state)    => req("PATCH", "", Object.fromEntries(Object.entries(state).map(([k, v]) => [k, clean(v)]))),
         resetAll: ()         => req("DELETE", "")
     };
 
     // ---- live stream (Server-Sent Events) ----
-    let mirror = {};          // last known remote tree
-    let initial = true;
+    let mirror = {}, initial = true;
     const setAt = (obj, parts, val) => {
         if (!parts.length) return val;
         const [k, ...rest] = parts;
@@ -1207,13 +1231,10 @@ const HARDCODED_DB = {
         ids.forEach(id => {
             if (!TRACKER.posts.includes(id)) return;
             const remote = mirror[id];
-            if (remote == null) { if (S[id]) { delete S[id]; changed = true; } }
+            if (remote == null) { if (S[id] && !S[id]._dirty) { delete S[id]; changed = true; } }
             else if (TRACKER.applyRemote(id, remote)) changed = true;
         });
-        if (changed) {
-            TRACKER.persist();
-            if (!document.activeElement?.matches?.('textarea,input[type=text]')) TRACKER.rerender();
-        }
+        if (changed) { TRACKER.persist(); TRACKER.rerender(); }
         TRACKER.savedLabel();
     }
     function onEvent(kind, msg){
@@ -1222,14 +1243,17 @@ const HARDCODED_DB = {
         const parts = payload.path.split("/").filter(Boolean);
 
         if (kind === "put" && !parts.length && initial) {
-            // first snapshot: merge, then push anything newer/only-local up to Firebase
+            // First snapshot: take Firebase's data, then upload anything this browser
+            // changed while offline (or that Firebase doesn't have yet).
             initial = false;
             mirror = payload.data || {};
+            const S = TRACKER.getState(), push = {};
+            Object.entries(S).forEach(([id, d]) => { if (d._dirty || (!mirror[id] && d.updatedAt > 0)) push[id] = d; });
             applyTouched(Object.keys(mirror));
-            const S = TRACKER.getState();
-            const push = {};
-            Object.entries(S).forEach(([id, d]) => { if (!(d.updatedAt > 0)) return; if (!mirror[id] || (d.updatedAt||0) > (mirror[id].updatedAt||0)) push[id] = d; });
-            if (Object.keys(push).length) window.FB.bulk(push).catch(e => { console.warn(e); TRACKER.setSave("err","Firebase write error · saved locally"); });
+            if (Object.keys(push).length) {
+                window.FB.bulk(push).then(() => { TRACKER.clearDirty(Object.keys(push)); TRACKER.savedLabel(); })
+                    .catch(e => { console.warn(e); TRACKER.setSave("err", window.FB.lastError || "Firebase write error · saved locally"); });
+            }
             return;
         }
         if (kind === "put") {
@@ -1245,14 +1269,25 @@ const HARDCODED_DB = {
         }
     }
 
+    // ---- connect: test access first so problems show up clearly in the badge ----
     TRACKER.setSave("saving", "Connecting to Firebase…");
-    const es = new EventSource(url());
-    es.addEventListener("put",   m => onEvent("put", m));
-    es.addEventListener("patch", m => onEvent("patch", m));
-    es.addEventListener("cancel", () => TRACKER.setSave("err", "Firebase denied access · check rules"));
-    es.addEventListener("auth_revoked", () => TRACKER.setSave("err", "Firebase auth revoked"));
-    es.onerror = () => { if (es.readyState === EventSource.CLOSED) TRACKER.setSave("err", "Firebase offline · Saved Locally"); else TRACKER.setSave("saving", "Reconnecting to Firebase…"); };
-    es.onopen  = () => TRACKER.savedLabel();
+    fetch(url() + "?shallow=true").then(async r => {
+        if (r.status === 401 || r.status === 403) { TRACKER.setSave("err", "Firebase: permission denied · check DB rules"); console.warn("[sync] Permission denied. Set the Realtime Database rules shown in the comment above this script."); return; }
+        if (r.status === 404) { TRACKER.setSave("err", "Firebase: database URL not found"); console.warn("[sync] 404 — check FIREBASE_DB_URL:", base); return; }
+        if (!r.ok) { TRACKER.setSave("err", `Firebase error ${r.status}`); console.warn("[sync]", await r.text()); return; }
+        console.info("[sync] Connected to", base);
+        const es = new EventSource(url());
+        es.addEventListener("put",   m => onEvent("put", m));
+        es.addEventListener("patch", m => onEvent("patch", m));
+        es.addEventListener("keep-alive", () => {});
+        es.addEventListener("cancel", () => TRACKER.setSave("err", "Firebase: permission denied · check DB rules"));
+        es.addEventListener("auth_revoked", () => TRACKER.setSave("err", "Firebase auth revoked"));
+        es.onerror = () => TRACKER.setSave(es.readyState === EventSource.CLOSED ? "err" : "saving", es.readyState === EventSource.CLOSED ? "Firebase offline · Saved Locally" : "Reconnecting to Firebase…");
+        es.onopen  = () => TRACKER.savedLabel();
+    }).catch(err => {
+        console.warn("[sync] Could not reach Firebase:", err);
+        TRACKER.setSave("err", "Firebase unreachable · Saved Locally");
+    });
 })();
 </script>
 </body>
