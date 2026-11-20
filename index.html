@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Michael Vallee — 30-Day Content & Production Tracker</title>
+<meta name="description" content="30-day Facebook + Instagram content and production tracker for Michael Vallee — Flagstaff, Munds Park, Scottsdale & Phoenix.">
+<style>
+  :root{
+    --bg:#f5f2ec; --paper:#fff; --ink:#1d2824; --muted:#5f6b66; --line:#e3ddd2;
+    --pine:#24473b; --pine-2:#346453; --clay:#c1653a; --clay-soft:#f7e7dd; --sand:#efe7da;
+    --red:#b3261e; --red-soft:#fbe4e2; --amber:#9a6400; --amber-soft:#fdf0d5;
+    --green:#2e6b3f; --green-soft:#e1f0e4; --blue:#1d5a80; --blue-soft:#dcecf6; --violet:#4b2f8a; --violet-soft:#ebe4f8;
+    --r:14px; --shadow:0 1px 2px rgba(29,40,36,.06),0 6px 18px rgba(29,40,36,.06);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  button,input,select,textarea{font:inherit}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 18px}
+  /* header */
+  header.top{background:linear-gradient(135deg,#1b352c 0%,var(--pine) 55%,#4a3326 100%);color:#fff;padding:26px 0 22px}
+  .brand{display:flex;align-items:center;gap:14px}
+  .brand svg{flex:none}
+  .brand .org{font-size:13px;letter-spacing:.12em;text-transform:uppercase;opacity:.8;font-weight:600}
+  .brand h1{margin:2px 0 0;font:700 clamp(24px,3.4vw,34px)/1.1 Georgia,"Times New Roman",serif}
+  .tagline{font-style:italic;opacity:.9;margin-top:4px}
+  .sub{font-size:13px;opacity:.8;margin-top:10px}
+  .toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+  .tb{border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.1);color:#fff;border-radius:10px;padding:8px 12px;font-weight:600;font-size:13px;cursor:pointer}
+  .tb:hover{background:rgba(255,255,255,.2)}
+  .tb.danger{border-color:#f0a59f;color:#ffd9d5}
+  /* progress */
+  .progress-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:18px 20px;margin-top:-14px;position:relative}
+  .prog-top{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px}
+  .prog-top h2{margin:0;font:700 22px/1.2 Georgia,serif}
+  .prog-top .muted{color:var(--muted);font-size:13px}
+  .save{font-size:12.5px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--green-soft);color:var(--green)}
+  .save.saving{background:var(--amber-soft);color:var(--amber)} .save.cloud{background:var(--blue-soft);color:var(--blue)} .save.err{background:var(--red-soft);color:var(--red)}
+  .bar{height:12px;border-radius:999px;background:#ece6db;overflow:hidden;margin:12px 0 4px}
+  .bar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--pine-2),var(--clay));transition:width .4s}
+  /* stage cards */
+  .stages{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}
+  .stage{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;cursor:pointer;text-align:left;box-shadow:var(--shadow);transition:transform .08s,border-color .15s}
+  .stage:hover{transform:translateY(-1px)}
+  .stage.active{border-color:var(--clay);box-shadow:0 0 0 2px var(--clay-soft),var(--shadow)}
+  .stage .lbl{font-weight:700;font-size:14px}
+  .stage .num{font:700 26px/1.1 Georgia,serif;margin-top:6px}
+  .stage .num small{font:600 14px/1 inherit;color:var(--muted)}
+  .stage .desc{font-size:12.5px;color:var(--muted)}
+  .stage .mini{height:6px;border-radius:999px;background:#ece6db;margin-top:10px;overflow:hidden}
+  .stage .mini i{display:block;height:100%;background:var(--pine-2);width:0;transition:width .4s}
+  .stage .pct{font-size:12px;font-weight:700;color:var(--pine-2);margin-top:4px}
+  .formats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:12px}
+  .fmt{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:13px}
+  .fmt b{display:block;font:700 18px/1.2 Georgia,serif;margin-top:2px}
+  .section-title{font:700 13px/1 inherit;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:22px 0 8px}
+  /* controls */
+  .controls{position:sticky;top:0;z-index:15;background:rgba(245,242,236,.95);backdrop-filter:blur(6px);padding:12px 0;border-bottom:1px solid var(--line);margin-top:18px}
+  .controls .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .controls input[type=search]{flex:1;min-width:200px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:#fff}
+  .controls select{padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:#fff}
+  .btn{border:1px solid var(--pine);background:var(--pine);color:#fff;border-radius:9px;padding:8px 12px;font-weight:600;font-size:13px;cursor:pointer}
+  .btn.ghost{background:transparent;color:var(--pine)}
+  .btn.sm{padding:6px 10px;font-size:12.5px}
+  .btn.danger{border-color:var(--red);background:var(--red)}
+  .btn:hover{filter:brightness(1.07)}
+  .showing{font-size:13px;color:var(--muted);margin-top:8px}
+  /* week groups + posts */
+  .week{margin-top:22px}
+  .week h3{font:700 18px/1.2 Georgia,serif;margin:0 0 10px;display:flex;align-items:center;gap:10px}
+  .week h3 .wk-meta{font:600 12.5px/1 inherit;color:var(--muted)}
+  .post{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);margin-bottom:10px;overflow:hidden;scroll-margin-top:90px}
+  .post.posted{border-left:5px solid var(--green)} .post.scheduled{border-left:5px solid var(--blue)} .post.pending{border-left:5px solid var(--amber)}
+  .phead{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:12px 16px;cursor:pointer;user-select:none}
+  .phead .dnum{width:46px;height:46px;border-radius:12px;background:var(--sand);display:grid;place-items:center;text-align:center;line-height:1}
+  .phead .dnum b{font:700 18px/1 Georgia,serif;display:block} .phead .dnum span{font-size:10px;color:var(--muted);font-weight:700}
+  .phead .t{min-width:0}
+  .phead .hook{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .phead .when{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .pills{display:flex;flex-wrap:wrap;gap:5px;justify-content:flex-end}
+  .pill{font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;white-space:nowrap}
+  .p-reel{background:var(--violet-soft);color:var(--violet)} .p-carousel{background:var(--blue-soft);color:var(--blue)} .p-text{background:var(--sand);color:#6b4b20} .p-story{background:var(--clay-soft);color:#9a431c}
+  .p-req{background:var(--red-soft);color:var(--red)} .p-rec{background:var(--amber-soft);color:var(--amber)} .p-ok{background:var(--green-soft);color:var(--green)}
+  .p-st-posted{background:var(--green);color:#fff} .p-st-scheduled{background:var(--blue);color:#fff} .p-st-pending{background:var(--amber);color:#fff} .p-st-none{background:#e9e4da;color:var(--muted)}
+  .chev{transition:transform .2s;color:var(--muted)} .post.open .chev{transform:rotate(90deg)}
+  .pbody{display:none;border-top:1px solid var(--line)}
+  .post.open .pbody{display:grid;grid-template-columns:1.3fr 1fr}
+  .pbody > div{padding:16px}
+  .pbody > div + div{border-left:1px solid var(--line);background:#fcfaf7}
+  .lbl2{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:12px 0 4px}
+  .lbl2:first-child{margin-top:0}
+  .bighook{font:700 18px/1.3 Georgia,serif;margin:0}
+  .caption{white-space:pre-wrap;background:#fbf9f5;border:1px solid var(--line);border-radius:10px;padding:10px 12px;max-height:300px;overflow:auto;font-size:14.5px}
+  .tags{color:var(--pine-2);font-weight:600;font-size:14px}
+  .flag{border-radius:10px;padding:9px 11px;font-size:13px;margin-top:10px}
+  .flag.required{background:var(--red-soft)} .flag.recommended{background:var(--amber-soft)} .flag.none{background:var(--green-soft)}
+  .checks{display:grid;gap:8px}
+  .check{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 11px;cursor:pointer}
+  .check input{width:18px;height:18px;margin-top:1px;accent-color:var(--pine)}
+  .check small{display:block;color:var(--muted);font-size:12px}
+  .check.done{background:var(--green-soft);border-color:#c5e2cb}
+  .check.comp{border-style:dashed}
+  .approver{display:flex;gap:6px;margin-top:6px}
+  .approver input{flex:1;padding:6px 8px;border:1px solid var(--line);border-radius:8px;font-size:13px;min-width:0}
+  textarea.notes{width:100%;min-height:70px;padding:9px 10px;border:1px solid var(--line);border-radius:10px;resize:vertical;background:#fff}
+  .leadform{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .leadform input,.leadform select{padding:7px 9px;border:1px solid var(--line);border-radius:8px;font-size:13px;min-width:0;background:#fff}
+  .leadform .full{grid-column:1/-1}
+  .leads{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:6px}
+  .leads li{background:#fff;border:1px solid var(--line);border-radius:9px;padding:7px 9px;font-size:13px;display:flex;justify-content:space-between;gap:8px}
+  .leads li .x{border:0;background:none;color:var(--red);cursor:pointer;font-weight:700}
+  .btnrow{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .empty{background:var(--paper);border:1px dashed var(--line);border-radius:var(--r);padding:30px;text-align:center;color:var(--muted);margin-top:18px}
+  /* modal */
+  .modal{position:fixed;inset:0;background:rgba(20,28,25,.55);display:none;align-items:center;justify-content:center;z-index:60;padding:18px}
+  .modal.show{display:flex}
+  .modal .box{background:#fff;border-radius:16px;max-width:460px;width:100%;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+  .modal h3{margin:0 0 8px;font:700 20px/1.2 Georgia,serif}
+  .modal p{color:var(--muted);margin:0 0 16px}
+  .modal .acts{display:flex;justify-content:flex-end;gap:8px}
+  .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;transition:.25s;pointer-events:none;z-index:70}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  footer{margin-top:40px;background:#1b352c;color:#d8e6df;padding:22px 0;font-size:13px}
+  footer b{color:#fff}
+  footer .disc{opacity:.75;font-size:12px;margin-top:8px}
+  @media (max-width:860px){
+    .stages{grid-template-columns:repeat(2,1fr)} .formats{grid-template-columns:repeat(2,1fr)}
+    .post.open .pbody{grid-template-columns:1fr} .pbody > div + div{border-left:0;border-top:1px solid var(--line)}
+    .phead{grid-template-columns:auto 1fr} .pills{grid-column:1/-1;justify-content:flex-start}
+    .chev{display:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <svg width="54" height="54" viewBox="0 0 54 54" aria-label="Michael Vallee logo mark" role="img">
+        <rect width="54" height="54" rx="14" fill="#fff" fill-opacity=".12" stroke="#fff" stroke-opacity=".35"/>
+        <path d="M10 40 L20 22 L26 31 L32 18 L44 40 Z" fill="#c1653a"/>
+        <path d="M32 18 L36 25 L33 24 L30 27 Z" fill="#fff" fill-opacity=".85"/>
+        <path d="M14 40 L18 33 L22 40 Z" fill="#7fb59c"/>
+        <text x="27" y="49" text-anchor="middle" font-family="Georgia,serif" font-size="8" font-weight="700" fill="#fff">MV</text>
+      </svg>
+      <div>
+        <div class="org">Michael Vallee · Munds Park, Arizona</div>
+        <h1>30-Day Content Tracker</h1>
+        <div class="tagline">Answers first. Then the keys.</div>
+      </div>
+    </div>
+    <div class="sub">Nov 23 – Dec 22, 2026 · Facebook + Instagram · Flagstaff · Munds Park · Scottsdale · Phoenix · Office: 480-848-5780 · Book: TimeWithMichael.com</div>
+    <div class="toolbar">
+      <button class="tb" id="btnCsv">⬇ Export CSV Backup</button>
+      <button class="tb" id="btnJson">⬇ Export JSON Backup</button>
+      <button class="tb" id="btnRestore">⬆ Restore JSON</button>
+      <input type="file" id="fileRestore" accept="application/json,.json" hidden>
+      <button class="tb danger" id="btnReset">↺ Reset</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="progress-card">
+    <div class="prog-top">
+      <div>
+        <h2 id="progHead">0 of 30 Posts Posted Live</h2>
+        <div class="muted">Overall Campaign Execution · 30 Days · <span id="leadTotal">0 leads logged</span></div>
+      </div>
+      <div><span class="save" id="saveState">Saved Locally</span> <b id="progPct" style="margin-left:6px">0%</b></div>
+    </div>
+    <div class="bar"><i id="progBar"></i></div>
+  </div>
+
+  <div class="stages" id="stages"></div>
+
+  <div class="section-title">Format breakdown · Posted Live</div>
+  <div class="formats" id="formats"></div>
+
+  <div class="controls">
+    <div class="row">
+      <input type="search" id="q" placeholder="Search hooks, captions, keywords, notes, leads…" aria-label="Search posts">
+      <select id="fWeek" aria-label="Week"></select>
+      <select id="fFormat" aria-label="Format"></select>
+      <select id="fStatus" aria-label="Workflow status"></select>
+      <button class="btn ghost sm" id="btnResetFilters">Reset Filters</button>
+      <button class="btn ghost sm" id="btnExpand">Expand All</button>
+      <button class="btn ghost sm" id="btnCollapse">Collapse All</button>
+    </div>
+    <div class="showing" id="showing"></div>
+  </div>
+
+  <div id="list"></div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <b>Michael Vallee</b> · Answers first. Then the keys.<br>
+    Munds Park, AZ · Office: 480-848-5780 · Michael@ValleeRealty.com · TimeWithMichael.com · ValleeRealty.com
+    <div class="disc" id="footDisc"></div>
+  </div>
+</footer>
+
+<div class="modal" id="resetModal" role="dialog" aria-modal="true" aria-labelledby="rmTitle">
+  <div class="box">
+    <h3 id="rmTitle">Reset All Progress?</h3>
+    <p>This clears every checkbox, compliance approval, note and lead log in this browser <strong>and</strong> in the connected Firebase database. It can't be undone, so export a JSON backup first.</p>
+    <div class="acts">
+      <button class="btn ghost" id="rmCancel">Cancel</button>
+      <button class="btn danger" id="rmYes">Yes, Reset Everything</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<!-- =====================================================================
+     HARDCODED CONTENT DB (30 posts, questions, disclosures)
+     ===================================================================== -->
+<script>
+const HARDCODED_DB = {
+  meta: {
+    info: {
+      business: "Michael Vallee — Real Estate (Real Broker, LLC) & Mortgage (One Real Mortgage)",
+      base: "Munds Park, Arizona",
+      markets: ["Flagstaff", "Munds Park", "Scottsdale", "Phoenix"],
+      audience: ["Families", "Young professionals", "Professionals"],
+      platforms: ["Facebook", "Instagram"],
+      timezone: "America/Phoenix (MST, no DST)",
+      bookingUrl: "https://TimeWithMichael.com",
+      website: "https://ValleeRealty.com",
+      phone: "480-848-5780",
+      email: "Michael@ValleeRealty.com",
+      calendarStart: "2026-11-23",
+      calendarEnd: "2026-12-22",
+      disclosures: {
+        mortgage: "Michael Vallee, Loan Officer | NMLS #2665457 | One Real Mortgage Corp. | NMLS #198414 | Equal Housing Opportunity. Terms, availability and eligibility vary by borrower and loan program.",
+        realEstate: "Michael Vallee | Real Broker, LLC | AZ License SA662806000 | Equal Housing Opportunity.",
+        tax: "Educational only. Not tax, legal or financial advice. Consult a CPA or attorney about your situation.",
+        rental: "Rental income is not guaranteed. Check local, county and HOA rules, permits and taxes before buying."
+      },
+      statuses: ["Draft", "Needs review", "Approved", "Scheduled", "Posted"]
+    }
+  },
+
+  questions: {
+    q1:  { n: 1,  q: "Should I buy now or wait for a better time (or better rates)?", why: "The #1 stall. Everyone's waiting for a 'perfect time' that nobody can predict." },
+    q2:  { n: 2,  q: "Can I actually afford a house — and how much?", why: "Young professionals especially don't know how lenders look at income vs. debts." },
+    q3:  { n: 3,  q: "Is my credit good enough to buy?", why: "Fear of judgment keeps people from even asking." },
+    q4:  { n: 4,  q: "How much do I really need saved — is it 20% down?", why: "The 20% myth and surprise closing costs scare off first-time buyers." },
+    q5:  { n: 5,  q: "How do I know I'm not overpaying?", why: "Professionals want to feel smart about the biggest purchase of their lives." },
+    q6:  { n: 6,  q: "Which area fits my life — Flagstaff, Munds Park, Scottsdale or Phoenix?", why: "Relocators and local movers are choosing between very different lifestyles." },
+    q7:  { n: 7,  q: "The inspection found problems — now what?", why: "Mid-deal panic. A trust-building moment for anyone under contract." },
+    q8:  { n: 8,  q: "Should I keep renting or buy?", why: "Renters feel rent going up and wonder if they're 'throwing money away'." },
+    q9:  { n: 9,  q: "How do I stop getting outbid?", why: "Buyers who've lost a home are emotional and highly motivated." },
+    q10: { n: 10, q: "Can my home pay me back (rental income, house hacking, STRs)?", why: "Michael's niche: Northern AZ short-term rentals and multi-units." }
+  },
+
+  posts: {
+    day01: {
+      day: 1, date: "2026-11-23", weekday: "Monday", time: "11:30 AM", platforms: "Instagram + Facebook Reels",
+      format: "Reel", question: "q1", week: 1,
+      hook: "I've bought 50+ houses… and I still can't tell you when the \"perfect time\" to buy is.",
+      caption: [
+        "Neither can anyone else, by the way.",
+        "So instead of guessing, I use a dumb-simple three-question test.",
+        "Question one: Will you stay at least five years?",
+        "Question two: Is the monthly payment comfortable today — not someday, today?",
+        "Question three (the big one): What would another year of rent cost you? Take your rent, multiply by 12, and sit with that number for a second.",
+        "If you said yes, yes, and that rent number made you wince… it might be time to stop waiting and start planning.",
+        "And if not? Totally fine. Waiting can be the smart move too.",
+        "Comment TEST and I'll send you the one-page version so you can run it with your real numbers."
+      ],
+      ctaType: "Comment a keyword", cta: "Comment TEST",
+      hashtags: ["#FlagstaffRealEstate", "#ArizonaHomes", "#FirstTimeHomeBuyer", "#HomeBuyingTips", "#MundsPark"],
+      notes: "On-screen text: STOP WAITING FOR \"THE PERFECT TIME\". Adapted from TikTok Script 1. End card: 📅 Book your free call → Link in bio.",
+      compliance: { level: "recommended", reason: "Mentions monthly payment and buy-timing. Not flagged in the original scripts, but a quick ORM look is cheap insurance. Include the broker name." }
+    },
+    day02: {
+      day: 2, date: "2026-11-24", weekday: "Tuesday", time: "12:00 PM", platforms: "Instagram + Facebook (multi-image)",
+      format: "Carousel", question: "q6", week: 1,
+      hook: "Same state. Four completely different lives.",
+      caption: [
+        "Here's the deal: Flagstaff, Munds Park, Scottsdale and Phoenix are all \"Arizona.\"",
+        "But living in each one is a totally different experience.",
+        "Flagstaff: four real seasons, ponderosa pines, and yes — you will own a snow shovel.",
+        "Munds Park: small and quiet, tucked in the pines just south of Flagstaff off I-17. (I live here, so I'm a little biased.)",
+        "Scottsdale: sunshine, golf, restaurants, and summers that will make you question your life choices.",
+        "Phoenix: big-city jobs, big-city options, and a commute you'll want to test-drive before you sign anything.",
+        "None of these is \"the best.\"",
+        "The best one is the one that fits how you actually live.",
+        "Swipe for the five things I'd check in each area before making an offer.",
+        "Comment TOWN and tell me which one you're leaning toward — I'll send you my honest take."
+      ],
+      ctaType: "Comment a keyword", cta: "Comment TOWN",
+      hashtags: ["#FlagstaffAZ", "#ScottsdaleRealEstate", "#PhoenixRealEstate", "#MundsPark", "#MovingToArizona"],
+      notes: "Slides: 1 Hook · 2 Flagstaff (seasons, elevation, winter driving) · 3 Munds Park (quiet, pines, HOA, drive to Flagstaff) · 4 Scottsdale (heat, HOAs, lifestyle amenities) · 5 Phoenix (commute, size, A/C costs) · 6 'Five things to check anywhere' · 7 CTA.",
+      compliance: { level: "recommended", reason: "Fair Housing: describe places and features only. No 'great for families/retirees/singles' and no safety or school-quality claims. Include the broker name." }
+    },
+    day03: {
+      day: 3, date: "2026-11-25", weekday: "Wednesday", time: "7:30 PM", platforms: "Instagram + Facebook Stories",
+      format: "Story", question: "q8", week: 1,
+      hook: "Quick poll: are you renting right now? 👀",
+      caption: [
+        "Frame 1 — Poll: \"Renting\" / \"I own\".",
+        "Frame 2 — If renting: \"What's the #1 thing stopping you from buying?\" Quiz options: Down payment · Credit · Timing · No idea where to start.",
+        "Frame 3 — \"Real talk: all four are fixable. Most just need a plan.\"",
+        "Frame 4 — \"I'll build that plan with you for free. 15 minutes.\" + link sticker."
+      ],
+      ctaType: "Book a call", cta: "Link sticker → TimeWithMichael.com",
+      hashtags: ["#RentVsBuy", "#ArizonaRealEstate", "#FirstTimeHomeBuyer"],
+      notes: "DM everyone who votes 'Renting' with a quick, non-salesy thank-you plus the Day 1 TEST sheet.",
+      compliance: { level: "none", reason: "Engagement poll, no financing claims. Broker name in profile/bio is sufficient for general content." }
+    },
+    day04: {
+      day: 4, date: "2026-11-26", weekday: "Thursday (Thanksgiving)", time: "9:00 AM", platforms: "Facebook (Instagram: photo + caption)",
+      format: "Text post", question: "brand", week: 1,
+      hook: "Quick confession: I'm not going to try to sell you a house today.",
+      caption: [
+        "It's Thanksgiving.",
+        "When my family moved from Washington to Arizona, everything was new. [personalize: one real detail about that move]",
+        "Now this place is home.",
+        "So today I'm just grateful — for the people who've trusted me with the biggest purchase of their lives, for my team, and for the neighbors who made Arizona feel like home.",
+        "If you're spending today with people you love, that's the whole point.",
+        "Eat too much pie. Take the nap. Real estate will still be here on Monday.",
+        "Happy Thanksgiving from Munds Park. — Michael",
+        "Drop a comment: what's one thing you're grateful for this year?"
+      ],
+      ctaType: "Comment a keyword", cta: "Comment what you're grateful for",
+      hashtags: ["#Thanksgiving", "#MundsPark", "#NorthernArizona", "#Grateful"],
+      notes: "Use a real family or Munds Park photo. No sales link. This post builds goodwill.",
+      compliance: { level: "none", reason: "Personal and brand content. Make sure the personalized detail is true." }
+    },
+    day05: {
+      day: 5, date: "2026-11-27", weekday: "Friday (Black Friday)", time: "10:00 AM", platforms: "Instagram + Facebook Reels",
+      format: "Reel", question: "q2", week: 1,
+      hook: "Two people. Same paycheck. One gets approved — one doesn't.",
+      caption: [
+        "Here's why, and you can check all three tonight.",
+        "Number one: your credit history. Pull your free reports and look for late payments or errors. Errors can be disputed.",
+        "Number two: your savings. Not just the down payment — closing costs, inspection, moving, and a cushion for after you get the keys.",
+        "Number three, the one that surprises everyone: your monthly debts.",
+        "Car payment. Student loans. Minimum credit card payments.",
+        "Lenders look at those debts compared to your income. That's why the same paycheck can get two different answers.",
+        "Your homework: write those three things on one page.",
+        "Then book a 15-minute call with me and bring the page. We'll talk about where you stand and what to do next.",
+        "(Better use of Black Friday than another air fryer. Just saying.)"
+      ],
+      ctaType: "Book a call", cta: "Book a 15-min call → TimeWithMichael.com",
+      hashtags: ["#MortgageTips", "#FirstTimeHomeBuyer", "#ArizonaHomes", "#HomeBuyingTips"],
+      notes: "On-screen hook: SAME PAYCHECK. DIFFERENT ANSWER. (Script 2.) Film two hook versions for A/B testing.",
+      compliance: { level: "required", reason: "Financing / qualification content (Script 2 was flagged in the original). ORM approval plus the NMLS disclosure on screen and in the caption." }
+    },
+    day06: {
+      day: 6, date: "2026-11-28", weekday: "Saturday", time: "9:30 AM", platforms: "Instagram + Facebook (multi-image)",
+      format: "Carousel", question: "q4", week: 1,
+      hook: "The down payment is the cost everyone plans for. Here are the five they forget.",
+      caption: [
+        "Most people save for the down payment and think they're done.",
+        "Then the other costs show up.",
+        "Swipe through all six so nothing catches you off guard.",
+        "1. Down payment: it depends on the loan program, and it's often different from what people expect.",
+        "2. Earnest money: a deposit when your offer is accepted that usually goes toward your purchase at closing.",
+        "3. Inspection and appraisal: often paid before closing.",
+        "4. Closing costs: the fees to finalize the loan and transfer ownership.",
+        "5. Moving and utility deposits.",
+        "6. The one everybody forgets: a cushion for repairs in the first few months.",
+        "Now the good news: Arizona and many local communities offer down payment assistance and first-time buyer programs for qualified buyers.",
+        "Comment COSTS and I'll send you the checklist, plus a list of programs worth asking about."
+      ],
+      ctaType: "Comment a keyword", cta: "Comment COSTS",
+      hashtags: ["#DownPaymentAssistance", "#FirstTimeHomeBuyer", "#ArizonaRealEstate", "#ClosingCosts", "#HomeBuyingTips"],
+      notes: "Save-worthy carousel (Script 4). Final slide: 'Save this for later 🔖'.",
+      compliance: { level: "required", reason: "Down payment and assistance program content (Script 4 was flagged). ORM approval plus the NMLS disclosure. Don't name specific programs or amounts unless ORM confirms them." }
+    },
+    day07: {
+      day: 7, date: "2026-11-29", weekday: "Sunday", time: "6:30 PM", platforms: "Instagram + Facebook Stories",
+      format: "Story", question: "q6", week: 1,
+      hook: "This or that: Pines 🌲 or Palms 🌴?",
+      caption: [
+        "Frame 1 — Poll: \"Pines (Flagstaff / Munds Park)\" vs \"Palms (Scottsdale / Phoenix)\".",
+        "Frame 2 — Poll: \"Snow days\" vs \"Pool days\".",
+        "Frame 3 — Slider: \"How long a commute could you live with?\" 🚗",
+        "Frame 4 — \"Whatever you picked, I can show you around. DM me 'TOUR'.\""
+      ],
+      ctaType: "Comment a keyword", cta: "DM TOUR",
+      hashtags: ["#FlagstaffAZ", "#ScottsdaleAZ", "#ArizonaLiving"],
+      notes: "Fun, low-pressure Sunday engagement. Screenshot the results for Day 2's comment replies.",
+      compliance: { level: "none", reason: "Lifestyle preference poll about places, not people." }
+    },
+    day08: {
+      day: 8, date: "2026-11-30", weekday: "Monday", time: "6:30 PM", platforms: "Instagram + Facebook Reels",
+      format: "Reel", question: "q3", week: 2,
+      hook: "Your credit score isn't the whole story. (And that's good news.)",
+      caption: [
+        "Lenders look at your payment history, how much of your available credit you're using, and your debts compared to your income.",
+        "So here are five things you can start today.",
+        "One: pull your free credit reports and dispute any errors.",
+        "Two: set autopay for at least the minimum on every account.",
+        "Three: think twice before closing your oldest card. History matters.",
+        "Four: don't co-sign for anyone while you're getting ready to buy.",
+        "Five, the 60-day move: pay down card balances and hold off on any new credit. No new truck. No furniture store card. Talk to your lender first.",
+        "If your credit isn't where you want it yet, that's okay. No judgment. Everybody starts somewhere.",
+        "Comment CREDIT and I'll send you the five-step checklist."
+      ],
+      ctaType: "Comment a keyword", cta: "Comment CREDIT",
+      hashtags: ["#CreditTips", "#MortgageTips", "#FirstTimeHomeBuyer", "#ArizonaHomes"],
+      notes: "On-screen hook: YOUR CREDIT SCORE ISN'T THE WHOLE STORY (Script 3).",
+      compliance: { level: "required", reason: "Credit and mortgage-readiness content (Script 3 was flagged). ORM approval plus the NMLS disclosure. Avoid any promise of score increases." }
+    },
+    day09: {
+      day: 9, date: "2026-12-01", weekday: "Tuesday", time: "8:30 AM", platforms: "Facebook (Instagram: text-on-image)",
+      format: "Text post", question: "q1", week: 2,
+      hook: "Here's the exact question I ask every buyer on our first call. Steal it.",
+      caption: [
+        "\"If nothing about the market changed for the next 12 months, would you still want to move?\"",
+        "That's it. That's the question.",
+        "Because here's what I've noticed: most people aren't really waiting on the market.",
+        "They're waiting on clarity.",
+        "If the answer is yes, then the market is just a detail. We plan around it.",
+        "If the answer is no, then you don't need a house right now. You need a different conversation, and that's fine too.",
+        "Ask yourself the question today.",
+        "If your answer is yes, grab 15 minutes with me and we'll figure out the smartest next step."
+      ],
+      ctaType: "Book a call", cta: "Book a call → TimeWithMichael.com",
+      hashtags: ["#HomeBuyingTips", "#FlagstaffRealEstate", "#PhoenixRealEstate", "#RealEstateAdvice"],
+      notes: "Frank Kern 'results in advance': the reader gets the whole tool for free. Pin it to the top of the profile for the month.",
+      compliance: { level: "none", reason: "General advice with no financing claims. Broker name in bio." }
+    },
+    day10: {
+      day: 10, date: "2026-12-02", weekday: "Wednesday", time: "12:00 PM", platforms: "Instagram + Facebook (multi-image)",
+      format: "Carousel", question: "q5", week: 2,
+      hook: "Before you pay asking price, check these 4 things.",
+      caption: [
+        "The list price is the seller's opinion.",
+        "What the house is actually worth is a different question.",
+        "1. Ignore what similar homes are listed for. Look at what they actually sold for in the last three to six months.",
+        "2. Check days on market. If it's been sitting much longer than homes nearby, the seller may be more flexible.",
+        "3. Look at the price history. Already reduced? That tells you something.",
+        "4. Compare price per square foot with recently sold homes of similar age, size and condition.",
+        "Bonus: ask about seller concessions. Sometimes a seller will help with closing costs or repairs instead of dropping the price.",
+        "You worked hard for that money. Make the house prove it's worth it.",
+        "Comment COMPS and I'll pull recent sales for any home you're eyeing."
+      ],
+      ctaType: "Comment a keyword", cta: "Comment COMPS",
+      hashtags: ["#HomeBuyingTips", "#ScottsdaleRealEstate", "#FlagstaffRealEstate", "#RealEstateTips"],
+      notes: "Script 5. Slide design: a 'detective' checklist with a magnifying-glass icon.",
+      compliance: { level: "recommended", reason: "Seller concessions depend on the loan program. If you mention loan types, get ORM review. Include the broker name. Don't name a specific listing unless the listing broker is identified." }
+    },
+    day11: {
+      day: 11, date: "2026-12-03", weekday: "Thursday", time: "7:00 PM", platforms: "Instagram + Facebook Reels",
+      format: "Reel", question: "q6", week: 2,
+      hook: "Before you buy a house, go back after dark.",
+      caption: [
+        "A great house isn't enough if the street doesn't fit your life.",
+        "And you can't remodel a location.",
+        "When my family moved from Washington to Arizona, I learned this the hard way.",
+        "So here's my five-point check.",
+        "One: drive your commute at rush hour on a regular weekday, not on a Sunday afternoon.",
+        "Two: check the city or county planning site for new roads, construction or rezoning nearby.",
+        "Three: if there's an HOA, read the rules and fees before you fall in love. Parking, pets, rentals, paint colors.",
+        "Four: come back after dark. Noise, lighting, parking, traffic. A street can feel totally different at night.",
+        "Five: talk to a neighbor. Ask what they love and what they'd change.",
+        "Screenshot this. Or comment NIGHT and I'll send you the printable checklist."
+      ],
+      ctaType: "Comment a keyword", cta: "Comment NIGHT",
+      hashtags: ["#MovingToArizona", "#HomeBuyingTips", "#FlagstaffAZ", "#PhoenixHomes"],
+      notes: "On-screen hook: GO BACK AFTER DARK (Script 6). Film at dusk for B-roll. Posting at 7 PM fits the theme.",
+      compliance: { level: "recommended", reason: "Fair Housing: keep it about noise, lighting and traffic. Never comment on who lives in an area or call areas 'safe' or 'unsafe'. Include the broker name." }
+    },
+    day12: {
+      day: 12, date: "2026-12-04", weekday: "Friday", time: "12:15 PM", platforms: "Instagram + Facebook Stories",
+      format: "Story", question: "q2", week: 2,
+      hook: "Pop quiz 🧠 What do lenders look at besides your income?",
+      caption: [
+        "Frame 1 — Quiz: \"Besides income, what matters most?\" A) Your car's color B) Monthly debts C) Your zodiac sign. (Answer: B 😄)",
+        "Frame 2 — \"Lenders look at your monthly debts compared to your income. Car, student loans, card minimums.\"",
+        "Frame 3 — Question box: \"What's your biggest question about qualifying?\"",
+        "Frame 4 — Link sticker: \"Get a straight answer in 15 minutes.\""
+      ],
+      ctaType: "Book a call", cta: "Link sticker → TimeWithMichael.com",
+      hashtags: ["#MortgageTips", "#ArizonaHomes", "#FirstTimeHomeBuyer"],
+      notes: "Answer the question-box replies as Reels next week (a free content engine).",
+      compliance: { level: "required", reason: "Qualification and financing content. ORM approval plus the NMLS disclosure on the frame." }
+    },
+    day13: {
+      day: 13, date: "2026-12-05", weekday: "Saturday", time: "9:00 AM", platforms: "Instagram + Facebook Reels",
+      format: "Reel", question: "q10", week: 2,
+      hook: "What if the people living in your house helped pay for it?",
+      caption: [
+        "I've done this with my own properties. Here are three ways people do it.",
+        "Strategy one: rent out a room. Live there, and let a roommate help cover costs, where local rules allow.",
+        "Strategy two, the one most people miss: buy a small multi-unit (a duplex, triplex or fourplex). Live in one unit and rent the others.",
+        "Strategy three: buy a home with a guest house or separate living space you can rent, where local rules allow it.",
+        "Before you buy, do three things: check local rental rules and HOA restrictions, look up what similar units actually rent for, and budget for vacancies and repairs.",
+        "Rental income isn't guaranteed, and being a landlord is a real job.",
+        "But done right, it's one way people build wealth and flexibility.",
+        "Comment DUPLEX and I'll send you my three-step check before buying a property that pays you back."
+      ],
+      ctaType: "Comment a keyword", cta: "Comment DUPLEX",
+      hashtags: ["#HouseHacking", "#RealEstateInvesting", "#ArizonaRealEstate", "#Duplex", "#FlagstaffRealEstate"],
+      notes: "On-screen hook: HOW RENTAL INCOME COULD HELP WITH YOUR MORTGAGE (Script 10).",
+      compliance: { level: "required", reason: "Rental income offsetting a mortgage (Script 10 was flagged). ORM approval plus the NMLS disclosure and a 'rental income not guaranteed' line. No income figures." }
+    },
+    day14: {
+      day: 14, date: "2026-12-06", weekday: "Sunday", time: "7:00 PM", platforms: "Facebook (Instagram: text-on-image)",
+      format: "Text post", question: "q8", week: 2,
+      hook: "Sometimes renting is the smarter move. (Yes, a real estate guy just said that.)",
+      caption: [
+        "Here's my honest four-question checklist.",
+        "Buying may make sense if you can say yes to all four:",
+        "1. You plan to stay at least five years.",
+        "2. Your income is steady.",
+        "3. You can cover the upfront costs and still keep an emergency cushion.",
+        "4. The monthly payment fits comfortably, including taxes, insurance and maintenance. (Don't forget maintenance. In Flagstaff that includes snow. In Phoenix it includes your A/C.)",
+        "If you might move in a year or two, your job feels shaky, or buying would wipe out your savings, renting might be the right call for now.",
+        "And that's okay.",
+        "The goal isn't just to own a house. It's a home that fits your life and your money.",
+        "Want to run rent vs. buy with your real numbers? Grab a time with me."
+      ],
+      ctaType: "Book a call", cta: "Book a call → TimeWithMichael.com",
+      hashtags: ["#RentVsBuy", "#FirstTimeHomeBuyer", "#ArizonaRealEstate", "#PersonalFinance"],
+      notes: "Contrarian honesty builds trust (Script 8). Good candidate for an A/B hook test.",
+      compliance: { level: "required", reason: "Rent vs. buy with payment, taxes and insurance (Script 8 was flagged). ORM approval plus the NMLS disclosure. Don't make equity-growth promises." }
+    },
+    day15: {
+      day: 15, date: "2026-12-07", weekday: "Monday", time: "11:30 AM", platforms: "Instagram + Facebook Reels",
+      format: "Reel", question: "q7", week: 3,
+      hook: "Bad inspection report? Don't panic. It might be leverage.",
+      caption: [
+        "I've bought more than 50 houses myself. Here's how I sort an inspection report into three buckets.",
+        "Bucket one, small stuff: loose railings, dripping faucets, missing outlet covers. Every house has some. Usually manageable after you move in.",
+        "Bucket two, big-ticket items: an aging roof, an old water heater, outdated electrical, an A/C near the end of its life. These are worth discussing. Depending on the situation, you may be able to ask for repairs, a credit or a price adjustment.",
+        "Bucket three, possible walk-away items: for me, that's serious structural or foundation issues. If an inspector flags one, bring in a qualified structural engineer before you decide.",
+        "One more thing: know your inspection deadline. Once it passes, your options can shrink depending on your contract.",
+        "Under contract and not sure what to do? Book a call. I'll help you understand your options before the clock runs out."
+      ],
+      ctaType: "Book a call", cta: "Book a call → TimeWithMichael.com",
+      hashtags: ["#HomeInspection", "#HomeBuyingTips", "#ArizonaRealEstate", "#FirstTimeHomeBuyer"],
+      notes: "On-screen hook: BAD INSPECTION? YOU MAY HAVE OPTIONS (Script 7). Show three labeled buckets as props.",
+      compliance: { level: "recommended", reason: "Touches on contract deadlines and remedies. Broker review recommended. Keep the 'depending on your contract' language and don't give legal advice." }
+    },
+    day16: {
+      day: 16, date: "2026-12-08", weekday: "Tuesday", time: "12:00 PM", platforms: "Instagram + Facebook (multi-image)",
+      format: "Carousel", question: "q9", week: 3,
+      hook: "The highest offer doesn't always win the house.",
+      caption: [
+        "Sellers often pick the offer that feels most reliable, not just the biggest number.",
+        "Here are five ways to stand out without overpaying.",
+        "1. Get fully prepared with your lender before you shop. Not a quick online estimate.",
+        "2. Ask the listing agent what matters most to the seller. Timing? Certainty? A rent-back?",
+        "3. Be flexible on your closing date when you can.",
+        "4. Keep the offer clean and simple.",
+        "5. Be ready to move fast. Good homes can get multiple offers.",
+        "And one thing I don't recommend: giving up protections you can't afford to lose just to win.",
+        "Losing a home you loved hurts. I get it. The next one can go differently.",
+        "Comment OFFER and I'll send you my offer-prep checklist."
+      ],
+      ctaType: "Comment a keyword", cta: "Comment OFFER",
+      hashtags: ["#HomeBuyingTips", "#ScottsdaleHomes", "#PhoenixRealEstate", "#FirstTimeHomeBuyer", "#RealEstateTips"],
+      notes: "Script 9. Strong A/B hook test candidate. Alt hook: 'You didn't lose the house because of price.'",
+      compliance: { level: "recommended", reason: "Mentions lender preparation. Avoid the word 'guaranteed' and loan-specific claims. Broker review for negotiation advice." }
+    },
+    day17: {
+      day: 17, date: "2026-12-09", weekday: "Wednesday", time: "7:30 PM", platforms: "Instagram + Facebook Stories",
+      format: "Story", question: "q9", week: 3,
+      hook: "Real question: have you ever lost a house you loved? 💔",
+      caption: [
+        "Frame 1 — Poll: \"Yep, it hurt\" / \"Not yet\".",
+        "Frame 2 — Question box: \"What happened?\"",
+        "Frame 3 — \"Most of the time it wasn't price. It was preparation. That's fixable.\"",
+        "Frame 4 — \"Want a game plan before the next one? Tap here.\" + link sticker."
+      ],
+      ctaType: "Book a call", cta: "Link sticker → TimeWithMichael.com",
+      hashtags: ["#HomeBuying", "#ArizonaHomes", "#RealEstateTips"],
+      notes: "Reply to every 'Yep, it hurt' vote personally. These are your warmest leads of the month.",
+      compliance: { level: "none", reason: "Engagement story with no claims." }
+    },
+    day18: {
+      day: 18, date: "2026-12-10", weekday: "Thursday", time: "6:30 PM", platforms: "Instagram + Facebook Reels",
+      format: "Reel", question: "q10", week: 3,
+      hook: "I literally wrote the book on short-term rentals. Here's what nobody tells you before you buy one.",
+      caption: [
+        "The book is called How to Be a Short-Term Rental Tycoon. And the first lesson isn't about pretty photos.",
+        "It's this: the rules come before the house.",
+        "Many Arizona cities, counties and HOAs have their own short-term rental rules, permits and taxes. Check them before you write an offer.",
+        "Lesson two: seasonality is real. A cabin near Flagstaff and a condo in Scottsdale can have totally different busy seasons.",
+        "Lesson three: budget for the boring stuff. Cleaning, supplies, repairs, management and empty nights.",
+        "Lesson four: run the numbers conservatively. If it only works in a perfect month, it doesn't work.",
+        "Rental income is never guaranteed. But a well-chosen property, bought with your eyes open, can be a powerful tool.",
+        "Comment TYCOON and I'll send you my pre-purchase STR checklist."
+      ],
+      ctaType: "Comment a keyword", cta: "Comment TYCOON",
+      hashtags: ["#ShortTermRental", "#AirbnbHost", "#FlagstaffRealEstate", "#RealEstateInvesting", "#ArizonaRealEstate"],
+      notes: "Hold up the book in the first two seconds. That's the authority pattern interrupt.",
+      compliance: { level: "recommended", reason: "Investment and income topic. Make no income or ROI figures and keep 'not guaranteed'. Include the broker name. If financing is mentioned, ORM review becomes Required." }
+    },
+    day19: {
+      day: 19, date: "2026-12-11", weekday: "Friday", time: "8:00 AM", platforms: "Facebook (Instagram: text-on-image)",
+      format: "Text post", question: "recruit", week: 3,
+      hook: "To the real estate agents who keep watching deals fall apart at the finish line because of financing…",
+      caption: [
+        "I've been there.",
+        "You do everything right. Great house, great buyer, accepted offer.",
+        "And then the loan side goes sideways, and you have zero control.",
+        "That's a big reason I got my mortgage license.",
+        "Now I help agents do the same: get licensed, join our One Real Mortgage team, and help their buyers on both sides of the deal.",
+        "We're a team of about 32 right now, and we're building toward 50.",
+        "This isn't for everyone. It takes study, an exam and real commitment.",
+        "But if you've ever thought \"I wish I could just handle the loan myself,\" let's talk.",
+        "Book 15 minutes and I'll walk you through exactly what the path looks like."
+      ],
+      ctaType: "Book a call", cta: "Book a call → TimeWithMichael.com",
+      hashtags: ["#RealEstateAgent", "#LoanOfficer", "#MortgageCareer", "#RealtorLife"],
+      notes: "Priority #2 (ORM agent recruiting). Consider also cross-posting to LinkedIn.",
+      compliance: { level: "required", reason: "Recruiting plus a description of NMLS licensing and the mortgage team. ORM approval. No income or earnings claims. Describe licensing requirements accurately (NMLS SAFE Act pre-licensing and exam)." }
+    },
+    day20: {
+      day: 20, date: "2026-12-12", weekday: "Saturday", time: "10:00 AM", platforms: "Instagram + Facebook (multi-image)",
+      format: "Carousel", question: "q3", week: 3,
+      hook: "5 money moves that can mess up your mortgage. (Save this before the holidays.)",
+      caption: [
+        "December is when good intentions meet holiday sales.",
+        "If you're planning to buy in 2027, here are five moves to talk to your lender about first.",
+        "1. Financing a new car or truck.",
+        "2. Opening a store card for that \"0% for 12 months\" deal.",
+        "3. Co-signing for a friend or family member.",
+        "4. Closing your oldest credit card.",
+        "5. Moving large amounts of cash around without a paper trail.",
+        "None of these is evil. But the timing matters.",
+        "A quick call can save you a big headache later.",
+        "Comment CREDIT and I'll send you the full 60-day prep checklist."
+      ],
+      ctaType: "Comment a keyword", cta: "Comment CREDIT",
+      hashtags: ["#MortgageTips", "#CreditTips", "#FirstTimeHomeBuyer", "#HolidayMoney"],
+      notes: "Very save- and share-worthy. Use a 'red X' visual for each move.",
+      compliance: { level: "required", reason: "Mortgage-readiness and credit content. ORM approval plus the NMLS disclosure." }
+    },
+    day21: {
+      day: 21, date: "2026-12-13", weekday: "Sunday", time: "6:30 PM", platforms: "Instagram + Facebook Stories",
+      format: "Story", question: "q4", week: 3,
+      hook: "True or false: you need 20% down to buy a home. 🤔",
+      caption: [
+        "Frame 1 — Quiz: True / False.",
+        "Frame 2 — \"FALSE for many buyers. Down payment depends on the loan program, and some programs allow much less for qualified buyers.\"",
+        "Frame 3 — \"Assistance programs exist too. Most people never ask.\"",
+        "Frame 4 — \"Want to know what you might qualify for? Tap to book.\" + link sticker."
+      ],
+      ctaType: "Book a call", cta: "Link sticker → TimeWithMichael.com",
+      hashtags: ["#DownPayment", "#FirstTimeHomeBuyer", "#ArizonaHomes"],
+      notes: "Myth-buster format works well on Sunday evenings.",
+      compliance: { level: "required", reason: "Down payment and loan program claims. ORM approval plus the NMLS disclosure on the frame. Don't state specific percentages unless ORM approves them." }
+    },
+    day22: {
+      day: 22, date: "2026-12-14", weekday: "Monday", time: "11:30 AM", platforms: "Instagram + Facebook Reels",
+      format: "Reel", question: "q1", week: 4,
+      hook: "Everyone stops house-hunting in December. That might be exactly why you shouldn't.",
+      caption: [
+        "Think about it.",
+        "Most buyers are busy with holidays, travel and shopping.",
+        "So the people still out looking often face fewer competing buyers.",
+        "And a seller who lists in December? They may have a real reason to move. That can mean more willingness to negotiate.",
+        "Not always. Every house and every seller is different.",
+        "But if you're ready, December can be a quiet advantage.",
+        "And if you're not ready yet, it's the perfect month to get ready so you're first in line in the spring.",
+        "Either way, comment READY and I'll tell you which camp you're in."
+      ],
+      ctaType: "Comment a keyword", cta: "Comment READY",
+      hashtags: ["#HomeBuyingTips", "#FlagstaffRealEstate", "#ScottsdaleRealEstate", "#PhoenixRealEstate", "#ArizonaRealEstate"],
+      notes: "Contrarian hook. B-roll: snowy Flagstaff street and sunny Scottsdale street side by side.",
+      compliance: { level: "recommended", reason: "Market claims. Keep the 'may' and 'not always' hedges and add no stats unless they're sourced and dated (e.g., local MLS). Include the broker name." }
+    },
+    day23: {
+      day: 23, date: "2026-12-15", weekday: "Tuesday", time: "12:00 PM", platforms: "Instagram + Facebook (multi-image)",
+      format: "Carousel", question: "q10", week: 4,
+      hook: "3 questions to ask your CPA BEFORE you buy an investment property.",
+      caption: [
+        "Most investors talk to their CPA after they buy.",
+        "That's backwards.",
+        "Here are three questions worth asking first.",
+        "1. \"How would owning this property affect my taxes this year and next?\"",
+        "2. \"What records should I keep from day one?\"",
+        "3. \"Does the way I use this property (long-term rental, short-term rental, or living in part of it) change how it's treated?\"",
+        "I'm not a CPA, and this isn't tax advice. But asking these early can save a lot of regret.",
+        "I go deeper on this in my free Real Estate Tax Strategy Playbook webinar.",
+        "Comment PLAYBOOK and I'll send you the next date."
+      ],
+      ctaType: "Comment a keyword", cta: "Comment PLAYBOOK",
+      hashtags: ["#RealEstateInvesting", "#TaxStrategy", "#ArizonaRealEstate", "#ShortTermRental"],
+      notes: "Drives sign-ups for the Tax Strategy Playbook webinar (an existing lead source).",
+      compliance: { level: "required", reason: "Tax-related content. Add the tax disclaimer ('not tax, legal or financial advice'). Broker review. If the webinar covers financing, it also needs ORM review." }
+    },
+    day24: {
+      day: 24, date: "2026-12-16", weekday: "Wednesday", time: "8:30 AM", platforms: "Facebook (Instagram: text-on-image)",
+      format: "Text post", question: "q2", week: 4,
+      hook: "The \"Can I afford it?\" math most people do backwards.",
+      caption: [
+        "Most people start with: \"What's the most I can get approved for?\"",
+        "I'd flip that.",
+        "Start with: \"What monthly payment lets me still sleep at night?\"",
+        "Then work backward.",
+        "And make sure that payment includes the stuff people forget: property taxes, homeowners insurance, HOA dues and maintenance.",
+        "Here in Arizona that also means real-life stuff. Winter heating and snow removal up north, summer A/C bills down south.",
+        "Your approval amount is a ceiling, not a target.",
+        "Want to work out your comfortable number together? Book 15 minutes with me."
+      ],
+      ctaType: "Book a call", cta: "Book a call → TimeWithMichael.com",
+      hashtags: ["#HomeAffordability", "#FirstTimeHomeBuyer", "#ArizonaHomes", "#MortgageTips"],
+      notes: "Professionals especially appreciate 'ceiling, not a target.' Pull that line out as a graphic.",
+      compliance: { level: "required", reason: "Affordability and approval content. ORM approval plus the NMLS disclosure." }
+    },
+    day25: {
+      day: 25, date: "2026-12-17", weekday: "Thursday", time: "6:30 PM", platforms: "Instagram + Facebook Reels",
+      format: "Reel", question: "q9", week: 4,
+      hook: "The one thing I won't let my buyers give up just to win a house.",
+      caption: [
+        "In a competitive market, it's tempting to throw everything at an offer.",
+        "Shorter deadlines. Fewer contingencies. Whatever it takes.",
+        "But here's my rule: never give up a protection you can't afford to lose.",
+        "For most people, that's the chance to inspect the home and walk away from a serious problem.",
+        "Because winning the house and then finding a foundation issue isn't winning.",
+        "There are smart ways to compete: a strong lender letter, flexible timing, a clean offer.",
+        "Giving up your safety net usually isn't one of them.",
+        "Understand every tradeoff before you sign. And if you want a second set of eyes, book a call."
+      ],
+      ctaType: "Book a call", cta: "Book a call → TimeWithMichael.com",
+      hashtags: ["#HomeBuyingTips", "#HomeInspection", "#PhoenixRealEstate", "#ScottsdaleHomes"],
+      notes: "Tie back to Day 15 (three buckets) and Day 16 (offers). Talking-head style, filmed sitting at a kitchen table.",
+      compliance: { level: "recommended", reason: "Contract and contingency guidance. Broker review recommended. Keep it general and avoid legal advice." }
+    },
+    day26: {
+      day: 26, date: "2026-12-18", weekday: "Friday", time: "12:15 PM", platforms: "Instagram + Facebook Stories",
+      format: "Story", question: "q6", week: 4,
+      hook: "AMA 🎤 Ask me anything about Flagstaff, Munds Park, Scottsdale or Phoenix.",
+      caption: [
+        "Frame 1 — Question sticker: \"Ask me anything about living or buying in Northern or Central Arizona.\"",
+        "Frame 2 — Answer 3–5 questions with short video replies.",
+        "Frame 3 — \"Thinking about a move in 2027? Let's map it out.\" + link sticker."
+      ],
+      ctaType: "Book a call", cta: "Link sticker → TimeWithMichael.com",
+      hashtags: ["#MovingToArizona", "#FlagstaffAZ", "#ScottsdaleAZ"],
+      notes: "Save answers to a Highlights folder called 'Arizona Q&A'.",
+      compliance: { level: "recommended", reason: "Live answers carry Fair Housing risk. Don't describe who lives where or call areas 'safe', and refer school questions to official sources." }
+    },
+    day27: {
+      day: 27, date: "2026-12-19", weekday: "Saturday", time: "9:30 AM", platforms: "Instagram + Facebook (multi-image)",
+      format: "Carousel", question: "q8", week: 4,
+      hook: "Your 2027 Home Game Plan: from renting to keys in 4 steps.",
+      caption: [
+        "New year, new address? Here's a simple plan you can actually follow.",
+        "Step 1 (January): pull your credit reports and fix any errors.",
+        "Step 2 (February): set your savings target, covering the down payment, closing costs and a cushion.",
+        "Step 3 (March): get fully prepared with a lender so you know your comfortable price range.",
+        "Step 4 (Spring): shop with confidence, and use the after-dark check, the comps check and the three-bucket inspection method.",
+        "That's it. Four steps. No magic.",
+        "The people who buy in 2027 won't be the luckiest ones. They'll be the ones who started in January.",
+        "Comment 2027 and I'll send you the printable version of this plan."
+      ],
+      ctaType: "Comment a keyword", cta: "Comment 2027",
+      hashtags: ["#2027Goals", "#FirstTimeHomeBuyer", "#ArizonaRealEstate", "#HomeBuyingTips", "#FlagstaffRealEstate"],
+      notes: "Recap carousel that links the whole month's content together. Encourage saves.",
+      compliance: { level: "required", reason: "Includes lender preparation and credit steps. ORM approval plus the NMLS disclosure. Dual role: have ORM confirm RESPA/affiliated-business wording." }
+    },
+    day28: {
+      day: 28, date: "2026-12-20", weekday: "Sunday", time: "7:00 PM", platforms: "Facebook (Instagram: text-on-image)",
+      format: "Text post", question: "q2", week: 4,
+      hook: "I'm teaching a free first-time buyer class in January. Here's who it's for (and who should skip it).",
+      caption: [
+        "It's for you if you've been thinking \"someday\" for a while and want a real plan.",
+        "It's for you if you don't know where your credit, savings and debts actually stand.",
+        "It's for you if you've been outbid and want a better strategy.",
+        "It's NOT for you if you want someone to tell you the market is about to crash or boom. I can't predict that, and neither can anyone else.",
+        "We'll cover the three-question buy-or-wait test, the six costs to plan for, and how to make an offer stand out.",
+        "Date: [INSERT DATE + TIME]. Online. Free.",
+        "Comment CLASS and I'll send you the registration link."
+      ],
+      ctaType: "Comment a keyword", cta: "Comment CLASS",
+      hashtags: ["#FirstTimeHomeBuyer", "#HomeBuyingClass", "#ArizonaRealEstate", "#PhoenixRealEstate"],
+      notes: "Drives the first-time buyer webinar (an existing lead source). The 'who should skip it' angle is a classic Kern-style qualifier.",
+      compliance: { level: "required", reason: "Webinar promo covering credit, costs and qualification. ORM approval plus the NMLS disclosure. RESPA review if real estate and loan services are promoted together." }
+    },
+    day29: {
+      day: 29, date: "2026-12-21", weekday: "Monday", time: "8:00 AM", platforms: "Instagram + Facebook Stories",
+      format: "Story", question: "recruit", week: 4,
+      hook: "Agents 👋 Ever wished you could close the loan too?",
+      caption: [
+        "Frame 1 — Poll: \"Yes, constantly\" / \"Nah, I'm good\".",
+        "Frame 2 — \"I'm a licensed agent AND a licensed loan officer. Here's what changed when I added the loan side.\" [personalize: one honest, non-income benefit]",
+        "Frame 3 — \"Our team is growing. If you're curious about getting your mortgage license, DM me 'LICENSE'.\""
+      ],
+      ctaType: "Comment a keyword", cta: "DM LICENSE",
+      hashtags: ["#RealEstateAgent", "#MortgageCareer", "#LoanOfficer"],
+      notes: "Recruiting follow-up to Day 19. Only DM people who vote 'Yes'.",
+      compliance: { level: "required", reason: "Recruiting. ORM approval. No income claims. Be accurate about licensing." }
+    },
+    day30: {
+      day: 30, date: "2026-12-22", weekday: "Tuesday", time: "11:30 AM", platforms: "Instagram + Facebook Reels",
+      format: "Reel", question: "q1", week: 4,
+      hook: "If you've watched my videos all month and still haven't booked a call… this one's for you.",
+      caption: [
+        "First, thank you. Seriously.",
+        "Second, I get it. Booking a call feels like walking into a car dealership. Someone's about to sell you something.",
+        "That's not how I do it.",
+        "Here's what actually happens: we talk for 15 minutes about where you are, where you want to be, and whether now even makes sense.",
+        "Sometimes the answer is \"buy this spring.\"",
+        "Sometimes it's \"wait a year and here's exactly what to work on.\"",
+        "Either way you walk away with a plan, and you never have to talk to me again if you don't want to.",
+        "So if 2027 is the year, the link's right there. TimeWithMichael.com."
+      ],
+      ctaType: "Book a call", cta: "Book a call → TimeWithMichael.com",
+      hashtags: ["#ArizonaRealEstate", "#FlagstaffRealEstate", "#ScottsdaleRealEstate", "#PhoenixRealEstate", "#MundsPark"],
+      notes: "Classic Kern 'take-away close'. Film it casually and outdoors, ideally in the pines in Munds Park. End card: 📅 Book your free call → Link in bio.",
+      compliance: { level: "recommended", reason: "Keep it about real estate planning. If it mentions loans or approvals, ORM review is Required. RESPA review if it promotes both roles. Include the broker name." }
+    }
+  }
+};
+</script>
+
+<!-- =====================================================================
+     TRACKER APP (local-first; Firebase sync is optional — see bottom)
+     ===================================================================== -->
+<script>
+(function(){
+  const DB = HARDCODED_DB;
+  const LS_KEY = "mv-content-tracker-v1";
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const $ = id => document.getElementById(id);
+  const toast = m => { const t=$('toast'); t.textContent=m; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),1800); };
+
+  const POSTS = Object.entries(DB.posts).map(([id,p])=>({id,...p})).sort((a,b)=>a.day-b.day);
+  const FORMATS = [
+    {k:"Reel", icon:"🎬", cls:"p-reel"}, {k:"Carousel", icon:"🎠", cls:"p-carousel"},
+    {k:"Text post", icon:"📝", cls:"p-text"}, {k:"Story", icon:"⭕", cls:"p-story", pl:"Stories"}
+  ];
+  const fmt = k => FORMATS.find(f=>f.k===k) || {icon:"",cls:""};
+  // Calendar weeks (Mon–Sun)
+  const WEEKS = [
+    {n:1, label:"Week 1", range:"Nov 23 – 29", days:[1,7]},
+    {n:2, label:"Week 2", range:"Nov 30 – Dec 6", days:[8,14]},
+    {n:3, label:"Week 3", range:"Dec 7 – 13", days:[15,21]},
+    {n:4, label:"Week 4", range:"Dec 14 – 20", days:[22,28]},
+    {n:5, label:"Week 5", range:"Dec 21 – 22", days:[29,30]}
+  ];
+  const weekOf = d => WEEKS.find(w => d>=w.days[0] && d<=w.days[1]).n;
+  const REQUIRED = POSTS.filter(p=>p.compliance.level==="required");
+
+  // ---------- state ----------
+  const blank = () => ({ pending:false, scheduled:false, posted:false, compliance:false, approvedBy:"", approvedOn:"", notes:"", leads:[], updatedAt:0 });
+  let STATE = {};
+  function load(){ try { STATE = JSON.parse(localStorage.getItem(LS_KEY)||"{}") || {}; } catch(e){ STATE = {}; } }
+  function persistLocal(){ try { localStorage.setItem(LS_KEY, JSON.stringify(STATE)); } catch(e){} }
+  const st = id => (STATE[id] = Object.assign(blank(), STATE[id]||{}));
+
+  function setSave(kind, text){ const el=$('saveState'); el.className="save "+(kind||""); el.textContent=text; }
+  function savedLabel(){ setSave(window.FB && FB.ready ? "cloud" : "", window.FB && FB.ready ? "Synced to Firebase ✓" : "Saved Locally ✓"); }
+
+  const timers = {};
+  function commit(id, {debounce=false, rerender=true}={}){
+    STATE[id].updatedAt = Date.now();
+    persistLocal();
+    if (rerender) { renderStats(); renderList(); }
+    if (window.FB && FB.ready){
+      setSave("saving","Saving…");
+      clearTimeout(timers[id]);
+      timers[id] = setTimeout(()=>{
+        FB.save(id, STATE[id]).then(savedLabel).catch(e=>{ console.warn(e); setSave("err","Firebase error · saved locally"); });
+      }, debounce ? 700 : 0);
+    } else savedLabel();
+  }
+
+  function statusKey(p){ const s=st(p.id); return s.posted?"posted":s.scheduled?"scheduled":s.pending?"pending":"none"; }
+  const STATUS_LABEL = { posted:"✅ Posted Live", scheduled:"🗓️ Scheduled", pending:"⏳ Pending Post", none:"⭕ Not started" };
+
+  // ---------- stats ----------
+  function renderStats(){
+    const n = POSTS.length;
+    const c = k => POSTS.filter(p=>st(p.id)[k]).length;
+    const posted=c("posted"), sched=c("scheduled"), pend=c("pending");
+    const compDone = REQUIRED.filter(p=>st(p.id).compliance).length;
+    const pct = Math.round(posted/n*100);
+    $('progHead').textContent = `${posted} of ${n} Posts Posted Live`;
+    $('progPct').textContent = pct+"%"; $('progBar').style.width = pct+"%";
+    const leads = POSTS.reduce((a,p)=>a+st(p.id).leads.length,0);
+    $('leadTotal').textContent = `${leads} lead${leads===1?"":"s"} logged`;
+    const cur = $('fStatus').value;
+    const cards = [
+      {k:"pending", label:"⏳ Pending Post", v:pend, of:n, desc:"Content drafted & ready to queue"},
+      {k:"scheduled", label:"🗓️ Scheduled", v:sched, of:n, desc:"Queued in Meta Business Suite"},
+      {k:"posted", label:"✅ Posted Live", v:posted, of:n, desc:"Published to FB & IG"},
+      {k:"compliance", label:"⚠️ Compliance", v:compDone, of:REQUIRED.length, desc:"Required reviews approved"}
+    ];
+    $('stages').innerHTML = cards.map(x=>{
+      const p = x.of ? Math.round(x.v/x.of*100) : 0;
+      const filterVal = x.k==="compliance" ? "needs-compliance" : x.k;
+      return `<button class="stage ${cur===filterVal?"active":""}" data-stage="${filterVal}">
+        <div class="lbl">${x.label}</div>
+        <div class="num">${x.v} <small>/ ${x.of}</small></div>
+        <div class="desc">${x.desc}</div>
+        <div class="mini"><i style="width:${p}%"></i></div><div class="pct">${p}%</div>
+      </button>`;
+    }).join("");
+    $('formats').innerHTML = FORMATS.map(f=>{
+      const all = POSTS.filter(p=>p.format===f.k); const done = all.filter(p=>st(p.id).posted).length;
+      return `<div class="fmt">${f.icon} ${f.pl || f.k+"s"}<b>${done} / ${all.length}</b></div>`;
+    }).join("") + `<div class="fmt">🧲 Leads<b>${leads}</b></div>`;
+  }
+
+  // ---------- filters ----------
+  function buildFilters(){
+    $('fWeek').innerHTML = `<option value="">All 5 Weeks (Days 1–30)</option>` + WEEKS.map(w=>`<option value="${w.n}">${w.label} (Days ${w.days[0]}–${w.days[1]}) · ${w.range}</option>`).join("");
+    $('fFormat').innerHTML = `<option value="">All Formats (${POSTS.length})</option>` + FORMATS.map(f=>`<option value="${f.k}">${f.icon} ${f.k} (${POSTS.filter(p=>p.format===f.k).length})</option>`).join("");
+    $('fStatus').innerHTML = `<option value="">All Statuses (${POSTS.length})</option>
+      <option value="pending">⏳ Pending Post</option>
+      <option value="scheduled">🗓️ Scheduled / Ready</option>
+      <option value="posted">✅ Posted Live</option>
+      <option value="not-posted">⭕ Not Yet Posted Live</option>
+      <option value="needs-compliance">⚠️ Needs Compliance Review</option>`;
+  }
+  function matches(p){
+    const q=$('q').value.trim().toLowerCase(), w=$('fWeek').value, f=$('fFormat').value, s=$('fStatus').value;
+    const S = st(p.id);
+    if (w && weekOf(p.day)!=+w) return false;
+    if (f && p.format!==f) return false;
+    if (s==="pending" && !(S.pending && !S.scheduled && !S.posted)) return false;
+    if (s==="scheduled" && !(S.scheduled && !S.posted)) return false;
+    if (s==="posted" && !S.posted) return false;
+    if (s==="not-posted" && S.posted) return false;
+    if (s==="needs-compliance" && !(p.compliance.level==="required" && !S.compliance)) return false;
+    if (q){
+      const hay = [p.hook,p.caption.join(" "),p.cta,p.hashtags.join(" "),p.notes,S.notes,S.leads.map(l=>Object.values(l).join(" ")).join(" "),"day "+p.day].join(" ").toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  }
+
+  // ---------- post rendering ----------
+  const OPEN = new Set();
+  function postHTML(p){
+    const S = st(p.id), sk = statusKey(p), F = fmt(p.format);
+    const d = new Date(p.date+"T12:00:00");
+    const mon = d.toLocaleDateString("en-US",{month:"short"}), dd = d.getDate();
+    const compPill = p.compliance.level==="required" ? (S.compliance?`<span class="pill p-ok">✔ Compliance approved</span>`:`<span class="pill p-req">⚠ Compliance required</span>`)
+                   : p.compliance.level==="recommended" ? `<span class="pill p-rec">• Review recommended</span>` : "";
+    const needsComp = p.compliance.level !== "none";
+    const q = DB.questions[p.question];
+    const answers = q ? `Q${q.n}: ${q.q}` : p.question==="recruit" ? "Agent recruiting" : "Brand / story";
+    return `<article class="post ${sk!=="none"?sk:""} ${OPEN.has(p.id)?"open":""}" id="post-${p.id}" data-id="${p.id}">
+      <div class="phead" data-toggle="${p.id}" role="button" tabindex="0" aria-expanded="${OPEN.has(p.id)}">
+        <div class="dnum"><div><b>${p.day}</b><span>DAY</span></div></div>
+        <div class="t">
+          <div class="hook">${esc(p.hook)}</div>
+          <div class="when">${esc(p.weekday)}, ${mon} ${dd} · ${esc(p.time)} MST · ${esc(p.platforms)}</div>
+        </div>
+        <div class="pills">
+          <span class="pill ${F.cls}">${F.icon} ${esc(p.format)}</span>
+          ${compPill}
+          <span class="pill p-st-${sk}">${STATUS_LABEL[sk]}</span>
+          ${S.leads.length?`<span class="pill p-ok">🧲 ${S.leads.length}</span>`:""}
+          <span class="chev">▶</span>
+        </div>
+      </div>
+      <div class="pbody">
+        <div>
+          <div class="lbl2">Hook</div>
+          <p class="bighook">${esc(p.hook)}</p>
+          <div class="lbl2">Full caption</div>
+          <div class="caption">${esc(p.caption.join("\n\n"))}</div>
+          <div class="lbl2">Call to action</div>
+          <div><b>${esc(p.ctaType)}:</b> ${esc(p.cta)}</div>
+          <div class="lbl2">Hashtags</div>
+          <div class="tags">${esc(p.hashtags.join(" "))}</div>
+          <div class="lbl2">Answers · Production notes</div>
+          <div style="font-size:13.5px"><b>${esc(answers)}</b><br>${esc(p.notes)}</div>
+          <div class="flag ${p.compliance.level}"><b>${p.compliance.level==="required"?"⚠ Compliance review required.":p.compliance.level==="recommended"?"• Review recommended.":"✓ No review flagged."}</b> ${esc(p.compliance.reason)}</div>
+          <div class="btnrow">
+            <button class="btn sm" data-copy="${p.id}">Copy full post + disclosures</button>
+            <button class="btn ghost sm" data-copycap="${p.id}">Copy caption</button>
+            <button class="btn ghost sm" data-copytags="${p.id}">Copy hashtags</button>
+          </div>
+        </div>
+        <div>
+          <div class="lbl2">Production checklist</div>
+          <div class="checks">
+            ${needsComp ? `<label class="check comp ${S.compliance?"done":""}"><input type="checkbox" data-f="compliance" ${S.compliance?"checked":""}>
+              <span><b>${p.compliance.level==="required"?"⚠️ Compliance approved":"Reviewed (optional)"}</b><small>${p.compliance.level==="required"?"ORM / designated broker sign-off before scheduling":"Recommended quick check"}</small>
+              <span class="approver"><input type="text" placeholder="Approved by" value="${esc(S.approvedBy)}" data-txt="approvedBy"><input type="date" value="${esc(S.approvedOn)}" data-txt="approvedOn"></span></span></label>` : ""}
+            <label class="check ${S.pending?"done":""}"><input type="checkbox" data-f="pending" ${S.pending?"checked":""}><span><b>⏳ Pending post</b><small>Graphics / video done, caption final</small></span></label>
+            <label class="check ${S.scheduled?"done":""}"><input type="checkbox" data-f="scheduled" ${S.scheduled?"checked":""}><span><b>🗓️ Scheduled</b><small>Queued in Meta Business Suite for ${esc(p.weekday.split(" ")[0])} ${esc(p.time)}</small></span></label>
+            <label class="check ${S.posted?"done":""}"><input type="checkbox" data-f="posted" ${S.posted?"checked":""}><span><b>✅ Posted live</b><small>Published to Facebook &amp; Instagram</small></span></label>
+          </div>
+          <div class="lbl2">Notes</div>
+          <textarea class="notes" data-txt="notes" placeholder="Edits, asset links, performance notes…">${esc(S.notes)}</textarea>
+          <div class="lbl2">Lead log (${S.leads.length})</div>
+          <div class="leadform" data-leadform="${p.id}">
+            <input type="text" placeholder="Name / handle" data-l="name">
+            <input type="text" placeholder="Phone / email" data-l="contact">
+            <select data-l="source"><option>Comment keyword</option><option>DM</option><option>Booked call</option><option>Story reply</option><option>Website</option><option>Other</option></select>
+            <input type="text" placeholder="Interest (buy / sell / loan / recruit)" data-l="interest">
+            <input type="text" class="full" placeholder="Note" data-l="note">
+            <button class="btn sm full" data-addlead="${p.id}">+ Add lead</button>
+          </div>
+          <ul class="leads">${S.leads.map(l=>`<li><span><b>${esc(l.name||"(no name)")}</b> · ${esc(l.source)}${l.interest?" · "+esc(l.interest):""}${l.contact?"<br>"+esc(l.contact):""}${l.note?"<br><i>"+esc(l.note)+"</i>":""}<br><small style="color:var(--muted)">${esc(l.date)}</small></span><button class="x" title="Remove" data-dellead="${p.id}|${l.id}">✕</button></li>`).join("")}</ul>
+        </div>
+      </div>
+    </article>`;
+  }
+  function renderList(){
+    const shown = POSTS.filter(matches);
+    const filtered = $('q').value || $('fWeek').value || $('fFormat').value || $('fStatus').value;
+    $('showing').textContent = filtered ? `Showing ${shown.length} of ${POSTS.length} filtered posts` : `Showing all ${POSTS.length} posts`;
+    if (!shown.length){
+      $('list').innerHTML = `<div class="empty"><b>No posts match your current filters.</b><br>Clear the search box or reset the dropdowns.<br><br><button class="btn" id="btnShowAll">Show All 30 Days</button></div>`;
+      return;
+    }
+    $('list').innerHTML = WEEKS.map(w=>{
+      const ps = shown.filter(p=>weekOf(p.day)===w.n); if (!ps.length) return "";
+      const done = POSTS.filter(p=>weekOf(p.day)===w.n && st(p.id).posted).length, tot = POSTS.filter(p=>weekOf(p.day)===w.n).length;
+      return `<section class="week"><h3>${w.label} <span class="wk-meta">${w.range} · Days ${w.days[0]}–${w.days[1]} · ${done}/${tot} posted</span></h3>${ps.map(postHTML).join("")}</section>`;
+    }).join("");
+  }
+  function refreshPost(id){
+    const el = document.getElementById('post-'+id);
+    const p = POSTS.find(x=>x.id===id);
+    if (!el) return;
+    if (!matches(p)) { renderList(); return; }
+    const active = document.activeElement, keep = active && el.contains(active) ? active.dataset.txt || active.dataset.l : null;
+    el.outerHTML = postHTML(p);
+    if (keep){ const n = document.querySelector(`#post-${id} [data-txt="${keep}"], #post-${id} [data-l="${keep}"]`); if(n){ n.focus(); if(n.setSelectionRange && n.value) n.setSelectionRange(n.value.length,n.value.length);} }
+    // keep week counters fresh
+    document.querySelectorAll('.week .wk-meta').forEach((m,i)=>{});
+  }
+  function renderAll(){ renderStats(); renderList(); }
+
+  // ---------- copy ----------
+  function fullCopy(p){
+    const d = DB.meta.info.disclosures;
+    let out = p.hook+"\n\n"+p.caption.join("\n\n")+"\n\n"+p.hashtags.join(" ");
+    if (p.compliance.level==="required" && (/ORM|NMLS/.test(p.compliance.reason) || p.question==="recruit")) out += "\n\n"+d.mortgage;
+    if (/tax/i.test(p.compliance.reason)) out += "\n\n"+d.tax;
+    if (p.question==="q10") out += "\n\n"+d.rental;
+    return out + "\n\n" + d.realEstate;
+  }
+  async function copy(t){ try{ await navigator.clipboard.writeText(t); toast("Copied ✓"); } catch(e){ const a=document.createElement('textarea'); a.value=t; document.body.appendChild(a); a.select(); try{document.execCommand('copy');toast("Copied ✓");}catch(_){toast("Copy failed");} a.remove(); } }
+
+  // ---------- events ----------
+  document.addEventListener('click', e=>{
+    const tg = e.target.closest('[data-toggle]');
+    if (tg && !e.target.closest('input,select,textarea,button')){ const id=tg.dataset.toggle; OPEN.has(id)?OPEN.delete(id):OPEN.add(id); const el=$('post-'+id); el.classList.toggle('open'); tg.setAttribute('aria-expanded', OPEN.has(id)); return; }
+    const stg = e.target.closest('[data-stage]');
+    if (stg){ const v=stg.dataset.stage; $('fStatus').value = $('fStatus').value===v ? "" : v; renderAll(); document.querySelector('.controls').scrollIntoView({behavior:"smooth"}); return; }
+    const c1=e.target.closest('[data-copy]'); if(c1) return copy(fullCopy(DB.posts[c1.dataset.copy]));
+    const c2=e.target.closest('[data-copycap]'); if(c2){ const p=DB.posts[c2.dataset.copycap]; return copy(p.hook+"\n\n"+p.caption.join("\n\n")); }
+    const c3=e.target.closest('[data-copytags]'); if(c3) return copy(DB.posts[c3.dataset.copytags].hashtags.join(" "));
+    const al=e.target.closest('[data-addlead]');
+    if (al){
+      const id=al.dataset.addlead, f=document.querySelector(`[data-leadform="${id}"]`);
+      const v=k=>f.querySelector(`[data-l="${k}"]`).value.trim();
+      if (!v("name") && !v("contact")) { toast("Add a name or contact"); return; }
+      st(id).leads.push({ id: Date.now().toString(36), date: new Date().toLocaleString("en-US",{dateStyle:"medium",timeStyle:"short"}), name:v("name"), contact:v("contact"), source:v("source"), interest:v("interest"), note:v("note") });
+      commit(id); toast("Lead logged 🧲"); return;
+    }
+    const dl=e.target.closest('[data-dellead]');
+    if (dl){ const [id,lid]=dl.dataset.dellead.split("|"); if(!confirm("Remove this lead?")) return; st(id).leads = st(id).leads.filter(l=>l.id!==lid); commit(id); return; }
+    if (e.target.id==="btnShowAll"){ resetFilters(); return; }
+  });
+  document.addEventListener('keydown', e=>{ if((e.key==="Enter"||e.key===" ") && e.target.matches('[data-toggle]')){ e.preventDefault(); e.target.click(); } });
+
+  document.addEventListener('change', e=>{
+    const cb = e.target.closest('input[type=checkbox][data-f]');
+    if (cb){
+      const id = cb.closest('.post').dataset.id, f = cb.dataset.f, S = st(id), p = DB.posts[id];
+      if (cb.checked && (f==="scheduled"||f==="posted") && p.compliance.level==="required" && !S.compliance){
+        if (!confirm(`Day ${p.day} needs compliance approval (ORM / broker) before it goes out.\n\nMark it ${f} anyway?`)){ cb.checked=false; return; }
+      }
+      S[f] = cb.checked;
+      // cascade: posted implies scheduled & pending; scheduled implies pending
+      if (cb.checked && f==="posted"){ S.scheduled=true; S.pending=true; }
+      if (cb.checked && f==="scheduled"){ S.pending=true; }
+      if (!cb.checked && f==="pending"){ S.scheduled=false; S.posted=false; }
+      if (!cb.checked && f==="scheduled"){ S.posted=false; }
+      if (f==="compliance" && cb.checked && !S.approvedOn) S.approvedOn = new Date().toISOString().slice(0,10);
+      commit(id); return;
+    }
+    const tx = e.target.closest('[data-txt]');
+    if (tx && tx.type==="date"){ const id=tx.closest('.post').dataset.id; st(id)[tx.dataset.txt]=tx.value; commit(id,{rerender:false}); return; }
+    if (["fWeek","fFormat","fStatus"].includes(e.target.id)) renderAll();
+  });
+  document.addEventListener('input', e=>{
+    const tx = e.target.closest('textarea[data-txt], input[type=text][data-txt]');
+    if (tx){ const id=tx.closest('.post').dataset.id; st(id)[tx.dataset.txt]=tx.value; setSave("saving","Saving…"); commit(id,{debounce:true, rerender:false}); }
+  });
+  $('q').addEventListener('input', renderList);
+  function resetFilters(){ ['q','fWeek','fFormat','fStatus'].forEach(i=>$(i).value=""); renderAll(); }
+  $('btnResetFilters').onclick = resetFilters;
+  $('btnExpand').onclick = ()=>{ POSTS.filter(matches).forEach(p=>OPEN.add(p.id)); renderList(); };
+  $('btnCollapse').onclick = ()=>{ OPEN.clear(); renderList(); };
+
+  // ---------- backup / restore / reset ----------
+  function download(name, text, type){ const b=new Blob([text],{type}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=name; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000); }
+  const stamp = () => new Date().toISOString().slice(0,10);
+  $('btnCsv').onclick = ()=>{
+    const cols = ["Day","Date","Weekday","Time (MST)","Format","Platforms","Hook","CTA","Compliance level","Pending","Scheduled","Posted live","Compliance approved","Approved by","Approved on","Notes","Lead count","Leads"];
+    const q = v => `"${String(v??"").replace(/"/g,'""')}"`;
+    const rows = POSTS.map(p=>{ const S=st(p.id); return [p.day,p.date,p.weekday,p.time,p.format,p.platforms,p.hook,p.cta,p.compliance.level,S.pending?"Yes":"No",S.scheduled?"Yes":"No",S.posted?"Yes":"No",S.compliance?"Yes":"No",S.approvedBy,S.approvedOn,S.notes,S.leads.length,S.leads.map(l=>[l.name,l.contact,l.source,l.interest,l.note,l.date].filter(Boolean).join(" | ")).join(" ;; ")].map(q).join(","); });
+    download(`mv-content-tracker-${stamp()}.csv`, "﻿"+cols.map(q).join(",")+"\n"+rows.join("\n"), "text/csv");
+  };
+  $('btnJson').onclick = ()=> download(`mv-content-tracker-backup-${stamp()}.json`, JSON.stringify({app:"mv-content-tracker", version:1, exportedAt:new Date().toISOString(), progress:STATE},null,2), "application/json");
+  $('btnRestore').onclick = ()=> $('fileRestore').click();
+  $('fileRestore').onchange = async e=>{
+    const file = e.target.files[0]; if(!file) return;
+    try{
+      const data = JSON.parse(await file.text());
+      const prog = data.progress || data;
+      if (typeof prog!=="object" || !Object.keys(prog).some(k=>DB.posts[k])) throw new Error("This doesn't look like a tracker backup.");
+      if (!confirm("Restore this backup? It replaces the current progress.")) return;
+      STATE = {}; Object.keys(DB.posts).forEach(k=>{ if(prog[k]) STATE[k]=Object.assign(blank(),prog[k]); });
+      persistLocal(); renderAll();
+      if (window.FB && FB.ready){ setSave("saving","Saving…"); await FB.bulk(STATE); }
+      savedLabel(); toast("Backup restored ✓");
+    } catch(err){ alert("Restore failed: "+err.message); }
+    e.target.value="";
+  };
+  $('btnReset').onclick = ()=> $('resetModal').classList.add('show');
+  $('rmCancel').onclick = ()=> $('resetModal').classList.remove('show');
+  $('resetModal').addEventListener('click', e=>{ if(e.target.id==="resetModal") $('resetModal').classList.remove('show'); });
+  $('rmYes').onclick = async ()=>{
+    STATE = {}; persistLocal(); OPEN.clear(); renderAll(); $('resetModal').classList.remove('show');
+    if (window.FB && FB.ready){ try{ setSave("saving","Resetting…"); await FB.resetAll(); }catch(err){ console.warn(err); setSave("err","Firebase reset failed"); return; } }
+    savedLabel(); toast("All progress reset");
+  };
+
+  // ---------- public hooks for Firebase module ----------
+  window.TRACKER = {
+    posts: Object.keys(DB.posts),
+    getState: ()=>STATE,
+    applyRemote(id, data){
+      const local = STATE[id];
+      if (local && local.updatedAt > (data.updatedAt||0)) return false;   // local newer
+      STATE[id] = Object.assign(blank(), data); persistLocal(); return true;
+    },
+    clearRemoteMissing(ids){ /* noop: keep local-only entries; they get pushed on connect */ },
+    rerender: ()=>{ renderStats(); renderList(); },
+    persist: persistLocal,
+    savedLabel, setSave
+  };
+
+  $('footDisc').textContent = DB.meta.info.disclosures.realEstate + "  ·  " + DB.meta.info.disclosures.mortgage;
+  load(); buildFilters(); renderAll(); savedLabel();
+})();
+</script>
+
+<!-- =====================================================================
+     FIREBASE REALTIME DATABASE SYNC (optional, live team sync, no SDK needed)
+     Setup:
+       1) console.firebase.google.com → Add project
+       2) Build → Realtime Database → Create Database
+       3) Copy the database URL (looks like https://your-project-default-rtdb.firebaseio.com/)
+       4) Rules tab → paste:
+          {
+            "rules": {
+              "trackerProgress": { ".read": true, ".write": true },
+              ".read": false, ".write": false
+            }
+          }
+          (Anyone with the URL can edit progress, so keep the page link within the team.)
+     Leave the URL as the placeholder and the tracker runs local-only (browser storage).
+     ===================================================================== -->
+<script>
+(function(){
+    // =========================================================================
+    // 👇 HARDCODE YOUR FIREBASE REALTIME DATABASE URL BETWEEN THE QUOTES 👇
+    // Example: const FIREBASE_DB_URL = "https://vallee-content-sync-default-rtdb.firebaseio.com";
+    // =========================================================================
+    const FIREBASE_DB_URL = "https://day-plan-e6d53-default-rtdb.firebaseio.com/";
+
+    const NODE = "trackerProgress";   // all progress lives under /trackerProgress/{day01…day30}
+    const base = FIREBASE_DB_URL.trim().replace(/\/+$/, "");
+    if (!base || /day-plan-e6d53/i.test(base) || !/^https:\/\/.+\.(firebaseio\.com|firebasedatabase\.app)$/i.test(base)) {
+        console.info("Firebase URL not set — running local-only.");
+        return;
+    }
+    const url = (path = "") => `${base}/${NODE}${path}.json`;
+    const req = async (method, path, body) => {
+        const r = await fetch(url(path), { method, headers: { "Content-Type": "application/json" }, body: body === undefined ? undefined : JSON.stringify(body) });
+        if (!r.ok) throw new Error(`Firebase ${method} ${r.status}: ${await r.text()}`);
+        return r.json();
+    };
+
+    window.FB = {
+        ready: true,
+        save:     (id, data) => req("PUT",   `/${id}`, data),
+        bulk:     (state)    => req("PATCH", "",       state),
+        resetAll: ()         => req("DELETE", "")
+    };
+
+    // ---- live stream (Server-Sent Events) ----
+    let mirror = {};          // last known remote tree
+    let initial = true;
+    const setAt = (obj, parts, val) => {
+        if (!parts.length) return val;
+        const [k, ...rest] = parts;
+        const o = (obj && typeof obj === "object") ? obj : {};
+        const v = setAt(o[k], rest, val);
+        if (v === null || v === undefined) delete o[k]; else o[k] = v;
+        return o;
+    };
+    function applyTouched(ids){
+        const S = TRACKER.getState(); let changed = false;
+        ids.forEach(id => {
+            if (!TRACKER.posts.includes(id)) return;
+            const remote = mirror[id];
+            if (remote == null) { if (S[id]) { delete S[id]; changed = true; } }
+            else if (TRACKER.applyRemote(id, remote)) changed = true;
+        });
+        if (changed) {
+            TRACKER.persist();
+            if (!document.activeElement?.matches?.('textarea,input[type=text]')) TRACKER.rerender();
+        }
+        TRACKER.savedLabel();
+    }
+    function onEvent(kind, msg){
+        let payload; try { payload = JSON.parse(msg.data); } catch(e){ return; }
+        if (!payload) return;
+        const parts = payload.path.split("/").filter(Boolean);
+
+        if (kind === "put" && !parts.length && initial) {
+            // first snapshot: merge, then push anything newer/only-local up to Firebase
+            initial = false;
+            mirror = payload.data || {};
+            applyTouched(Object.keys(mirror));
+            const S = TRACKER.getState();
+            const push = {};
+            Object.entries(S).forEach(([id, d]) => { if (!(d.updatedAt > 0)) return; if (!mirror[id] || (d.updatedAt||0) > (mirror[id].updatedAt||0)) push[id] = d; });
+            if (Object.keys(push).length) window.FB.bulk(push).catch(e => { console.warn(e); TRACKER.setSave("err","Firebase write error · saved locally"); });
+            return;
+        }
+        if (kind === "put") {
+            if (!parts.length) { const ids = new Set([...Object.keys(mirror), ...Object.keys(payload.data || {})]); mirror = payload.data || {}; applyTouched([...ids]); }
+            else { mirror = setAt(mirror, parts, payload.data) || {}; applyTouched([parts[0]]); }
+        } else if (kind === "patch") {
+            const touched = new Set();
+            Object.entries(payload.data || {}).forEach(([k, v]) => {
+                const full = [...parts, ...k.split("/").filter(Boolean)];
+                mirror = setAt(mirror, full, v) || {}; touched.add(full[0]);
+            });
+            applyTouched([...touched]);
+        }
+    }
+
+    TRACKER.setSave("saving", "Connecting to Firebase…");
+    const es = new EventSource(url());
+    es.addEventListener("put",   m => onEvent("put", m));
+    es.addEventListener("patch", m => onEvent("patch", m));
+    es.addEventListener("cancel", () => TRACKER.setSave("err", "Firebase denied access · check rules"));
+    es.addEventListener("auth_revoked", () => TRACKER.setSave("err", "Firebase auth revoked"));
+    es.onerror = () => { if (es.readyState === EventSource.CLOSED) TRACKER.setSave("err", "Firebase offline · Saved Locally"); else TRACKER.setSave("saving", "Reconnecting to Firebase…"); };
+    es.onopen  = () => TRACKER.savedLabel();
+})();
+</script>
+</body>
+</html>
