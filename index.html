@@ -7,44 +7,55 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
   <script>
     tailwind.config = {
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Lato', 'Helvetica Neue', 'Arial', 'sans-serif'],
-            display: ['"Playfair Display"', 'Georgia', 'serif']
+            sans: ['Figtree', 'system-ui', 'Helvetica Neue', 'Arial', 'sans-serif'],
+            display: ['"Bricolage Grotesque"', 'Figtree', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace']
           },
           colors: {
             agency: {
-              navy: '#1F4136',    // Pine green (primary)
-              deep: '#142B24',    // Deep forest (hovers / depth)
-              blue: '#2D6A64',    // Juniper teal (secondary)
-              gold: '#C9773F',    // Desert clay (accent)
-              goldink: '#8E4A22', // Clay darkened for readable text
-              cream: '#FBF1E8',   // Light clay tint
-              mist: '#E8F0EC',    // Light sage tint
-              paper: '#F6F3EE',   // Sand page background
-              line: '#E4DED4',    // Hairline borders
-              steel: '#5E6F68',   // Sage-gray neutral
-              success: '#2E7D4F', // Posted / approved
-              alert: '#B23A2E'    // Compliance / destructive
-            }
+              navy: '#1F1B3A',    // Dusk ink (primary)
+              deep: '#120F26',    // Night sky (hovers / depth)
+              blue: '#5B4B8A',    // Twilight violet (secondary)
+              gold: '#F0743E',    // Sunset orange (accent)
+              goldink: '#A8461C', // Sunset darkened for readable text
+              cream: '#FFF1E7',   // Light sunset tint
+              mist: '#EEEAF6',    // Light violet tint
+              paper: '#F8F5F0',   // Sandstone page background
+              line: '#E6E0D8',    // Hairline borders
+              steel: '#6E6A80',   // Dusk gray neutral
+              success: '#2F7D5B', // Posted / approved
+              alert: '#C2352B'    // Compliance / destructive
+            },
+            ch: { tiktok: '#111111', tiktokcyan: '#25F4EE', tiktokpink: '#FE2C55', ig: '#C13584', yt: '#E62117' }
           }
         }
       }
     };
   </script>
   <style>
-    body { font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif; }
-    h1, h2, h3, .font-display { font-family: 'Playfair Display', Georgia, serif; }
-    .eyebrow { font-family: 'Lato', sans-serif; font-weight: 900; letter-spacing: .16em; text-transform: uppercase; font-size: .7rem; }
+    body { font-family: 'Figtree', system-ui, Arial, sans-serif; }
+    h1, h2, h3, .font-display { font-family: 'Bricolage Grotesque', 'Figtree', sans-serif; letter-spacing: -0.02em; }
+    .eyebrow { font-family: 'JetBrains Mono', ui-monospace, monospace; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: .68rem; }
     .gold-rule-left { display: flex; align-items: center; gap: .75rem; }
-    .gold-rule-left::after { content: ""; height: 1px; flex: 1; background: #E4DED4; }
-    .header-arc { position: absolute; left: -10%; right: -10%; bottom: -70px; height: 110px; border-top: 3px solid #C9773F; border-radius: 50%; opacity: .55; pointer-events: none; }
-    select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%231F4136' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right .85rem center; background-size: 1rem; appearance: none; -webkit-appearance: none; padding-right: 2.5rem !important; }
-    ::selection { background: rgba(201,119,63,.30); color: #1F4136; }
+    .gold-rule-left::before { content: ""; width: 10px; height: 10px; border-radius: 3px; background: #F0743E; flex: none; }
+    .gold-rule-left::after { content: ""; height: 1px; flex: 1; background: #E6E0D8; }
+    .sky { background: radial-gradient(120% 90% at 78% 100%, rgba(240,116,62,.55) 0%, rgba(240,116,62,0) 55%), linear-gradient(180deg, #0E0B20 0%, #1F1B3A 42%, #3B2752 72%, #7A3B4A 100%); }
+    .stars { position: absolute; inset: 0; pointer-events: none; opacity: .5;
+      background-image: radial-gradient(1px 1px at 12% 18%, #fff 50%, transparent 51%), radial-gradient(1px 1px at 28% 42%, #fff 50%, transparent 51%), radial-gradient(1.5px 1.5px at 46% 12%, #fff 50%, transparent 51%), radial-gradient(1px 1px at 63% 30%, #fff 50%, transparent 51%), radial-gradient(1px 1px at 84% 16%, #fff 50%, transparent 51%), radial-gradient(1.5px 1.5px at 92% 38%, #fff 50%, transparent 51%), radial-gradient(1px 1px at 6% 52%, #fff 50%, transparent 51%), radial-gradient(1px 1px at 38% 8%, #fff 50%, transparent 51%); }
+    .chip { display: inline-flex; align-items: center; gap: .4rem; padding: .3rem .7rem; border-radius: 999px; font-size: .72rem; font-weight: 700; }
+    .meta-pill { font-family: 'JetBrains Mono', monospace; font-size: .68rem; letter-spacing: .03em; padding: .3rem .6rem; border-radius: 6px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14); color: rgba(255,255,255,.85); }
+    .hook-quote { border-left: 3px solid #F0743E; padding-left: .75rem; }
+    .ch-tiktok { background: linear-gradient(110deg, #111 0%, #111 86%, #25F4EE 86%, #25F4EE 92%, #FE2C55 92%); }
+    .ch-ig { background: linear-gradient(135deg, #F58529 0%, #DD2A7B 50%, #8134AF 100%); }
+    .ch-yt { background: #E62117; }
+    select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%231F1B3A' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right .85rem center; background-size: 1rem; appearance: none; -webkit-appearance: none; padding-right: 2.5rem !important; }
+    ::selection { background: rgba(240,116,62,.30); color: #1F1B3A; }
   </style>
 </head>
 <body class="bg-agency-paper text-slate-800 font-sans antialiased">
@@ -63,8 +74,8 @@
       </div>
       <p id="confirm-message" class="text-slate-600 text-sm leading-relaxed mb-6 whitespace-pre-line"></p>
       <div class="flex flex-col sm:flex-row justify-end gap-3">
-        <button id="confirm-cancel" class="px-4 py-2.5 rounded-lg font-bold text-agency-navy bg-agency-mist hover:bg-[#D9E6DF] text-sm transition cursor-pointer">Cancel</button>
-        <button id="confirm-ok" class="px-4 py-2.5 rounded-lg font-bold text-white bg-agency-alert hover:bg-[#8F2E24] text-sm transition cursor-pointer">Yes</button>
+        <button id="confirm-cancel" class="px-4 py-2.5 rounded-lg font-bold text-agency-navy bg-agency-mist hover:bg-[#E2DCF0] text-sm transition cursor-pointer">Cancel</button>
+        <button id="confirm-ok" class="px-4 py-2.5 rounded-lg font-bold text-white bg-agency-alert hover:bg-[#99281F] text-sm transition cursor-pointer">Yes</button>
       </div>
     </div>
   </div>
@@ -73,37 +84,54 @@
   <input type="file" id="import-file-input" accept=".json,application/json" class="hidden" />
 
   <!-- Top Header -->
-  <header class="relative overflow-hidden bg-agency-navy text-white">
-    <div class="header-arc"></div>
-    <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-7 pb-9">
-      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-        <div class="flex items-center gap-5 min-w-0">
-          <svg class="w-16 h-16 sm:w-20 sm:h-20 shrink-0" viewBox="0 0 80 80" role="img" aria-label="Logo mark">
-            <circle cx="40" cy="40" r="38" fill="none" stroke="#C9773F" stroke-width="2.5"/>
-            <path d="M16 54 L30 32 L38 43 L48 26 L64 54 Z" fill="#C9773F"/>
-            <path d="M48 26 L53 34 L49 33 L45 37 Z" fill="#ffffff" fill-opacity=".9"/>
-            <path d="M20 54 L26 45 L32 54 Z" fill="#ffffff" fill-opacity=".35"/>
+  <header class="relative overflow-hidden sky text-white">
+    <div class="stars"></div>
+    <div class="absolute right-[12%] bottom-24 w-40 h-40 sm:w-56 sm:h-56 rounded-full pointer-events-none" style="background: radial-gradient(circle, #FFB27A 0%, #F0743E 45%, rgba(240,116,62,0) 70%); opacity:.75"></div>
+    <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-28 sm:pb-32">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="flex items-center gap-2.5">
+          <svg class="w-9 h-9 shrink-0" viewBox="0 0 40 40" role="img" aria-label="Logo mark">
+            <rect x="1" y="1" width="38" height="38" rx="10" fill="#F0743E"/>
+            <path d="M7 29 L15 17 L20 23 L26 13 L33 29 Z" fill="#1F1B3A"/>
+            <circle cx="29" cy="10" r="3" fill="#FFF1E7"/>
           </svg>
-          <div>
-            <div class="eyebrow text-agency-gold mb-2 flex flex-wrap items-center gap-x-2 gap-y-1">
-              <span>Munds Park, Arizona</span>
-              <span class="text-white/40">·</span>
-              <span>Flagstaff · Scottsdale · Phoenix</span>
-            </div>
-            <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-white leading-tight">30-Day Content Tracker</h1>
-            <p class="font-display italic text-agency-gold text-base mt-1">Answers first. Then the keys.</p>
-            <p class="text-white/70 text-xs mt-1.5 tracking-wide">Mon–Fri · 6 Weeks · Nov 23, 2026 – Jan 1, 2027 · Office: 480-848-5780 · Book: https://booktimenow.com</p>
+          <div class="leading-tight">
+            <p class="font-display font-extrabold text-sm tracking-tight">Michael Vallee</p>
+            <p class="eyebrow text-white/60" style="font-size:.6rem">Content Ops · Real Broker · One Real Mortgage</p>
           </div>
         </div>
-        <div class="flex flex-wrap lg:flex-nowrap items-center gap-2 shrink-0">
-          <button data-action="export-csv" class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-agency-gold text-agency-navy hover:bg-[#D98B55] text-xs sm:text-sm font-black tracking-wide shadow-sm transition cursor-pointer">Export CSV</button>
-          <button data-action="export-json" class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-transparent hover:bg-white/10 text-white border border-white/40 text-xs sm:text-sm font-bold transition cursor-pointer">Backup JSON</button>
-          <button data-action="import-json" class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-transparent hover:bg-white/10 text-white border border-white/40 text-xs sm:text-sm font-bold transition cursor-pointer">Restore JSON</button>
-          <button data-action="reset-all" class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-transparent hover:bg-agency-alert text-white/80 hover:text-white border border-white/20 hover:border-agency-alert text-xs sm:text-sm font-bold transition cursor-pointer">Reset</button>
+        <div class="flex flex-wrap items-center gap-2">
+          <button data-action="export-csv" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-agency-gold text-agency-navy hover:bg-[#F48C5A] text-xs sm:text-sm font-extrabold shadow-sm transition cursor-pointer">Export CSV</button>
+          <button data-action="export-json" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/25 text-xs sm:text-sm font-bold transition cursor-pointer">Backup JSON</button>
+          <button data-action="import-json" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/25 text-xs sm:text-sm font-bold transition cursor-pointer">Restore JSON</button>
+          <button data-action="reset-all" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-transparent hover:bg-agency-alert text-white/75 hover:text-white border border-white/20 hover:border-agency-alert text-xs sm:text-sm font-bold transition cursor-pointer">Reset</button>
+        </div>
+      </div>
+
+      <div class="mt-10 sm:mt-14 max-w-3xl">
+        <p class="eyebrow text-agency-gold mb-3">Munds Park, AZ &nbsp;/&nbsp; Flagstaff · Scottsdale · Phoenix</p>
+        <h1 class="font-display text-4xl sm:text-6xl font-extrabold leading-[0.95] tracking-tight">30-Day Content<br/><span class="text-agency-gold">Tracker</span></h1>
+        <p class="font-display text-lg sm:text-xl font-semibold text-white/85 mt-3">Answers first. Then the keys.</p>
+        <div class="flex flex-wrap gap-2 mt-5">
+          <span class="chip bg-black text-white border border-white/20"><span class="w-2 h-2 rounded-full" style="background:#25F4EE;box-shadow:2px 0 0 #FE2C55"></span>TikTok · every Reel</span>
+          <span class="chip text-white ch-ig">Instagram Reels</span>
+          <span class="chip text-white ch-yt">YouTube Shorts</span>
+          <span class="chip bg-white/10 text-white border border-white/20">Facebook cross-post</span>
+        </div>
+        <div class="flex flex-wrap gap-2 mt-4">
+          <span class="meta-pill">Mon–Fri · 6 weeks</span>
+          <span class="meta-pill">Nov 23, 2026 → Jan 1, 2027</span>
+          <span class="meta-pill">Times in MST (Arizona)</span>
+          <span class="meta-pill">Office 480-848-5780</span>
+          <span class="meta-pill">Book: TimeWithMichael.com</span>
         </div>
       </div>
     </div>
-    <div class="h-1 bg-agency-gold"></div>
+    <svg class="absolute bottom-0 left-0 w-full h-24 sm:h-32" viewBox="0 0 1440 160" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 110 L120 96 L170 60 L260 60 L300 92 L470 84 L520 40 L660 40 L700 78 L900 70 L960 30 L1060 30 L1100 74 L1280 66 L1330 50 L1440 62 L1440 160 L0 160 Z" fill="#2A1F45" opacity=".9"/>
+      <path d="M0 128 L200 118 L240 96 L330 96 L370 120 L620 112 L680 86 L760 86 L800 114 L1080 108 L1130 90 L1210 90 L1250 112 L1440 104 L1440 160 L0 160 Z" fill="#43284A"/>
+      <path d="M0 146 Q360 128 720 142 T1440 138 L1440 160 L0 160 Z" fill="#F8F5F0"/>
+    </svg>
   </header>
 
   <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
@@ -162,8 +190,17 @@
       </div>
 
       <div>
+        <h3 class="eyebrow gold-rule-left text-agency-steel mb-3">Reel Channel Strategy · TikTok on Every Reel · Click a Card to Filter</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3" id="channel-cards"></div>
+        <details class="mt-3 rounded-xl border border-agency-line bg-agency-paper/60 open:bg-white">
+          <summary class="cursor-pointer select-none px-4 py-3 text-sm font-bold text-agency-navy">Channel fit by Reel (the analysis behind each plan)</summary>
+          <div class="px-4 pb-4 overflow-x-auto" id="channel-matrix"></div>
+        </details>
+      </div>
+
+      <div>
         <h3 class="eyebrow gold-rule-left text-agency-steel mb-3">Before Posting · Rules From Michael's Script File</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3" id="before-posting"></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3" id="before-posting"></div>
       </div>
     </section>
 
@@ -183,7 +220,7 @@
           <button data-action="collapse-all" class="px-4 py-2.5 rounded-lg border border-agency-navy/20 bg-white hover:bg-agency-mist text-agency-navy font-bold text-sm transition cursor-pointer">Collapse All</button>
         </div>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
         <div>
           <label for="week-filter" class="block eyebrow text-agency-steel mb-1.5">Filter by Week</label>
           <select id="week-filter" class="w-full rounded-lg border border-agency-line bg-white px-3.5 py-2.5 text-sm font-bold text-agency-navy focus:outline-none focus:ring-2 focus:ring-agency-gold"></select>
@@ -203,6 +240,15 @@
             <option value="compliance">⚠️ Needs Compliance Review</option>
           </select>
         </div>
+        <div>
+          <label for="channel-filter" class="block eyebrow text-agency-steel mb-1.5">Filter by Channel</label>
+          <select id="channel-filter" class="w-full rounded-lg border border-agency-line bg-white px-3.5 py-2.5 text-sm font-bold text-agency-navy focus:outline-none focus:ring-2 focus:ring-agency-gold">
+            <option value="all">All Channels</option>
+            <option value="tiktok">TikTok (Reels)</option>
+            <option value="ig">Instagram Reels</option>
+            <option value="yt">YouTube Shorts</option>
+          </select>
+        </div>
       </div>
       <div id="active-filter-bar" class="hidden flex items-center justify-between bg-agency-cream border border-agency-gold/50 rounded-lg px-4 py-2 text-sm">
         <span id="filter-result-count" class="font-bold text-agency-navy">Showing filtered posts</span>
@@ -219,15 +265,15 @@
     </div>
   </main>
 
-  <footer class="mt-12 bg-agency-navy text-white">
-    <div class="h-1 bg-agency-gold"></div>
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex flex-col items-center text-center gap-4">
-      <p class="font-display italic text-agency-gold text-lg">Answers first. Then the keys.</p>
-      <div class="text-xs sm:text-sm text-white/75 space-y-1">
-        <p class="font-bold text-white">Michael Vallee</p>
-        <p>Munds Park, AZ · Office: 480-848-5780 · Michael@ValleeRealty.com · TimeWithMichael.com · ValleeRealty.com</p>
-        <p class="text-white/50 text-[11px] max-w-3xl" id="footer-disc"></p>
+  <footer class="mt-14 sky text-white relative overflow-hidden">
+    <div class="stars"></div>
+    <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+      <div>
+        <p class="font-display text-2xl font-extrabold">Answers first. <span class="text-agency-gold">Then the keys.</span></p>
+        <p class="font-bold text-white mt-3 text-sm">Michael Vallee</p>
+        <p class="text-xs sm:text-sm text-white/75">Munds Park, AZ · Office: 480-848-5780 · Michael@ValleeRealty.com · TimeWithMichael.com · ValleeRealty.com</p>
       </div>
+      <p class="text-white/55 text-[11px] max-w-md sm:text-right" id="footer-disc"></p>
     </div>
   </footer>
 
@@ -858,9 +904,10 @@ const REEL_STEPS = (o) => [
   "Last 5 seconds: show the end card \"" + END_CARD + "\" on a " + KIT.pine + " background.",
   ...(o.ab ? ["Hook test (the file recommends this script for A/B testing): export a second version that changes ONLY the first line to: \"" + o.ab + "\". Post version A on the scheduled day and keep version B for a re-post 2–3 weeks later; compare 3-second hold rate."] : []),
   "Quality check before export (from the file): listen for pronunciation, pacing, caption accuracy, and confirm the spoken narration matches the approved script word for word.",
-  "Confirm the Instagram and Facebook bio link goes straight to TimeWithMichael.com (one tap to the calendar).",
-  "Paste the caption + hashtags from the Copy tab, then schedule in Meta Business Suite for FB Reels and IG Reels at the date and time on this card.",
-  "Tick ⏳ Pending Post when the export is done, 🗓️ Scheduled when it's queued, ✅ Posted Live once it publishes."
+  "Export a clean master (MP4, 1080×1920, no app watermark). Every channel version is cut from this file, never from another app's download.",
+  "Confirm the bio links on Instagram, Facebook and TikTok and the YouTube channel link all go straight to TimeWithMichael.com (one tap to the calendar).",
+  "Open the 📱 Channel Plans tab: TikTok, Instagram and (where it fits) YouTube Shorts each get their own cut, hook, caption, time and posting steps.",
+  "Tick ⏳ Pending Post when the master is done, 🗓️ Scheduled when the first channel is queued, ✅ Posted Live once every planned channel is live (tick each channel on the card)."
 ];
 
 const GUIDES = {
@@ -1406,13 +1453,319 @@ const GUIDES = {
   }
 };
 
+// =========================================================================
+// CHANNEL PLANS FOR EVERY REEL — TikTok (always), Instagram Reels, YouTube Shorts
+// Research basis (Nov 2026): TikTok rewards search intent (spoken words, on-screen
+// text and caption keywords are read), watch-through and authentic creator footage;
+// Instagram Reels rewards originality (watermarked reposts lose reach), shares/DM
+// sends, and offers Trial Reels for hook tests (1,000+ followers); YouTube Shorts run
+// up to 3 minutes, are found through search for months, and can carry a Related Video
+// link. All three require an AI label on realistic AI avatar/voice video.
+// Times are MST (Arizona). The card's own time is the Instagram/Facebook slot.
+// =========================================================================
+const CHANNEL_META = {
+  tiktok: { name: "TikTok", short: "TikTok", role: "Discovery + search", cls: "ch-tiktok", text: "text-white", dot: "#25F4EE",
+    window: "Evenings, 6–9 PM MST (Buffer's 7.1M-post study points to 6–11 PM)",
+    rules: ["Search-first: say the search phrase out loud in the first sentence and put it on screen", "Tighter TikTok cut: 30–50 sec, a visual change every 2–3 sec", "Michael's real selfie footage beats the avatar here whenever possible", "Turn on the AI-generated content label for any HeyGen version", "Business account needed for a clickable bio link (or 1,000+ followers)"] },
+  ig: { name: "Instagram Reels", short: "IG", role: "Local conversion + DMs (FB cross-post)", cls: "ch-ig", text: "text-white", dot: "#DD2A7B",
+    window: "The card's time (late morning or early evening MST)",
+    rules: ["Upload the clean master: no TikTok watermark (recycled clips lose reach)", "Full-length script is fine: 45–60 sec", "Ask for shares and DM sends, not just likes", "Trial Reels for the hook B test once the account has 1,000+ followers", "Turn on the AI label for HeyGen avatar/voice versions"] },
+  yt: { name: "YouTube Shorts", short: "YT", role: "Evergreen search library", cls: "ch-yt", text: "text-white", dot: "#E62117",
+    window: "Around 4 PM MST (Buffer: Friday 4 PM is the top Shorts slot)",
+    rules: ["Keyword title written like a search (\"Is my credit good enough to buy a house?\")", "Remove 'Comment KEYWORD' endings; there's no comment-to-DM flow", "Link a Related Video on every Short to keep viewers on the channel", "Answer 'Yes' to altered/synthetic content for HeyGen versions", "Only evergreen topics; seasonal or warm-audience Reels are skipped"] }
+};
+
+const FIT_STYLE = {
+  Primary: "bg-agency-navy text-white",
+  Strong: "bg-agency-blue text-white",
+  Good: "bg-agency-mist text-agency-navy border border-agency-blue/30",
+  Skip: "bg-agency-paper text-agency-steel border border-agency-line line-through"
+};
+
+const CHANNELS = {
+  day01: {
+    tiktok: { fit: "Primary", why: "\"Should I buy a house now or wait\" is a high-intent search phrase, and TikTok now ranks videos by the spoken words and on-screen text.",
+      when: "Mon Nov 23 · 7:00 PM MST", length: "35–45 sec",
+      hook: "Should you buy a house now or wait? Here's the three-question test I use, and it has nothing to do with the market.",
+      onScreen: "BUY NOW OR WAIT? THE 3-QUESTION TEST",
+      approach: "Search-first TikTok cut. Open with the question people type, not the credentials line. Drop the 'buying and selling both cost money' explanation to one sentence. Pop a big '1', '2', '3' on each question and slam 'RENT × 12' full-screen on question three.",
+      film: "Best: Michael films it selfie-style outside in the Munds Park pines (real voice, phone at eye level). Backup: the HeyGen avatar with the AI label on.",
+      caption: "Should I buy a house now or wait for rates? Run this 3-question test first 👇\nComment TEST and I'll send you the one-page version.",
+      tags: ["#buyahouse", "#firsttimehomebuyer", "#arizonarealestate", "#flagstaffaz"],
+      cta: "Comment TEST",
+      watch: "Search views (TikTok Studio → Traffic source → Search) and average watch time" },
+    ig: { fit: "Strong", why: "Followers here are local and warm; the bio link goes one tap to the calendar.",
+      when: "Mon Nov 23 · 11:30 AM MST", length: "45–60 sec (full script)",
+      hook: "I've bought 50+ houses… and I still can't tell you when the \"perfect time\" to buy is.",
+      onScreen: "STOP WAITING FOR \"THE PERFECT TIME\"",
+      approach: "Keep the credibility hook and the full script. Cleaner, slower edit than TikTok. Add a share line in the caption: \"Send this to the friend who's been 'waiting for rates' 📩\". Pick a cover frame with the hook text for the grid.",
+      film: "HeyGen avatar (as planned) or the same real footage as TikTok, exported without any TikTok watermark.",
+      cta: "Comment TEST (comment-to-DM automation sends the one-pager)", trial: "If nothing about the market changed for 12 months, would you still move?",
+      watch: "Shares + DM sends and saves" },
+    yt: { fit: "Strong", why: "Evergreen question people search on YouTube year-round; Shorts keep getting found for months.",
+      when: "Mon Nov 23 · 4:00 PM MST", length: "40–55 sec",
+      hook: "Buy now or wait? Answer these three questions first.",
+      onScreen: "BUY NOW OR WAIT?",
+      approach: "Educational, evergreen cut. Remove 'Comment TEST'. End on the opening question again (\"So… buy now or wait?\") so the Short loops.",
+      film: "Same master as TikTok, re-exported without the comment CTA.",
+      title: "Buy a House Now or Wait? The 3-Question Test",
+      description: "Not sure whether to buy a home now or wait for better rates? Use this 3-question test: will you stay 5+ years, is the payment comfortable today, and what would another year of rent cost you?\n\nBook a free 15-minute call: TimeWithMichael.com\nFlagstaff · Munds Park · Scottsdale · Phoenix",
+      tags: ["#Shorts", "#FirstTimeHomeBuyer", "#ArizonaRealEstate"], related: "the Day 5 Short (\"Same paycheck, different answer\") once it's live",
+      cta: "\"Book a free 15-minute call. Link on my channel.\"", watch: "Viewed vs. swiped away (YouTube Studio)" }
+  },
+  day05: {
+    tiktok: { fit: "Primary", why: "\"How much house can I afford\" is one of the most searched home-buying questions, and Black Friday night is a heavy scroll window.",
+      when: "Fri Nov 27 · 7:30 PM MST", length: "40–50 sec",
+      hook: "Same paycheck. Different mortgage answer. Here's why.",
+      onScreen: "SAME PAYCHECK. DIFFERENT ANSWER.",
+      approach: "Split-screen 'Person A vs Person B' with simple silhouettes; tick each factor (credit, savings, monthly debts) as it's said. Keep the air-fryer joke as the closer. It's TikTok's tone.",
+      film: "HeyGen avatar on one half, icons on the other (AI label on), or Michael on camera.",
+      caption: "How much house can I afford? Two people with the same paycheck can get different answers. Lenders look at these 3 things 👇\nBook a free 15-min call. Link in bio.",
+      tags: ["#howmuchhousecanIafford", "#mortgagetips", "#firsttimehomebuyer", "#arizonahomes"],
+      cta: "Book a 15-min call (link in bio)", watch: "Completion rate; profile visits → bio link taps" },
+    ig: { fit: "Strong", why: "Warm followers + one-tap booking. The file recommends A/B testing this hook, and Trial Reels handle that natively.",
+      when: "Fri Nov 27 · 10:00 AM MST", length: "50–60 sec (full script)",
+      hook: "Two people. Same paycheck. One gets approved — one doesn't.",
+      onScreen: "SAME PAYCHECK. DIFFERENT ANSWER.",
+      approach: "Full script with the homework line. Post version A on the feed; post hook B as a Trial Reel to non-followers and keep the winner for the re-post.",
+      film: "HeyGen avatar (as planned).", cta: "Book a 15-min call (link in bio)", trial: "Same income. Different mortgage decision. Here's why.",
+      watch: "Bio link taps; Trial Reel 3-sec hold rate A vs B" },
+    yt: { fit: "Strong", why: "Affordability is evergreen search, and Friday 4 PM is Buffer's top-performing Shorts slot.",
+      when: "Fri Nov 27 · 4:00 PM MST", length: "45–55 sec",
+      hook: "Why can two people with the same salary get different mortgage answers?",
+      onScreen: "SAME SALARY. DIFFERENT ANSWER.",
+      approach: "Drop the Black Friday joke (this Short will be watched in March). Slightly slower, list-style. End by looping back to the question.",
+      film: "Same master, re-exported without the joke and the 'book a call' line.",
+      title: "Why the Same Salary Gets Different Mortgage Answers",
+      description: "Lenders look at more than income: your credit history, your savings (not just the down payment), and your monthly debts compared to your income. Write those three on one page before you talk to a lender.\n\nFree 15-minute call: TimeWithMichael.com",
+      tags: ["#Shorts", "#MortgageTips", "#FirstTimeHomeBuyer"], related: "the Day 8 credit Short",
+      cta: "\"Free 15-minute call. Link on my channel.\"", watch: "Viewed vs. swiped away; Related Video clicks" }
+  },
+  day08: {
+    tiktok: { fit: "Primary", why: "Credit-score questions are huge on TikTok search, and the judgment-free tone fits the platform.",
+      when: "Wed Dec 2 · 8:00 PM MST", length: "45–55 sec",
+      hook: "Wondering if your credit is good enough to buy a house? Your score isn't the whole story.",
+      onScreen: "IS MY CREDIT GOOD ENOUGH TO BUY?",
+      approach: "Five quick numbered steps, one per 6–8 seconds, with '60-DAY MOVE' flashing on step five. Use TikTok's green-screen effect over a blank, generic credit-report graphic (no real data). No score numbers or promises of score increases.",
+      film: "Michael on camera with green-screen, or the HeyGen avatar (AI label on).",
+      caption: "Is my credit good enough to buy a house? Lenders look at more than your score. 5 things to start today + the 60-day move 👇\nComment CREDIT for the checklist.",
+      tags: ["#creditscore", "#buyingahouse", "#mortgagetips", "#firsttimehomebuyer"],
+      cta: "Comment CREDIT (pinned comment)", watch: "Saves and search views" },
+    ig: { fit: "Strong", why: "Saves drive reach here, and this list is save-worthy. It also sets up the Day 20 carousel.",
+      when: "Wed Dec 2 · 6:30 PM MST", length: "55–65 sec (full script)",
+      hook: "Your credit score isn't the whole story. (And that's good news.)",
+      onScreen: "YOUR CREDIT SCORE ISN'T THE WHOLE STORY",
+      approach: "Full script, warm tone. End-screen text: \"Save this for your 60-day countdown 🔖\". Mention the checklist comes by DM.",
+      film: "HeyGen avatar (as planned).", cta: "Comment CREDIT (comment-to-DM automation)", watch: "Saves" },
+    yt: { fit: "Strong", why: "\"Is my credit good enough to buy a house\" is a long-running YouTube search query.",
+      when: "Wed Dec 2 · 4:00 PM MST", length: "50–60 sec",
+      hook: "Is your credit good enough to buy a house? Here's what lenders actually look at.",
+      onScreen: "IS MY CREDIT GOOD ENOUGH?",
+      approach: "Remove 'Comment CREDIT'. Keep all five steps; they earn the watch-through on YouTube.",
+      film: "Same master without the comment CTA.",
+      title: "Is My Credit Good Enough to Buy a House?",
+      description: "Lenders consider your payment history, how much of your available credit you use, and your debts compared to your income. Five steps to start today, plus the 60-day move before you apply.\n\nPersonal game plan, free 15-minute call: TimeWithMichael.com",
+      tags: ["#Shorts", "#CreditTips", "#HomeBuyingTips"], related: "the Day 5 affordability Short",
+      cta: "\"Get a personal game plan. Link on my channel.\"", watch: "Viewed vs. swiped away" }
+  },
+  day11: {
+    tiktok: { fit: "Primary", why: "The 'POV: you went back after dark' format is native to TikTok, and real dusk footage is exactly the authentic content it rewards.",
+      when: "Mon Dec 7 · 8:00 PM MST", length: "30–40 sec",
+      hook: "POV: you went back to the house you love… after dark.",
+      onScreen: "POV: YOU WENT BACK AFTER DARK",
+      approach: "Open on real footage of a quiet street at dusk, then the same street at night. Michael's real voice-over runs the five checks fast. Fair Housing: talk only about noise, lighting, parking and traffic. No people, house numbers or 'safe/unsafe' wording.",
+      film: "Real phone footage at dusk + night (Flagstaff or Munds Park). Avatar only as a small inset if Michael can't record.",
+      caption: "Before you buy a house, go back after dark. My 5-point neighborhood check 👇 Screenshot it.\nComment NIGHT for the printable list.",
+      tags: ["#househunting", "#homebuyingtips", "#movingtoarizona", "#flagstaffaz"],
+      cta: "Comment NIGHT", watch: "Shares and rewatches" },
+    ig: { fit: "Strong", why: "Local lifestyle content drives local conversions on Instagram; relocators save this.",
+      when: "Mon Dec 7 · 7:00 PM MST", length: "50–60 sec (full script)",
+      hook: "Before you buy a house, go back after dark.",
+      onScreen: "GO BACK AFTER DARK",
+      approach: "Cinematic dusk B-roll behind the avatar. Keep the Washington → Arizona line. Share CTA in caption: \"Send this to whoever you're house-hunting with.\"",
+      film: "HeyGen avatar over the dusk B-roll.", cta: "Comment NIGHT (comment-to-DM automation)", watch: "DM sends" },
+    yt: { fit: "Good", why: "\"Things to check before buying a house\" is evergreen, though less searched than finance topics.",
+      when: "Mon Dec 7 · 4:00 PM MST", length: "40–50 sec",
+      hook: "Check this before you buy a house: go back at night.",
+      onScreen: "CHECK THIS BEFORE YOU BUY",
+      approach: "Use the TikTok footage cut, add the five checks as a numbered list overlay, end with 'screenshot this'.",
+      film: "TikTok master without the comment CTA.",
+      title: "Check This Before You Buy a House (Go Back at Night)",
+      description: "Five neighborhood checks before you buy: drive the commute at rush hour, look up planned construction, read the HOA rules, come back after dark, and talk to a neighbor.\n\nMoving to Flagstaff, Munds Park, Scottsdale or Phoenix? TimeWithMichael.com",
+      tags: ["#Shorts", "#HomeBuyingTips", "#MovingToArizona"], related: "the Day 15 inspection Short",
+      cta: "\"Moving to Arizona? Link on my channel.\"", watch: "Viewed vs. swiped away" }
+  },
+  day13: {
+    tiktok: { fit: "Primary", why: "House hacking is one of the biggest real estate topics on TikTok, and Michael has done it himself.",
+      when: "Wed Dec 9 · 7:00 PM MST", length: "40–55 sec",
+      hook: "House hacking, explained: three ways people let their home help cover the bills.",
+      onScreen: "HOUSE HACKING: 3 WAYS",
+      approach: "Green-screen over a simple drawn floor plan: room → duplex → guest house. 'Rental income isn't guaranteed' on screen during strategy three and again at the end. No income figures.",
+      film: "Michael on camera with green-screen, or the HeyGen avatar (AI label on).",
+      caption: "House hacking 101: 3 ways people use rental income to help with housing costs (rental income isn't guaranteed) 👇\nComment DUPLEX for my 3-step check.",
+      tags: ["#househacking", "#realestateinvesting", "#duplex", "#arizonarealestate"],
+      cta: "Comment DUPLEX", watch: "Saves; comments asking follow-up questions" },
+    ig: { fit: "Strong", why: "Warm local followers who might buy a multi-unit in Northern AZ.",
+      when: "Wed Dec 9 · 11:30 AM MST", length: "60–70 sec (full script)",
+      hook: "What if the people living in your house helped pay for it?",
+      onScreen: "HOW RENTAL INCOME COULD HELP WITH YOUR MORTGAGE",
+      approach: "Full script with the duplex icon on strategy two. Keep 'Purpose is found in the pursuit.'",
+      film: "HeyGen avatar (as planned).", cta: "Comment DUPLEX (comment-to-DM automation)", watch: "DM sends and saves" },
+    yt: { fit: "Primary", why: "Investor audiences research on YouTube; 'house hacking' and 'duplex' are steady search terms.",
+      when: "Wed Dec 9 · 4:00 PM MST", length: "55–70 sec",
+      hook: "Three house hacking strategies: room, duplex, guest house.",
+      onScreen: "3 HOUSE HACKING STRATEGIES",
+      approach: "Investor-education cut; keep the 'before you buy' three checks. End on the duplex diagram so it loops.",
+      film: "Same master as TikTok without the comment CTA.",
+      title: "3 House Hacking Strategies (Room, Duplex, Guest House)",
+      description: "Three ways some homeowners use rental income to help with housing costs: rent a room, buy a small multi-unit and live in one unit, or rent a guest house where local rules allow. Check rental rules and HOA restrictions, research real rents, and budget for vacancies and repairs.\n\nTimeWithMichael.com",
+      tags: ["#Shorts", "#HouseHacking", "#RealEstateInvesting"], related: "the Day 18 short-term rental Short",
+      cta: "\"Talk through a property. Link on my channel.\"", watch: "Viewed vs. swiped away; new subscribers" }
+  },
+  day15: {
+    tiktok: { fit: "Primary", why: "Buyers under contract search 'home inspection problems' in a panic, and real props make it stitchable.",
+      when: "Fri Dec 11 · 7:00 PM MST", length: "40–50 sec",
+      hook: "Your home inspection came back bad? Don't panic. Sort it into three buckets.",
+      onScreen: "BAD INSPECTION? 3 BUCKETS",
+      approach: "Three real buckets labeled SMALL / BIG-TICKET / WALK-AWAY. Michael drops a card with each item into a bucket. Invite Stitches: \"Stitch this with the weirdest thing your inspector found.\"",
+      film: "Real footage with props (strongly preferred). Avatar version only as backup.",
+      caption: "Home inspection found problems? Here's how I sort the report into 3 buckets (and the one that makes me walk away) 👇\nUnder contract? Book a call. Link in bio.",
+      tags: ["#homeinspection", "#undercontract", "#firsttimehomebuyer", "#realestatetips"],
+      cta: "Book a call (link in bio)", watch: "Stitches/comments; bio link taps" },
+    ig: { fit: "Strong", why: "Saves from future buyers; past clients share it with friends under contract.",
+      when: "Fri Dec 11 · 11:30 AM MST", length: "55–60 sec (full script)",
+      hook: "Bad inspection report? Don't panic. It might be leverage.",
+      onScreen: "BAD INSPECTION? YOU MAY HAVE OPTIONS",
+      approach: "Full script with the three labeled buckets on screen. Caption share line: \"Send this to a friend who's under contract.\"",
+      film: "HeyGen avatar with bucket graphics, or the TikTok prop footage.", cta: "Book a call (link in bio)", watch: "Saves and DM sends" },
+    yt: { fit: "Strong", why: "Evergreen search, and it lands on a Friday at 4 PM, the top Shorts slot.",
+      when: "Fri Dec 11 · 4:00 PM MST", length: "50–60 sec",
+      hook: "Home inspection found problems? Here's what to do next.",
+      onScreen: "INSPECTION FOUND PROBLEMS?",
+      approach: "Keep 'depending on your contract' and the deadline tip. End on the three buckets lined up.",
+      film: "TikTok prop master.",
+      title: "Home Inspection Found Problems? Do This Next",
+      description: "Sort your inspection report into three buckets: small stuff, big-ticket items worth negotiating, and possible walk-away items like serious structural issues. Know your inspection deadline. Options depend on your contract.\n\nUnder contract in Arizona? TimeWithMichael.com",
+      tags: ["#Shorts", "#HomeInspection", "#HomeBuyingTips"], related: "the Day 11 'go back after dark' Short",
+      cta: "\"Under contract? Link on my channel.\"", watch: "Viewed vs. swiped away" }
+  },
+  day18: {
+    tiktok: { fit: "Primary", why: "STR content performs well on TikTok, and holding a physical book is an authority hook the avatar can't fake.",
+      when: "Wed Dec 16 · 8:00 PM MST", length: "35–45 sec",
+      hook: "I wrote the book on short-term rentals. Rule number one is the one nobody tells you.",
+      onScreen: "STR RULE #1 (BEFORE YOU BUY)",
+      approach: "Michael holds How to Be a Short-Term Rental Tycoon in frame for the first two seconds. Tease rule #1 (the rules come before the house) and run lessons 2–4 fast. 'Rental income is never guaranteed' on screen. No income/ROI figures.",
+      film: "Real footage with the book (strongly preferred).",
+      caption: "Thinking about buying an Airbnb or short-term rental in Arizona? Rule #1 before you write an offer 👇\nComment TYCOON for my pre-purchase STR checklist.",
+      tags: ["#shorttermrental", "#airbnbhost", "#realestateinvesting", "#flagstaffaz"],
+      cta: "Comment TYCOON", watch: "Follows from this video; saves" },
+    ig: { fit: "Strong", why: "Michael's niche, and local investors on Instagram want the checklist.",
+      when: "Wed Dec 16 · 6:30 PM MST", length: "45–55 sec (full script)",
+      hook: "I literally wrote the book on short-term rentals. Here's what nobody tells you before you buy one.",
+      onScreen: "I LITERALLY WROTE THE BOOK ON SHORT-TERM RENTALS",
+      approach: "Book cover next to the avatar for the first two seconds (as planned).",
+      film: "HeyGen avatar + book photo, or the TikTok real footage.", cta: "Comment TYCOON (comment-to-DM automation)", watch: "DM sends" },
+    yt: { fit: "Primary", why: "Short-term rental investors do heavy research on YouTube; strong subscriber potential.",
+      when: "Wed Dec 16 · 4:00 PM MST", length: "45–55 sec",
+      hook: "Before you buy a short-term rental, check the rules first.",
+      onScreen: "STR RULE #1",
+      approach: "Investor cut; keep all four lessons. Replace 'Comment TYCOON' with 'The checklist is linked on my channel.'",
+      film: "TikTok book master.",
+      title: "Short-Term Rental Rule #1 (Before You Buy)",
+      description: "From the author of How to Be a Short-Term Rental Tycoon: check city, county and HOA short-term rental rules, permits and taxes before you write an offer. Plan for seasonality, budget for the boring costs, and run conservative numbers. Rental income is never guaranteed.\n\nTimeWithMichael.com",
+      tags: ["#Shorts", "#ShortTermRental", "#AirbnbHost"], related: "the Day 13 house hacking Short",
+      cta: "\"Pre-purchase checklist: link on my channel.\"", watch: "New subscribers; Related Video clicks" }
+  },
+  day22: {
+    tiktok: { fit: "Primary", why: "Timely, contrarian holiday-week take. TikTok's fast feed suits seasonal content.",
+      when: "Tue Dec 22 · 7:00 PM MST", length: "25–35 sec",
+      hook: "Nobody's house-hunting in December. That's exactly the point.",
+      onScreen: "EVERYONE STOPS HOUSE-HUNTING IN DECEMBER",
+      approach: "Short and punchy. Split-screen snowy Flagstaff street vs sunny Scottsdale street. Keep the 'may' and 'not always' hedges. No market stats.",
+      film: "Michael on camera over split B-roll, or the HeyGen avatar (AI label on).",
+      caption: "Is December a good time to buy a house? Fewer buyers, motivated sellers (sometimes) 👇\nComment READY and I'll tell you which camp you're in.",
+      tags: ["#househunting", "#arizonarealestate", "#flagstaffaz", "#scottsdaleaz"],
+      cta: "Comment READY", watch: "Comments (READY replies)" },
+    ig: { fit: "Strong", why: "Local followers who are actively looking this month.",
+      when: "Tue Dec 22 · 11:30 AM MST", length: "35–45 sec (full script)",
+      hook: "Everyone stops house-hunting in December. That might be exactly why you shouldn't.",
+      onScreen: "EVERYONE STOPS HOUSE-HUNTING IN DECEMBER",
+      approach: "As planned, with the split B-roll.", film: "HeyGen avatar (as planned).", cta: "Comment READY (comment-to-DM automation)", watch: "Comments" },
+    yt: { skip: "Seasonal. Shorts search traffic builds over weeks, and by then it's January and the message is stale. Re-cut it for YouTube next November instead." }
+  },
+  day30: {
+    tiktok: { fit: "Primary", why: "TikTok is always on, but its feed is mostly non-followers, so 'you've watched all month' won't land. The hook is rewritten for cold viewers.",
+      when: "Fri Jan 1 · 6:00 PM MST", length: "30–40 sec",
+      hook: "Want to buy a home in 2027 but dread the sales pitch? Here's what a call with me actually looks like.",
+      onScreen: "BUYING IN 2027? NO SALES PITCH.",
+      approach: "Same take-away close, rewritten for strangers: what happens on the 15-minute call, the two possible answers ('buy this spring' / 'wait a year, here's the plan'), and 'you never have to talk to me again.' Relaxed, outdoors, New Year's Day energy.",
+      film: "Real footage in the Munds Park pines (strongly preferred).",
+      caption: "Thinking about buying a home in 2027? A free 15-minute call. No pressure, just a plan. Link in bio.",
+      tags: ["#2027goals", "#firsttimehomebuyer", "#arizonarealestate", "#buyingahouse"],
+      cta: "Link in bio → TimeWithMichael.com", watch: "Bio link taps and booked calls" },
+    ig: { fit: "Primary", why: "This is a warm-audience close. Instagram followers really have watched all month.",
+      when: "Fri Jan 1 · 10:00 AM MST", length: "40–50 sec (full script)",
+      hook: "If you've watched my videos all month and still haven't booked a call… this one's for you.",
+      onScreen: "STILL HAVEN'T BOOKED A CALL? THIS ONE'S FOR YOU.",
+      approach: "Original script as written. Pin it to the profile grid for January.", film: "HeyGen avatar or real outdoor footage.", cta: "Book a call (link in bio)", watch: "Booked calls" },
+    yt: { skip: "The take-away close needs a warm audience and a one-tap booking path. Shorts viewers are mostly non-subscribers and there's no in-feed bio link, so the effort is better spent elsewhere." }
+  }
+};
+
+// Channel-specific production steps (built from the per-post plan above)
+function channelSteps(ch, p, c) {
+  const req = p.compliance.level === "required";
+  const kw = /comment|dm/i.test(c.cta || "") ? ((c.cta.match(/[A-Z0-9]{4,}/) || [""])[0]) : "";
+  if (ch === "tiktok") return [
+    ...(req ? ["Use the ORM-approved script. If you trimmed it for this TikTok cut, send the trimmed version to ORM too. A shorter script is a new script."] : []),
+    "Production: " + c.film,
+    "Edit 9:16 in CapCut or the TikTok editor. Hook text on screen in the first second: \"" + c.onScreen + "\". A cut, zoom or text change every 2–3 seconds; target " + c.length + ".",
+    "Say the opening line exactly as written below. TikTok reads spoken words, on-screen text and the caption to decide who sees the video.",
+    "Captions: TikTok's auto-captions (edit for accuracy) placed above the bottom caption area and left of the right-side buttons.",
+    ...(req ? ["Keep the NMLS disclosure on screen for the whole video (small white text, top or middle third, clear of TikTok's buttons) and in the caption."] : []),
+    "Sound: business accounts can only use the Commercial Music Library. Pick a quiet instrumental under the voice.",
+    "Before posting: More options → turn on \"AI-generated content\" for any HeyGen avatar or voice. Leave it off only for footage Michael filmed with his real voice.",
+    "Paste the TikTok caption + hashtags (Copy button below). Then pin a comment with the CTA: " + c.cta + ".",
+    "Bio link check: a clickable website needs a business account (or 1,000+ followers). Set it to TimeWithMichael.com.",
+    "Schedule in TikTok Studio (desktop) for " + c.when + ". Upload natively. Never post a file downloaded from another app.",
+    "First hour: reply to every comment" + (kw ? " (DM the " + kw + " resource to everyone who comments it)" : "") + ". Turn the best question into a 'reply with video' follow-up.",
+    "Tick \"TikTok posted\" below once it's live."
+  ];
+  if (ch === "ig") return [
+    "Upload the clean master, not the TikTok export. Instagram limits reach on recycled clips with another app's watermark.",
+    "Production: " + c.film,
+    "Approach for this version: " + c.approach,
+    ...(req ? ["NMLS disclosure on screen (whole video or at least the last 5 seconds) and in the caption; use the Copy + Disclosures button on the Copy tab."] : []),
+    "Cover: pick a frame showing \"" + c.onScreen + "\" so it reads on the profile grid. Keep text out of the top ~14% and bottom ~35% of the frame.",
+    "Advanced settings → turn on the AI label for HeyGen avatar or voice versions.",
+    ...(c.trial ? ["Hook test: if the account has 1,000+ followers, publish a second cut as a Trial Reel (non-followers only) opening with: \"" + c.trial + "\". Share the winner to followers."] : []),
+    ...(kw ? ["Set the comment-to-DM automation (for example ManyChat) for the keyword " + kw + " before posting."] : []),
+    "Caption + hashtags: use the Copy tab. Schedule in Meta Business Suite for " + c.when + " and share to Facebook Reels.",
+    "Tick \"IG posted\" below once it's live."
+  ];
+  return [
+    "Re-edit for YouTube: remove any 'Comment KEYWORD' ending (no comment-to-DM flow on YouTube) and end on a frame that loops back to the opening line.",
+    "Production: " + c.film,
+    "Approach for this version: " + c.approach,
+    "Upload in YouTube Studio as a vertical 9:16 video under 3 minutes so it's classified as a Short. Target " + c.length + ".",
+    "Title: \"" + c.title + "\". Description and tags: Copy button below.",
+    ...(req ? ["NMLS disclosure on screen and at the end of the description (included in the copied description)."] : []),
+    "Upload flow → \"Altered or synthetic content\": answer Yes for HeyGen avatar or voice versions.",
+    "Related video: Studio → Content → this Short → Related video → link " + c.related + ".",
+    "Pin a comment: \"Free 15-minute call: TimeWithMichael.com (link on my channel page).\" Links in Shorts descriptions and comments aren't reliably clickable, so keep the channel header link set to TimeWithMichael.com.",
+    "Schedule for " + c.when + ".",
+    "Tick \"YT posted\" below once it's live."
+  ];
+}
+
 // Posting rules straight from the file's "BEFORE POSTING" section
 const BEFORE_POSTING = [
   { t: "Booking link", d: "Make sure the link in the bio goes straight to Michael's booking page, TimeWithMichael.com. One tap from the video should take viewers directly to the calendar." },
   { t: "Compliance review", d: "Scripts 2, 3, 4 and 8 discuss financing. Script 10 discusses rental income helping cover mortgage expenses. Add the NMLS disclosure as on-screen text and submit those scripts to ORM Marketing & Compliance before posting." },
   { t: "Last five seconds of every video", d: "Display: " + END_CARD },
   { t: "Test different hooks", d: "Film two versions of the strongest scripts, changing only the first line. Scripts 2, 8 and 9 are good choices." },
-  { t: "Final quality check", d: "Before publishing, review the HeyGen output for pronunciation, pacing, captions, and whether the spoken narration matches the approved script." }
+  { t: "Final quality check", d: "Before publishing, review the HeyGen output for pronunciation, pacing, captions, and whether the spoken narration matches the approved script." },
+  { t: "Share to boost reach", d: "After each Reel goes live, share it to relevant Facebook groups (local Flagstaff, Munds Park, Scottsdale and Phoenix community, relocation and first-time buyer groups) and other sharing spots like Facebook Stories, the personal profile and Instagram Stories. Share the live post (don't re-upload), add a short personal line, follow each group's promotion rules, and keep the disclosures attached." }
 ];
 
 </script>
@@ -1428,7 +1781,13 @@ const BEFORE_POSTING = [
   const $ = id => document.getElementById(id);
   const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-  const POSTS = Object.entries(DB.posts).map(([id, p]) => ({ id, ...p, ...(GUIDES[id] || {}) })).sort((a, b) => a.day - b.day);
+  const CH_KEYS = ["tiktok", "ig", "yt"];
+  const POSTS = Object.entries(DB.posts).map(([id, p]) => {
+    const o = { id, ...p, ...(GUIDES[id] || {}), channels: CHANNELS[id] || null };
+    if (o.channels) o.platforms = "TikTok + Instagram Reels" + (o.channels.yt && !o.channels.yt.skip ? " + YouTube Shorts" : "") + " · FB Reels cross-post";
+    return o;
+  }).sort((a, b) => a.day - b.day);
+  const liveCh = p => p.channels ? CH_KEYS.filter(k => p.channels[k] && !p.channels[k].skip) : [];
   const byId = id => POSTS.find(p => p.id === id);
   const WEEKS = [1, 2, 3, 4, 5, 6].map(n => ({ n, from: (n - 1) * 5 + 1, to: n * 5 }));
   const WEEK_RANGES = { 1: "Nov 23 – 27", 2: "Nov 30 – Dec 4", 3: "Dec 7 – 11", 4: "Dec 14 – 18", 5: "Dec 21 – 25", 6: "Dec 28 – Jan 1" };
@@ -1441,17 +1800,17 @@ const BEFORE_POSTING = [
   const needsReview = p => p.compliance.level === "required";
 
   // ---------- state ----------
-  const blank = () => ({ pending: false, scheduled: false, posted: false, compliance: false, approvedBy: "", approvedOn: "", notes: "", leads: [], links: [], updatedAt: 0 });
+  const blank = () => ({ ch: { tiktok: false, ig: false, yt: false }, pending: false, scheduled: false, posted: false, compliance: false, approvedBy: "", approvedOn: "", notes: "", leads: [], links: [], updatedAt: 0 });
   let STATE = {};
   const asArray = v => Array.isArray(v) ? v.filter(Boolean) : (v && typeof v === "object" ? Object.values(v).filter(Boolean) : []);
-  function normalize(s) { const o = Object.assign(blank(), s || {}); o.leads = asArray(o.leads); o.links = asArray(o.links); return o; }
+  function normalize(s) { const o = Object.assign(blank(), s || {}); o.ch = Object.assign({ tiktok: false, ig: false, yt: false }, (s && s.ch && typeof s.ch === "object") ? s.ch : {}); o.leads = asArray(o.leads); o.links = asArray(o.links); return o; }
   function load() { try { const raw = JSON.parse(localStorage.getItem(LS_KEY) || "{}") || {}; STATE = {}; Object.keys(raw).forEach(k => { if (DB.posts[k]) STATE[k] = normalize(raw[k]); }); } catch (e) { STATE = {}; } }
   function persistLocal() { try { localStorage.setItem(LS_KEY, JSON.stringify(STATE)); } catch (e) {} }
   const st = id => (STATE[id] = normalize(STATE[id]));
   const getResetId = () => { try { return localStorage.getItem(LS_RESET_KEY) || ""; } catch (e) { return ""; } };
   const setResetId = v => { try { localStorage.setItem(LS_RESET_KEY, v); } catch (e) {} };
 
-  let filters = { search: "", week: "all", format: "all", status: "all" };
+  let filters = { search: "", week: "all", format: "all", status: "all", channel: "all" };
   const expanded = new Set(["day01"]);
   const activeTab = {};
 
@@ -1500,7 +1859,7 @@ const BEFORE_POSTING = [
     $('confirm-message').textContent = message;
     const okBtn = $('confirm-ok');
     okBtn.textContent = ok;
-    okBtn.className = "px-4 py-2.5 rounded-lg font-bold text-white text-sm transition cursor-pointer " + (danger ? "bg-agency-alert hover:bg-[#8F2E24]" : "bg-agency-navy hover:bg-agency-deep");
+    okBtn.className = "px-4 py-2.5 rounded-lg font-bold text-white text-sm transition cursor-pointer " + (danger ? "bg-agency-alert hover:bg-[#99281F]" : "bg-agency-navy hover:bg-agency-deep");
     $('confirm-box').className = "bg-white rounded-xl max-w-md w-full p-6 shadow-2xl border-t-4 " + (danger ? "border-agency-alert" : "border-agency-gold");
     $('confirm-icon').setAttribute("class", "w-7 h-7 shrink-0 " + (danger ? "text-agency-alert" : "text-agency-goldink"));
     const m = $('confirm-modal'); m.classList.remove("hidden"); m.classList.add("flex");
@@ -1558,19 +1917,20 @@ const BEFORE_POSTING = [
       if (filters.status === "posted" && !S.posted) return false;
       if (filters.status === "not_posted" && S.posted) return false;
       if (filters.status === "compliance" && (!needsReview(p) || S.compliance)) return false;
+      if ((filters.channel === "tiktok" || filters.channel === "yt") && !liveCh(p).includes(filters.channel)) return false;
       if (q) {
         const hay = [`day ${p.day}`, p.weekday, p.format, p.topic, p.source, p.hook, p.caption.join(" "), p.cta, p.hashtags.join(" "), p.notes,
-          S.notes, S.approvedBy, S.leads.map(l => Object.values(l).join(" ")).join(" "), S.links.map(l => l.label + " " + l.url).join(" ")].join(" ").toLowerCase();
+          S.notes, S.approvedBy, p.channels ? JSON.stringify(p.channels) : "", S.leads.map(l => Object.values(l).join(" ")).join(" "), S.links.map(l => l.label + " " + l.url).join(" ")].join(" ").toLowerCase();
         if (!hay.includes(q)) return false;
       }
       return true;
     });
   }
   function syncFilterControls() {
-    $('search-input').value = filters.search; $('week-filter').value = filters.week; $('format-filter').value = filters.format; $('status-filter').value = filters.status;
+    $('search-input').value = filters.search; $('week-filter').value = filters.week; $('format-filter').value = filters.format; $('status-filter').value = filters.status; $('channel-filter').value = filters.channel;
     $('clear-search-btn').classList.toggle("hidden", !filters.search);
   }
-  function resetFilters() { filters = { search: "", week: "all", format: "all", status: "all" }; syncFilterControls(); renderPosts(); }
+  function resetFilters() { filters = { search: "", week: "all", format: "all", status: "all", channel: "all" }; syncFilterControls(); renderPosts(); }
 
   // ---------- stats ----------
   function updateStats() {
@@ -1584,6 +1944,22 @@ const BEFORE_POSTING = [
     $('stat-scheduled-count').textContent = `${sch} / ${n}`; $('stat-scheduled-pct').textContent = pct(sch) + "%";
     $('stat-posted-count').textContent = `${pos} / ${n}`; $('stat-posted-pct').textContent = pct(pos) + "%";
     $('stat-compliance-count').textContent = `${cA} / ${cT}`; $('stat-compliance-pct').textContent = (cT ? Math.round(cA / cT * 100) : 0) + "%";
+    const reels = POSTS.filter(p => p.channels);
+    $('channel-cards').innerHTML = CH_KEYS.map(k => {
+      const M = CHANNEL_META[k], planned = reels.filter(p => liveCh(p).includes(k)), done = planned.filter(p => st(p.id).ch[k]).length;
+      const pc = planned.length ? Math.round(done / planned.length * 100) : 0;
+      return `<button data-action="quick-channel" data-value="${k}" class="flex flex-col justify-start text-left rounded-xl overflow-hidden border border-agency-line bg-white hover:shadow-md transition cursor-pointer">
+        <div class="${M.cls} w-full px-4 py-2.5 flex items-center justify-between"><span class="font-display font-extrabold text-white">${M.name}</span><span class="eyebrow text-white bg-black/30 rounded px-1.5 py-0.5">${done} / ${planned.length} live</span></div>
+        <div class="p-4 space-y-2">
+          <p class="eyebrow text-agency-goldink">${esc(M.role)}</p>
+          <p class="text-xs text-agency-steel"><strong class="text-agency-navy">Post window:</strong> ${esc(M.window)}</p>
+          <ul class="text-xs text-slate-600 space-y-1 list-disc pl-4">${M.rules.map(r => `<li>${esc(r)}</li>`).join("")}</ul>
+          <div class="w-full bg-agency-line rounded-full h-1.5 mt-1"><div class="bg-agency-gold h-1.5 rounded-full transition-all" style="width:${pc}%"></div></div>
+        </div></button>`;
+    }).join("");
+    $('channel-matrix').innerHTML = `<table class="w-full text-xs mt-1"><thead><tr class="text-left text-agency-steel"><th class="py-2 pr-3 eyebrow">Day</th><th class="py-2 pr-3 eyebrow">Reel</th>${CH_KEYS.map(k => `<th class="py-2 pr-3 eyebrow">${CHANNEL_META[k].name}</th>`).join("")}</tr></thead><tbody>${reels.map(p => `<tr class="border-t border-agency-line align-top">
+      <td class="py-2 pr-3 font-mono font-bold text-agency-navy whitespace-nowrap">D${p.day}</td><td class="py-2 pr-3 text-slate-700 min-w-[160px]">${esc(p.topic)}</td>
+      ${CH_KEYS.map(k => { const c = p.channels[k]; const fit = c.skip ? "Skip" : c.fit; return `<td class="py-2 pr-3 min-w-[180px]"><span class="inline-block px-2 py-0.5 rounded font-bold ${FIT_STYLE[fit]}">${fit === "Skip" ? "Skipped" : fit}</span><span class="block text-slate-500 mt-1 leading-snug">${esc(c.skip || c.why)}</span></td>`; }).join("")}</tr>`).join("")}</tbody></table>`;
     $('format-cards').innerHTML = FORMATS.map(f => {
       const all = POSTS.filter(p => p.format === f.key), done = all.filter(p => st(p.id).posted).length, p = all.length ? Math.round(done / all.length * 100) : 0;
       return `<button data-action="quick-format" data-value="${f.key}" class="text-left rounded-lg p-3.5 border border-agency-line bg-agency-paper/60 ${f.hover} transition cursor-pointer">
@@ -1634,7 +2010,7 @@ const BEFORE_POSTING = [
         </div>
       </div>`;
     if (g.script) out += `<div class="bg-white border border-agency-line rounded-lg p-4 space-y-2"><div class="flex flex-wrap items-center justify-between gap-2"><span class="eyebrow text-agency-navy">🎬 HeyGen Script (paste exactly as approved)</span>
-        <button data-action="copy-script" data-id="${p.id}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-agency-gold hover:bg-[#D98B55] text-agency-navy text-xs font-black tracking-wide transition cursor-pointer">Copy Script</button></div>
+        <button data-action="copy-script" data-id="${p.id}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-agency-gold hover:bg-[#F48C5A] text-agency-navy text-xs font-black tracking-wide transition cursor-pointer">Copy Script</button></div>
         <pre class="whitespace-pre-wrap font-sans text-sm text-slate-800 leading-relaxed bg-agency-paper border-l-4 border-agency-gold p-3 rounded-md">${esc(g.script)}</pre></div>`;
     if (g.carouselPlan) out += `<div class="bg-white border border-agency-line rounded-lg p-4 space-y-3"><span class="eyebrow text-agency-blue">🎠 Detailed Carousel Slide Plan</span>
         ${g.carouselPlan.map(s => `<div class="border border-agency-line rounded-md p-3 bg-agency-paper/60"><div class="flex flex-wrap items-center gap-2 mb-1"><span class="bg-agency-navy text-agency-gold text-[11px] font-black tracking-wider px-2 py-0.5 rounded">SLIDE ${s.slide}</span><span class="text-xs font-bold text-agency-steel">Background: ${esc(s.background)}</span></div>
@@ -1646,6 +2022,50 @@ const BEFORE_POSTING = [
         <p><strong>Background:</strong> ${esc(g.graphicSpec.background)}</p><p><strong>Image/Visual:</strong> ${esc(g.graphicSpec.image)}</p><p><strong>Text:</strong> ${esc(g.graphicSpec.text)}</p><p><strong>Text Style:</strong> ${esc(g.graphicSpec.textStyle)}</p><p><strong>Design Note:</strong> ${esc(g.graphicSpec.designNote)}</p></div></div>`;
     out += `<p class="text-[11px] text-agency-steel">Colors and fonts are suggestions: the script file doesn't specify a brand kit. Swap in Michael's brand colors if he has them.</p></div>`;
     return out;
+  }
+
+  function channelCopy(k, p) {
+    const c = p.channels[k], req = p.compliance.level === "required", tail = [];
+    if (req) tail.push(D.mortgage);
+    if (p.question === "q10") tail.push(D.rental);
+    tail.push(D.realEstate);
+    if (k === "ig") return fullCopy(p);
+    if (k === "yt") return "TITLE: " + c.title + "\n\nDESCRIPTION:\n" + c.description + "\n\n" + tail.join("\n") + "\n\n" + c.tags.join(" ");
+    return c.caption + "\n\n" + c.tags.join(" ") + "\n\n" + tail.join("\n");
+  }
+  function channelsHTML(p, S) {
+    const row = (label, val, mono) => val ? `<div><span class="eyebrow text-agency-steel">${label}</span><p class="text-sm text-slate-700 leading-relaxed mt-0.5 ${mono ? 'font-mono text-xs' : ''}">${esc(val)}</p></div>` : "";
+    const fitBox = `<div class="bg-white border border-agency-line rounded-xl p-4"><span class="eyebrow text-agency-goldink">Channel fit analysis for Day ${p.day}</span>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-3">${CH_KEYS.map(k => { const c = p.channels[k], fit = c.skip ? "Skip" : c.fit; return `<div class="rounded-lg border border-agency-line p-3"><div class="flex items-center justify-between gap-2"><span class="font-display font-bold text-agency-navy">${CHANNEL_META[k].name}</span><span class="px-2 py-0.5 rounded text-[11px] font-bold ${FIT_STYLE[fit]}">${fit === "Skip" ? "Skipped" : fit}</span></div><p class="text-xs text-slate-600 mt-1.5 leading-relaxed">${esc(c.skip || c.why)}</p></div>`; }).join("")}</div></div>`;
+    const sections = CH_KEYS.map(k => {
+      const c = p.channels[k], M = CHANNEL_META[k];
+      if (c.skip) return `<section class="rounded-xl border border-dashed border-agency-line bg-white/60 p-4"><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full" style="background:${M.dot}"></span><span class="font-display font-bold text-agency-steel">${M.name} · not planned for this Reel</span></div><p class="text-sm text-agency-steel mt-1.5">${esc(c.skip)}</p></section>`;
+      const steps = channelSteps(k, p, c), on = S.ch[k];
+      const copyBody = k === "yt" ? "TITLE: " + c.title + "\n\n" + c.description + "\n\n" + c.tags.join(" ") : k === "ig" ? "Uses the Instagram caption on the Copy tab, plus the share line in the approach above." : c.caption + "\n\n" + c.tags.join(" ");
+      return `<section class="rounded-xl border border-agency-line bg-white overflow-hidden">
+        <div class="${M.cls} px-4 py-3 flex flex-wrap items-center justify-between gap-2">
+          <div><p class="font-display text-lg font-extrabold text-white">${M.name}</p><p class="eyebrow text-white/85">${esc(c.fit)} fit · ${esc(c.when)} · ${esc(c.length)}</p></div>
+          <label class="chip cursor-pointer select-none ${on ? 'bg-white text-agency-success' : 'bg-white/15 text-white border border-white/40'}"><input type="checkbox" ${on ? "checked" : ""} data-action="check-ch" data-id="${p.id}" data-ch="${k}" class="w-3.5 h-3.5 accent-[#2F7D5B]" />${on ? "Posted ✓" : "Mark posted"}</label>
+        </div>
+        <div class="p-4 space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            ${row("Spoken hook (first line)", "“" + c.hook + "”")}
+            ${row("On-screen text (first second)", c.onScreen)}
+            <div class="md:col-span-2">${row("How this version is different", c.approach)}</div>
+            ${row("Footage", c.film)}
+            ${row("Call to action", c.cta)}
+            ${c.trial ? row("Trial Reel hook B", "“" + c.trial + "”") : ""}
+            ${c.related ? row("Related video link", c.related) : ""}
+            ${row("Metric to watch", c.watch)}
+          </div>
+          <div class="rounded-lg bg-agency-paper border-l-4 border-agency-gold p-3"><div class="flex flex-wrap items-center justify-between gap-2 mb-1.5"><span class="eyebrow text-agency-navy">${k === "yt" ? "Title, description & tags" : k === "ig" ? "Caption" : "TikTok caption (search-first) & hashtags"}</span>
+            <button data-action="copy-ch" data-id="${p.id}" data-ch="${k}" class="px-3 py-1.5 rounded-full bg-agency-gold hover:bg-[#F48C5A] text-agency-navy text-xs font-extrabold transition cursor-pointer">Copy ${k === "ig" ? "caption + disclosures" : "with disclosures"}</button></div>
+            <pre class="whitespace-pre-wrap font-sans text-sm text-slate-800 leading-relaxed">${esc(copyBody)}</pre></div>
+          <div><span class="eyebrow text-agency-success">Step-by-step for ${M.name}</span>
+            <ol class="space-y-2 mt-2">${steps.map((s, i) => `<li class="flex gap-3 text-sm text-slate-700 leading-relaxed"><span class="shrink-0 w-6 h-6 rounded-full bg-agency-navy text-agency-gold text-[11px] font-black flex items-center justify-center font-mono">${i + 1}</span><span>${esc(s)}</span></li>`).join("")}</ol></div>
+        </div></section>`;
+    }).join("");
+    return `<div class="space-y-4">${fitBox}${sections}<p class="text-[11px] text-agency-steel">Platform research as of Nov 2026: TikTok search & AI-label rules, Instagram originality & Trial Reels, YouTube Shorts length, Related Video and synthetic-content disclosure. Post windows are starting points; check each app's own analytics after two weeks and adjust.</p></div>`;
   }
 
   function handoffHTML(p, S) {
@@ -1671,7 +2091,7 @@ const BEFORE_POSTING = [
         <div class="flex flex-col sm:flex-row gap-2">
           <input id="link-label-${p.id}" type="text" placeholder="Label (e.g. Canva – Slides 1–7)" data-enter="add-link" data-id="${p.id}" class="sm:w-56 rounded-lg border border-agency-line bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-agency-gold" />
           <input id="link-url-${p.id}" type="url" placeholder="Paste link, e.g. https://www.canva.com/design/..." data-enter="add-link" data-id="${p.id}" class="flex-1 rounded-lg border border-agency-line bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-agency-gold" />
-          <button data-action="add-link" data-id="${p.id}" class="px-4 py-2 rounded-lg bg-agency-gold hover:bg-[#D98B55] text-agency-navy text-sm font-black transition cursor-pointer">+ Add Link</button>
+          <button data-action="add-link" data-id="${p.id}" class="px-4 py-2 rounded-lg bg-agency-gold hover:bg-[#F48C5A] text-agency-navy text-sm font-black transition cursor-pointer">+ Add Link</button>
         </div>
       </div>
       ${comp}
@@ -1719,7 +2139,7 @@ const BEFORE_POSTING = [
           </div>
           <div>
             <h3 class="text-lg sm:text-xl font-bold text-agency-navy leading-snug">${esc(p.topic)}</h3>
-            <p class="font-display italic text-[15px] sm:text-base text-slate-700 mt-1.5"><span class="eyebrow not-italic text-agency-goldink mr-1.5" style="font-style:normal">Hook</span>“${esc(p.hook)}”</p>
+            <p class="hook-quote text-[15px] sm:text-base font-semibold text-slate-700 mt-2"><span class="eyebrow text-agency-goldink mr-1.5">Hook</span>“${esc(p.hook)}”</p>
             <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2.5 text-xs text-agency-steel">
               <span><strong class="text-agency-navy font-black">CTA:</strong> ${esc(p.cta)}</span>
               <span><strong class="text-agency-navy font-black">Platforms:</strong> ${esc(p.platforms)}</span>
@@ -1728,24 +2148,30 @@ const BEFORE_POSTING = [
             ${S.links.length ? `<div class="flex flex-wrap items-center gap-2 mt-3"><span class="eyebrow text-agency-goldink mr-1">Links</span>${S.links.map(l => `
               <a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer" title="${esc(l.url)}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-agency-cream border border-agency-gold/60 text-agency-navy text-xs font-bold hover:bg-agency-gold hover:border-agency-gold transition"><span>${linkIcon(l.url)}</span><span class="max-w-[220px] truncate">${esc(l.label)}</span></a>`).join("")}</div>` : ""}
           </div>
+          ${p.channels ? `<div class="flex flex-wrap items-center gap-2"><span class="eyebrow text-agency-steel mr-1">Channels</span>${CH_KEYS.map(k => {
+              const c = p.channels[k], M = CHANNEL_META[k];
+              if (c.skip) return `<span class="chip bg-agency-paper text-agency-steel border border-agency-line line-through" title="${esc(c.skip)}">${M.short} · skipped</span>`;
+              const on = S.ch[k];
+              return `<label class="chip cursor-pointer select-none border ${on ? 'bg-[#EAF5EE] border-agency-success text-agency-success' : 'bg-white border-agency-line text-agency-navy hover:bg-agency-mist'}"><input type="checkbox" ${on ? "checked" : ""} data-action="check-ch" data-id="${p.id}" data-ch="${k}" class="w-3.5 h-3.5 accent-[#2F7D5B]" /><span class="w-2 h-2 rounded-full" style="background:${M.dot}"></span>${M.short} posted<span class="font-mono font-medium text-agency-steel">· ${esc(c.when.split("·")[1].trim())}</span></label>`;
+            }).join("")}</div>` : ""}
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 pt-1">
-            ${checkBox(p.id, "pending", S.pending, "⏳ Pending Post", "bg-agency-cream border-agency-gold text-agency-goldink font-bold", "#C9773F")}
-            ${checkBox(p.id, "scheduled", S.scheduled, "🗓️ Scheduled / Ready", "bg-agency-mist border-agency-blue text-agency-navy font-bold", "#2D6A64")}
-            ${checkBox(p.id, "posted", S.posted, "✅ Posted Live", "bg-[#EAF5EE] border-agency-success text-agency-success font-bold", "#2E7D4F")}
-            ${checkBox(p.id, "compliance", S.compliance, p.compliance.level === "required" ? "🛡️ Compliance Approved" : "🛡️ Reviewed (Optional)", "bg-[#EAF5EE] border-agency-success text-agency-success font-bold", "#2E7D4F", p.compliance.level === "none")}
+            ${checkBox(p.id, "pending", S.pending, "⏳ Pending Post", "bg-agency-cream border-agency-gold text-agency-goldink font-bold", "#F0743E")}
+            ${checkBox(p.id, "scheduled", S.scheduled, "🗓️ Scheduled / Ready", "bg-agency-mist border-agency-blue text-agency-navy font-bold", "#5B4B8A")}
+            ${checkBox(p.id, "posted", S.posted, "✅ Posted Live", "bg-[#EAF5EE] border-agency-success text-agency-success font-bold", "#2F7D5B")}
+            ${checkBox(p.id, "compliance", S.compliance, p.compliance.level === "required" ? "🛡️ Compliance Approved" : "🛡️ Reviewed (Optional)", "bg-[#EAF5EE] border-agency-success text-agency-success font-bold", "#2F7D5B", p.compliance.level === "none")}
           </div>
         </div>
         ${open ? `
           <div class="border-t border-agency-line bg-agency-paper p-4 sm:p-5 space-y-4">
             <div class="flex flex-wrap gap-2 border-b border-agency-line pb-3">
-              ${tabBtn(p.id, "copy", "📋 Copy & Caption", tab)}${tabBtn(p.id, "guide", "🎬 Step-by-Step Production Guide", tab)}${tabBtn(p.id, "handoff", "🔗 Links, Handoff & Leads", tab)}
+              ${tabBtn(p.id, "copy", "📋 Copy & Caption", tab)}${tabBtn(p.id, "guide", "🎬 Step-by-Step Production Guide", tab)}${p.channels ? tabBtn(p.id, "channels", "📱 Channel Plans", tab) : ""}${tabBtn(p.id, "handoff", "🔗 Links, Handoff & Leads", tab)}
             </div>
             ${tab === "copy" ? `
               <div class="space-y-3">
                 <div class="flex flex-wrap items-center justify-between gap-2">
                   <span class="eyebrow text-agency-steel">Full Caption · Blank Line Between Sentences</span>
                   <div class="flex gap-2">
-                    <button data-action="copy-caption" data-id="${p.id}" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-agency-gold hover:bg-[#D98B55] text-agency-navy text-xs font-black tracking-wide transition cursor-pointer">Copy Caption + Hashtags</button>
+                    <button data-action="copy-caption" data-id="${p.id}" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-agency-gold hover:bg-[#F48C5A] text-agency-navy text-xs font-black tracking-wide transition cursor-pointer">Copy Caption + Hashtags</button>
                     <button data-action="copy-full" data-id="${p.id}" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-white border border-agency-line hover:bg-agency-mist text-agency-navy text-xs font-bold transition cursor-pointer">Copy + Disclosures</button>
                   </div>
                 </div>
@@ -1755,6 +2181,7 @@ const BEFORE_POSTING = [
                 </div>
               </div>` : ""}
             ${tab === "guide" ? guideHTML(p) : ""}
+            ${tab === "channels" && p.channels ? channelsHTML(p, S) : ""}
             ${tab === "handoff" ? `<div class="space-y-4">${handoffHTML(p, S)}</div>` : ""}
           </div>` : ""}
       </article>`;
@@ -1762,7 +2189,7 @@ const BEFORE_POSTING = [
 
   function renderPosts() {
     const list = getFiltered();
-    const active = filters.search.trim() || filters.week !== "all" || filters.format !== "all" || filters.status !== "all";
+    const active = filters.search.trim() || filters.week !== "all" || filters.format !== "all" || filters.status !== "all" || filters.channel !== "all";
     $('active-filter-bar').classList.toggle("hidden", !active);
     if (active) $('filter-result-count').textContent = `Showing ${list.length} of ${POSTS.length} business days`;
     if (!list.length) { $('posts-list').innerHTML = ""; $('empty-state').classList.remove("hidden"); return; }
@@ -1831,7 +2258,7 @@ const BEFORE_POSTING = [
   document.addEventListener("click", async e => {
     const el = e.target.closest("[data-action]"); if (!el || el.disabled) return;
     const a = el.dataset.action, id = el.dataset.id, v = el.dataset.value;
-    if (a === "check") return; // handled on change
+    if (a === "check" || a === "check-ch") return; // handled on change
     switch (a) {
       case "toggle": expanded.has(id) ? expanded.delete(id) : expanded.add(id); renderPosts(); break;
       case "tab": activeTab[id] = v; renderPosts(); break;
@@ -1844,6 +2271,8 @@ const BEFORE_POSTING = [
       case "copy-caption": { const p = byId(id); copyText(p.hook + "\n\n" + p.caption.join("\n\n") + "\n\n" + p.hashtags.join(" "), "Caption + hashtags copied"); break; }
       case "copy-full": copyText(fullCopy(byId(id)), "Caption + disclosures copied"); break;
       case "copy-script": copyText(byId(id).guide.script, "Script copied"); break;
+      case "copy-ch": copyText(channelCopy(el.dataset.ch, byId(id)), CHANNEL_META[el.dataset.ch].name + " copy + disclosures copied"); break;
+      case "quick-channel": filters.channel = filters.channel === v ? "all" : v; syncFilterControls(); renderPosts(); $('posts-list').scrollIntoView({ behavior: "smooth" }); break;
       case "add-link": addLink(id); break;
       case "add-lead": addLead(id); break;
       case "remove-link": removeItem(id, "link", el.dataset.item); break;
@@ -1857,6 +2286,20 @@ const BEFORE_POSTING = [
   });
 
   document.addEventListener("change", async e => {
+    const cc = e.target.closest('input[type=checkbox][data-action="check-ch"]');
+    if (cc) {
+      const id = cc.dataset.id, k = cc.dataset.ch, p = byId(id), want = cc.checked;
+      if (want && needsReview(p) && !st(id).compliance) {
+        cc.checked = false;
+        const ok = await askConfirm({ title: "Compliance Not Approved Yet", message: `Day ${p.day} needs ORM / broker approval before it goes out.\n\nMark ${CHANNEL_META[k].name} as posted anyway?`, ok: "Mark Anyway" });
+        if (!ok) return;
+      }
+      const S = st(id); S.ch[k] = want;
+      if (want) { S.pending = true; S.scheduled = true; }
+      if (liveCh(p).every(c => S.ch[c])) S.posted = true; else if (!want) S.posted = false;
+      commit(id);
+      return;
+    }
     const cb = e.target.closest('input[type=checkbox][data-action="check"]');
     if (cb) {
       const id = cb.dataset.id, f = cb.dataset.field, p = byId(id), want = cb.checked;
@@ -1878,6 +2321,7 @@ const BEFORE_POSTING = [
     if (e.target.id === "week-filter") { filters.week = e.target.value; renderPosts(); }
     if (e.target.id === "format-filter") { filters.format = e.target.value; renderPosts(); }
     if (e.target.id === "status-filter") { filters.status = e.target.value; renderPosts(); }
+    if (e.target.id === "channel-filter") { filters.channel = e.target.value; renderPosts(); }
   });
   document.addEventListener("input", e => {
     const t = e.target.closest('textarea[data-field-text], input[type=text][data-field-text]');
@@ -1893,9 +2337,9 @@ const BEFORE_POSTING = [
   function download(name, text, type) { const b = new Blob([text], { type }); const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000); }
   const stamp = () => new Date().toISOString().slice(0, 10);
   function exportCSV() {
-    const cols = ["Day", "Date", "Weekday", "Time (MST)", "Format", "Topic", "Source", "Hook", "CTA", "Compliance level", "Pending", "Scheduled", "Posted live", "Compliance approved", "Approved by", "Approved on", "Notes", "Links", "Lead count", "Leads"];
+    const cols = ["Day", "Date", "Weekday", "Time (MST)", "Format", "Topic", "Source", "Hook", "CTA", "Compliance level", "Pending", "Scheduled", "Posted live", "TikTok", "Instagram", "YouTube Shorts", "Compliance approved", "Approved by", "Approved on", "Notes", "Links", "Lead count", "Leads"];
     const q = v => `"${String(v ?? "").replace(/"/g, '""')}"`;
-    const rows = POSTS.map(p => { const S = st(p.id); return [p.day, p.date, p.weekday, p.time, p.format, p.topic, p.source, p.hook, p.cta, p.compliance.level, S.pending ? "Yes" : "No", S.scheduled ? "Yes" : "No", S.posted ? "Yes" : "No", S.compliance ? "Yes" : "No", S.approvedBy, S.approvedOn, S.notes, S.links.map(l => `${l.label}: ${l.url}`).join(" ;; "), S.leads.length, S.leads.map(l => [l.name, l.contact, l.source, l.note, l.date].filter(Boolean).join(" | ")).join(" ;; ")].map(q).join(","); });
+    const rows = POSTS.map(p => { const S = st(p.id); return [p.day, p.date, p.weekday, p.time, p.format, p.topic, p.source, p.hook, p.cta, p.compliance.level, S.pending ? "Yes" : "No", S.scheduled ? "Yes" : "No", S.posted ? "Yes" : "No", ...CH_KEYS.map(k => !p.channels ? (k === "ig" ? (S.posted ? "Yes" : "No") : "n/a") : p.channels[k].skip ? "skipped" : (S.ch[k] ? "Yes" : "No")), S.compliance ? "Yes" : "No", S.approvedBy, S.approvedOn, S.notes, S.links.map(l => `${l.label}: ${l.url}`).join(" ;; "), S.leads.length, S.leads.map(l => [l.name, l.contact, l.source, l.note, l.date].filter(Boolean).join(" | ")).join(" ;; ")].map(q).join(","); });
     download(`content-tracker-${stamp()}.csv`, "﻿" + cols.map(q).join(",") + "\n" + rows.join("\n"), "text/csv");
     showToast("CSV exported");
   }
